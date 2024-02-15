@@ -1,0 +1,54 @@
+#callForm {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#callForm fieldset {
+    margin: 0 0 1.5em 0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    border: 3px solid #EB6300 !important;
+    border-radius: 7px;
+    text-align: start;
+    box-shadow: 1px 3px 7px 3px rgba(0, 0, 0, .3);
+}
+
+#callForm legend {
+    float: none !important;
+    width: initial !important;
+    padding: 0 10px !important;
+    color: #EB6300;
+    font-weight: bold;
+}
+
+#callForm input,
+#callForm select,
+#callForm textarea,
+#callForm span {
+    border: 1px solid black !important;
+}
+
+#callForm textarea.is-invalid,
+#callForm select.is-invalid,
+#callForm span.is-invalid,
+#callForm input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#callForm span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}
+
+#callForm textarea {
+    resize: none !important;
+}
+
+#callForm label {
+    margin-bottom: 3px !important;
+}
+
+@media (max-width: 768px) {
+    fieldset>legend {
+        text-align: center;
+    }
+}

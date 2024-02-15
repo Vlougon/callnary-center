@@ -1,0 +1,5 @@
+#notFound {
+    min-height: calc(100vh - 95px - 165px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}

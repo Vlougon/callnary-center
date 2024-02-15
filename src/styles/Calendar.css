@@ -1,0 +1,25 @@
+#calendar {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#calendar .modal {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+#calendar input,
+#calendar select,
+#calendar form span {
+    border: 1px solid black !important;
+}
+
+#calendar select.is-invalid,
+#calendar span.is-invalid,
+#calendar input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#calendar span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}

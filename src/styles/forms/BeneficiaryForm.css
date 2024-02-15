@@ -1,0 +1,75 @@
+#beneficiaryForm {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#beneficiaryForm fieldset {
+    margin: 0 0 1.5em 0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    border: 3px solid #EB6300 !important;
+    border-radius: 7px;
+    text-align: start;
+    box-shadow: 1px 3px 7px 3px rgba(0, 0, 0, .3);
+}
+
+#beneficiaryForm legend {
+    float: none !important;
+    width: initial !important;
+    padding: 0 10px !important;
+    color: #EB6300;
+    font-weight: bold;
+}
+
+#beneficiaryForm input,
+#beneficiaryForm textarea,
+#beneficiaryForm select,
+#beneficiaryForm span {
+    border: 1px solid black !important;
+    resize: none !important;
+}
+
+#beneficiaryForm textarea.is-invalid,
+#beneficiaryForm select.is-invalid,
+#beneficiaryForm span.is-invalid,
+#beneficiaryForm input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#beneficiaryForm span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}
+
+#beneficiaryForm div.invalid-feedback p {
+    margin-bottom: 0 !important;
+}
+
+#beneficiaryForm input[type=submit] {
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#beneficiaryForm input[type=submit]:hover {
+    background-color: #005be3;
+    box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
+}
+
+#beneficiaryForm label {
+    margin-bottom: 3px !important;
+}
+
+#beneficiaryForm .btn-orange {
+    background-color: #ffa667 !important;
+    color: black !important;
+}
+
+#beneficiaryForm .btn-orange:hover {
+    background-color: #ff6a00 !important;
+}
+
+@media (max-width: 768px) {
+    fieldset>legend {
+        text-align: center;
+    }
+}

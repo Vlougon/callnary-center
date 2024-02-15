@@ -1,0 +1,45 @@
+#assistantList {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#assistantList table#assistantTable {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+    overflow: hidden;
+}
+
+#assistantList table td,
+#assistantList table th {
+    vertical-align: middle;
+    border-bottom: 1px solid #888888;
+}
+
+#assistantList table thead {
+    border-left: 1px solid #e05d00;
+    border-right: 1px solid #e05d00;
+}
+
+#assistantList table tbody {
+    border-left: 1px solid #888888;
+    border-right: 1px solid #888888;
+}
+
+#assistantList th {
+    background-color: #e05d00 !important;
+    color: white;
+}
+
+#assistantList .btn-warning,
+#assistantList .btn-outline-danger {
+    width: 80%;
+}
+
+@media (max-width: 768px) {
+
+    #assistantList .btn-warning,
+    #assistantList .btn-outline-danger {
+        width: 90%;
+    }
+}

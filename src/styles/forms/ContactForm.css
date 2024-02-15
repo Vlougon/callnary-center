@@ -1,0 +1,64 @@
+#contactForm {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#contactForm fieldset {
+    margin: 0 0 1.5em 0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    border: 3px solid #EB6300 !important;
+    border-radius: 7px;
+    text-align: start;
+    box-shadow: 1px 3px 7px 3px rgba(0, 0, 0, .3);
+}
+
+#contactForm legend {
+    float: none !important;
+    width: initial !important;
+    padding: 0 10px !important;
+    color: #EB6300;
+    font-weight: bold;
+}
+
+#contactForm input,
+#contactForm select,
+#contactForm span {
+    border: 1px solid black !important;
+}
+
+#contactForm select.is-invalid,
+#contactForm span.is-invalid,
+#contactForm input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#contactForm span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}
+
+#contactForm input[type=submit] {
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#contactForm input[type=submit]:hover {
+    background-color: #005be3;
+    box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
+}
+
+#contactForm .btn-orange {
+    background-color: #ffa667 !important;
+    color: black !important;
+}
+
+#contactForm .btn-orange:hover {
+    background-color: #ff6a00 !important;
+}
+
+@media (max-width: 768px) {
+    fieldset>legend {
+        text-align: center;
+    }
+}

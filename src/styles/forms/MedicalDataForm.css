@@ -1,0 +1,64 @@
+#medicalForm {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#medicalForm fieldset {
+    margin: 0 0 1.5em 0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    border: 3px solid #EB6300 !important;
+    border-radius: 7px;
+    text-align: start;
+    box-shadow: 1px 3px 7px 3px rgba(0, 0, 0, .3);
+}
+
+#medicalForm legend {
+    float: none !important;
+    width: initial !important;
+    padding: 0 10px !important;
+    color: #EB6300;
+    font-weight: bold;
+}
+
+#medicalForm textarea,
+#medicalForm span,
+#medicalForm input {
+    border: 1px solid black !important;
+    resize: none !important;
+}
+
+#medicalForm textarea.is-invalid,
+#medicalForm span.is-invalid,
+#medicalForm input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#medicalForm span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}
+
+#medicalForm form fieldset div.requiredRadio {
+    color: red !important;
+}
+
+#medicalForm div.invalid-feedback p {
+    margin-bottom: 0 !important;
+}
+
+#medicalForm input[type=submit] {
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#medicalForm input[type=submit]:hover {
+    background-color: #005be3;
+    box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
+}
+
+@media (max-width: 768px) {
+    fieldset>legend {
+        text-align: center;
+    }
+}

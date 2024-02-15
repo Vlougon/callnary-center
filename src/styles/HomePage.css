@@ -1,0 +1,96 @@
+#homePage .main {
+    min-height: calc(100vh - 77px - 113px);
+}
+
+#homePage aside.column {
+    background-color: #575757;
+    border-right: 3px solid black;
+}
+
+#homePage h3 {
+    padding: 10px 0;
+    border-bottom: 3px solid black;
+}
+
+#homePage aside.column .columrow {
+    padding: 15px 10px;
+    font-size: large;
+}
+
+#homePage aside.column .columrow:hover {
+    background-color: #424242;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+#homePage aside.column .addSection {
+    height: 10%;
+    padding: 10px;
+}
+
+#homePage aside.column ul {
+    padding: 0;
+    list-style: none;
+}
+
+#homePage aside.column .columrow a {
+    color: white;
+    text-decoration: none;
+}
+
+#homePage aside.column .columrow a:hover {
+    text-decoration: underline white;
+}
+
+#homePage aside.column .columrow img {
+    border-radius: 10px;
+}
+
+#homePage aside.column .columrow p {
+    display: inline;
+    padding-left: 10px;
+}
+
+#homePage aside.column .columrow button {
+    background: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+
+#homePage aside.column #addButton {
+    background: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    border: 2px solid black;
+    font-size: xx-large;
+    text-align: center;
+}
+
+#homePage aside.column .columrow button:hover,
+#homePage aside.column #addButton:hover {
+    background-color: #727272;
+}
+
+#homePage .gap-4 {
+    height: 100%;
+    padding: 30px 0;
+}
+
+#homePage .main a {
+    background-color: rgb(237, 237, 237);
+    border-radius: 10%;
+}
+
+#homePage .main a:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    #homePage aside.column {
+        border-right: none;
+        border-bottom: 3px solid black;
+    }
+}

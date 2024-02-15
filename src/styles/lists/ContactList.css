@@ -1,0 +1,40 @@
+#contactList {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#contactList table#contactTable {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+    overflow: hidden;
+}
+
+#contactList table td,
+#contactList table th {
+    vertical-align: middle;
+    border-bottom: 1px solid #888888;
+}
+
+#contactList table thead {
+    border-left: 1px solid #e05d00;
+    border-right: 1px solid #e05d00;
+}
+
+#contactList table tbody {
+    border-left: 1px solid #888888;
+    border-right: 1px solid #888888;
+}
+
+#contactList th {
+    background-color: #e05d00 !important;
+    color: white;
+}
+
+#contactList .btn-outline-danger {
+    width: 80%;
+}
+
+#contactList .btn-warning {
+    width: 60%;
+}

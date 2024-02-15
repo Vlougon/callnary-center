@@ -1,0 +1,47 @@
+#medicalList {
+    min-height: calc(100vh - 92px - 171px);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#medicalList table#medicalTable {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;
+    overflow: hidden;
+}
+
+#medicalList table td,
+#medicalList table th {
+    vertical-align: middle;
+    border-bottom: 1px solid #888888;
+}
+
+#medicalList table thead {
+    border-left: 1px solid #e05d00;
+    border-right: 1px solid #e05d00;
+}
+
+#medicalList table tbody {
+    border-left: 1px solid #888888;
+    border-right: 1px solid #888888;
+}
+
+#medicalList th {
+    background-color: #e05d00 !important;
+    color: white;
+}
+
+#medicalList .btn-outline-danger {
+    width: 90%;
+}
+
+#medicalList .btn-success {
+    width: 50%;
+}
+
+@media (max-width: 768px) {
+
+    #medicalList .btn-success {
+        width: 70%;
+    }
+}
