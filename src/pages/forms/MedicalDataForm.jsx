@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { FormContext } from '../../contexts/FormContext';
+import { FormContext } from '../../context/FormContext';
 import AllergiesIllnessesFieldSet from '../../components/fieldsets/Allergies&IllnessesFieldSet';
 import MedicinesFieldSet from '../../components/fieldsets/MedicinesFieldSet';
 import LocalStrucutresFieldSet from '../../components/fieldsets/LocalStructures';

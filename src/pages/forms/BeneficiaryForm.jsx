@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FormContext } from '../../contexts/FormContext';
+import { FormContext } from '../../context/FormContext';
 import BeneficiaryPersonalDataFieldSet from '../../components/fieldsets/BeneficiaryPersonalDataFieldSet';
 import SocialDataFieldSet from '../../components/fieldsets/SocialDataFieldSet';
 import AddresFieldSet from '../../components/fieldsets/AddresFieldSet';

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from '../../contexts/FormContext';
+import { FormContext } from '../../context/FormContext';
 import TextInput from "../inputs/TextInput";
 import SelectInput from "../inputs/SelectInput";
 import PCGenerator from "../../classes/PCGenerator";

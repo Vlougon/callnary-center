@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { MainCalendarContext } from "../../pages/Calendar";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 import CheckboxInput from "../inputs/CheckboxInput";
 
 export default function ModalForm() {

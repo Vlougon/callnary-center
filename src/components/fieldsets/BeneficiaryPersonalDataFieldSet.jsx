@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FormContext } from '../../contexts/FormContext';
+import { FormContext } from '../../context/FormContext';
 import PhoneNumberInput from '../inputs/PhoneNumberInput';
 import TextInput from '../inputs/TextInput';
 import DNIGenerator from '../../classes/DNIGenerator';

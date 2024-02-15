@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 
 export default function DateInput({ dateValueID, dateText, formUsed, boxLength, disabledDate = false }) {
     const { callData } = useContext(FormContext);

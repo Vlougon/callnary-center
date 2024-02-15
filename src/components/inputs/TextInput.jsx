@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 
 export default function TextInput({ nameID, sublimText, formUsed, boxLength, needFeedback = false }) {
     const { beneficiaryData } = useContext(FormContext);

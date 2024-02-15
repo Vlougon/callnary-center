@@ -1,6 +1,6 @@
 // import { useParams, Link } from 'react-router-dom';
 import { useContext } from "react";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 import ContactPersonalDataFieldSet from "../../components/fieldsets/ContactPersonalDataFieldSet";
 import AddresFieldSet from "../../components/fieldsets/AddresFieldSet";
 import PCGenerator from "../../classes/PCGenerator";

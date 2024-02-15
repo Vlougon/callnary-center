@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { FormContext } from '../../contexts/FormContext';
+import { FormContext } from '../../context/FormContext';
 
 export default function SelectInput({ selectNameID, selectLabel, selectValues, formUsed, boxLength, needFeedBack = false }) {
     const [options] = useState([{ value: '', text: selectLabel }]);

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 import TimeInput from "../inputs/TimeInput";
 import DateInput from "../inputs/DateInput";
 

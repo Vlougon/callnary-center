@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FormContext } from "../../contexts/FormContext";
+import { FormContext } from "../../context/FormContext";
 
 export default function TimeInput({ timeValueID, timeText, formUsed, boxLength, disabledTime = false }) {
     const { callData } = useContext(FormContext);
