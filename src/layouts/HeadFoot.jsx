@@ -1,10 +1,12 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PathsList from '../classes/PathsList';
+import useAuthContext from '../hooks/useAuthContext';
 import '../styles/HeadFoot.css';
 
 export default function HeadFoot() {
     const location = useLocation();
+    const { logout } = useAuthContext();
     const [paths, setPaths] = useState([{
         id: 1,
         href: '/',
@@ -99,17 +101,28 @@ export default function HeadFoot() {
                             <img src="../images/logoMajada.png" alt="Logo del Majada Marcial" />
                             Majada's Call Center
                         </a>
+
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userNavbar" aria-controls="userNavbar" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
+
                         <div className="collapse navbar-collapse" id="userNavbar">
                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             </ul>
 
-                            <button id="profileBox" name="Perfil de Usuario">
-                                <img src="../images/defaultUserIcon.png" alt="Icono de Perfil de Usuario" className="d-inline-block" />
-                                <span id="usersName"></span>
-                            </button>
+                            <div className="dropdown">
+                                <button type="button" id="profileBox" className="btn btn-light" name="Perfil de Usuario" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../images/defaultUserIcon.png" alt="Icono de Perfil de Usuario" className="d-inline-block" />
+                                    <span id="usersName">Manolo</span>
+                                </button>
+                                <ul className="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <Link to={''} onClick={logout} className='dropdown-item'>
+                                            Cerrar Sesión
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </nav>

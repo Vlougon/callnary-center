@@ -4,11 +4,28 @@ header {
     border-bottom: 4px solid #000e8d;
 }
 
+nav.navbar button {
+    padding: 3px;
+}
+
+nav.navbar button span {
+    padding-left: 3px;
+    vertical-align: middle;
+}
+
 nav.navbar a {
     color: white !important;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+nav.navbar .dropdown a {
+    color: black !important;
+}
+
+nav.navbar .dropdown a:hover {
+    background-color: #e5e5e5;
 }
 
 nav.nav {
