@@ -1,4 +1,4 @@
-import { Toaster } from 'react-hot-toast';
+// import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 import AuthLayout from './components/layout/AuthLayout';
 import GuestLayout from './components/layout/GuestLayout';
@@ -13,17 +13,14 @@ import BeneficiaryList from "./pages/lists/BeneficiaryList";
 import MedicalDataList from "./pages/lists/MedicalDataList";
 import ContactList from "./pages/lists/ContactList";
 import AssistantList from "./pages/lists/AssistantList";
-import HomePage from './pages/HomePage';
+import Home from './pages/Home';
 import Calendar from "./pages/Calendar";
 import DocumentGenerator from "./pages/DocumentGenerator";
 import NotFound from "./pages/auth/NotFound";
 
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ResetPassword from './pages/ResetPassword';
-import ForgotPassword from './pages/ForgotPassword';
-import Home from './pages/Home';
-import QuickStart from './pages/QuickStart';
+import Login from './pages/auth/Login';
+import ResetPassword from './pages/auth/ResetPassword';
+import ForgotPassword from './pages/auth/ForgotPassword';
 import ErrorBoundary from './components/ErrorBoundary';
 import './assets/app.css';
 
@@ -35,7 +32,7 @@ export default function App() {
           <AuthLayout />
         </ErrorBoundary>}>
           <Route element={<HeadFoot />} path='/'>
-            <Route element={<HomePage />} path='/'></Route>
+            <Route element={<Home />} path='/'></Route>
             <Route element={<BeneficiaryForm />} path='/beneficiaryform/:id?'></Route>
             <Route element={<AssistantForm />} path='/assistantform/:id?'></Route>
             <Route element={<CallForm />} path='/callform'></Route>
@@ -54,7 +51,6 @@ export default function App() {
           <GuestLayout />
         </ErrorBoundary>}>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>

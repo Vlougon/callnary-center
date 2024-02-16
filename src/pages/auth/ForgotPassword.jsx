@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Spinner from '../components/ui/Spinner';
-import useAuthContext from '../hooks/useAuthContext';
 import toast from 'react-hot-toast';
-import '../assets/pages/auth/ForgotPassword.css';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
+import '../../assets/pages/auth/ForgotPassword.css';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

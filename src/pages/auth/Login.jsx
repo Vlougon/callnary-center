@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Spinner from '../components/ui/Spinner';
-import useAuthContext from '../hooks/useAuthContext';
-import '../assets/pages/auth/Login.css';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
+import '../../assets/pages/auth/Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
