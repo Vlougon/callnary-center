@@ -5,7 +5,7 @@ import SocialDataFieldSet from '../../components/fieldsets/SocialDataFieldSet';
 import AddresFieldSet from '../../components/fieldsets/AddresFieldSet';
 import DNIGenerator from '../../classes/DNIGenerator';
 import PCGenerator from '../../classes/PCGenerator';
-import '../../styles/forms/BeneficiaryForm.css';
+import '../../assets/pages/forms/BeneficiaryForm.css';
 
 export default function BeneficiaryForm() {
     const { beneficiaryData } = useContext(FormContext);

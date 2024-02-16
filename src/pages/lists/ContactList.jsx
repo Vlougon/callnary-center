@@ -1,5 +1,5 @@
 import TableRows from '../../components/tablerows/TableRows';
-import '../../styles/lists/ContactList.css';
+import '../../assets/pages/lists/ContactList.css';
 
 const contact = [
     {

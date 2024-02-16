@@ -3,7 +3,7 @@ import BigShortCut from '../components/shortcuts/BigShortCut';
 import ShortCut from '../components/shortcuts/ShortCut';
 import ShortCutModal from '../components/shortcuts/ShortCutModal';
 import FlashMessage from '../components/flashmessages/FlashMessage'
-import '../styles/Home.css';
+import '../assets/pages/Home.css';
 
 export default function Home() {
     const [shortCuts, setShortCuts] = useState(() => {

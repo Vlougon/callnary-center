@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import ReminderModal from '../components/calendar/ReminderModal';
-import '../styles/Calendar.css';
+import '../assets/pages/Calendar.css';
 
 export const MainCalendarContext = createContext();
 

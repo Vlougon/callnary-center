@@ -1,6 +1,6 @@
 // import { useContext } from 'react';
 // import { FormContext } from '../../context/FormContext';
-import '../../styles/FlashMessage.css';
+import '../../assets/components/FlashMessage.css';
 
 export default function FlashMessage({ flashMessgae, flashType, closeHandler }) {
     const IconRender = () => {

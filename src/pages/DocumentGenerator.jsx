@@ -1,4 +1,4 @@
-import '../styles/DocumentGenerator.css';
+import '../assets/pages/DocumentGenerator.css';
 
 export default function DocumentGenerator() {
     return (

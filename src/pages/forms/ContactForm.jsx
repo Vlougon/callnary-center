@@ -4,7 +4,7 @@ import { FormContext } from "../../context/FormContext";
 import ContactPersonalDataFieldSet from "../../components/fieldsets/ContactPersonalDataFieldSet";
 import AddresFieldSet from "../../components/fieldsets/AddresFieldSet";
 import PCGenerator from "../../classes/PCGenerator";
-import '../../styles/forms/ContactForm.css';
+import '../../assets/pages/forms/ContactForm.css';
 
 export default function ContactForm() {
     const { contactData } = useContext(FormContext);

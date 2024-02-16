@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
-import '../../styles/lists/BeneficiaryList.css';
+import '../../assets/pages/lists/BeneficiaryList.css';
 
 const beneficiaries = [
     {

@@ -4,7 +4,7 @@ import { FormContext } from '../../context/FormContext';
 import AllergiesIllnessesFieldSet from '../../components/fieldsets/Allergies&IllnessesFieldSet';
 import MedicinesFieldSet from '../../components/fieldsets/MedicinesFieldSet';
 import LocalStrucutresFieldSet from '../../components/fieldsets/LocalStructures';
-import '../../styles/forms/MedicalDataForm.css';
+import '../../assets/pages/forms/MedicalDataForm.css';
 
 export default function MedicalDataForm() {
     const beneficiaryID = parseInt(useParams().userid);

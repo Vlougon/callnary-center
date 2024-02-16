@@ -3,7 +3,7 @@ import { FormContext } from '../../context/FormContext';
 import TimeDataFieldSet from '../../components/fieldsets/TimeDataFieldSet';
 import CallDataFieldSet from '../../components/fieldsets/CallDataFieldSet';
 import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
-import '../../styles/forms/CallForm.css';
+import '../../assets/pages/forms/CallForm.css';
 
 let callDuration = 0;
 

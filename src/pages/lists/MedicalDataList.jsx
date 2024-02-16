@@ -1,5 +1,5 @@
 import TableRows from '../../components/tablerows/TableRows';
-import '../../styles/lists/MedicalDataList.css';
+import '../../assets/pages/lists/MedicalDataList.css';
 
 const medcials = [
     {

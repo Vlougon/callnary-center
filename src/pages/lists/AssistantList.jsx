@@ -1,5 +1,5 @@
 import TableRows from '../../components/tablerows/TableRows';
-import '../../styles/lists/AssistantList.css';
+import '../../assets/pages/lists/AssistantList.css';
 
 const users = [
     {

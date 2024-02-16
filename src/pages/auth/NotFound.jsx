@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../../styles/auth/NotFound.css';
+import '../../assets/pages/auth/NotFound.css';
 
 export default function NotFound() {
     return (
