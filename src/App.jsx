@@ -59,7 +59,7 @@ export default function App() {
           <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
       </Routes>
-      <Toaster position="top-right" toastOptions={{ duration: 6000 }} />
+      {/* <Toaster position="top-right" toastOptions={{ duration: 6000 }} /> */}
     </div>
   );
 }
