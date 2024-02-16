@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import AuthLayout from './components/layout/AuthLayout';
 import GuestLayout from './components/layout/GuestLayout';
-import HeadFoot from './layouts/HeadFoot';
+import HeadFoot from './components/layout/HeadFoot';
 
 import BeneficiaryForm from './pages/forms/BeneficiaryForm';
 import MedicalDataForm from "./pages/forms/MedicalDataForm";

@@ -33,7 +33,7 @@ export default function Login() {
               {errors.email && (<span className="text-danger">{errors.email[0]}</span>)}
             </div>
 
-            <div className='col-12 mb-4'>
+            <div className='col-12 text-sm-start mb-4'>
               <div className="d-sm-flex justify-content-between mb-2 mb-sm-0">
                 <label htmlFor="password" className="form-label">
                   Contraseña:

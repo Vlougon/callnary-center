@@ -1,8 +1,8 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import PathsList from '../classes/PathsList';
-import useAuthContext from '../hooks/useAuthContext';
-import '../assets/components/HeadFoot.css';
+import PathsList from '../../classes/PathsList';
+import useAuthContext from '../../hooks/useAuthContext';
+import '../../assets/components/HeadFoot.css';
 
 export default function HeadFoot() {
     const location = useLocation();
