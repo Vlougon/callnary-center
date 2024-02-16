@@ -3,6 +3,7 @@ import BigShortCut from '../components/shortcuts/BigShortCut';
 import ShortCut from '../components/shortcuts/ShortCut';
 import ShortCutModal from '../components/shortcuts/ShortCutModal';
 import FlashMessage from '../components/flashmessages/FlashMessage'
+import useAuthContext from '../hooks/useAuthContext';
 import '../assets/pages/Home.css';
 
 export default function Home() {
@@ -16,9 +17,11 @@ export default function Home() {
         type: '',
     });
     let [shortCutsID, setShortCutsID] = useState(shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => shortcut.id)) + 1 : 1);
+    const { getAllUsers } = useAuthContext();
 
     useEffect(() => {
         localStorage.setItem('shortCuts', JSON.stringify(shortCuts));
+        getAllUsers();
     }, [shortCuts]);
 
     const handleShortCutInsert = (element) => {

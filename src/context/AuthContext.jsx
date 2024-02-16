@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
-import axios from '../lib/axios';
 import { useNavigate } from 'react-router-dom';
+import axios from '../lib/axios';
 export const AuthContext = createContext({});
+
 const SESSION_NAME = 'session-verified';
+
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [errors, setErrors] = useState({});
@@ -12,7 +14,9 @@ export function AuthProvider({ children }) {
     const sessionData = window.localStorage.getItem(SESSION_NAME);
     const initialSessionVerified = sessionData ? JSON.parse(sessionData) : false;
     const [sessionVerified, setSessionVerified] = useState(initialSessionVerified);
+
     const csrf = () => axios.get('/sanctum/csrf-cookie');
+
     const getUser = async () => {
         try {
             const { data } = await axios.get('/api/user');
@@ -24,6 +28,7 @@ export function AuthProvider({ children }) {
             console.warn('Error ', e);
         }
     };
+
     const login = async ({ ...data }) => {
         setErrors({});
         setLoading(true);
@@ -45,6 +50,7 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
     const register = async ({ ...data }) => {
         setErrors({});
         setLoading(true);
@@ -66,6 +72,7 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
     const sendPasswordResetLink = async ({ ...data }) => {
         setErrors({});
         setLoading(true);
@@ -88,6 +95,7 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
     const newPassword = async ({ ...data }) => {
         setErrors({});
         setLoading(true);
@@ -113,6 +121,7 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
     const sendEmailVerificationLink = async () => {
         setErrors({});
         setLoading(true);
@@ -135,6 +144,7 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
     const logout = async () => {
         try {
             setSessionVerified(false);
@@ -146,6 +156,29 @@ export function AuthProvider({ children }) {
             console.warn(e);
         }
     };
+
+    const getAllUsers = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/users');
+            console.log(response);
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -163,21 +196,20 @@ export function AuthProvider({ children }) {
             fetchUser();
         }
     }, [user]);
-    return (<AuthContext.Provider value={{
-        csrf,
-        errors,
-        user,
-        login,
-        register,
-        logout,
-        loading,
-        status,
-        sessionVerified,
-        setStatus,
-        sendPasswordResetLink,
-        newPassword,
-        sendEmailVerificationLink,
-    }}>
-        {children}
-    </AuthContext.Provider>);
+
+    return (
+        <AuthContext.Provider value={{
+            csrf,
+            user, loading, errors,
+            login, register, logout,
+            status, setStatus,
+            sessionVerified,
+            sendPasswordResetLink,
+            newPassword,
+            sendEmailVerificationLink,
+            getAllUsers,
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
