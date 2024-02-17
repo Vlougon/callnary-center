@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSessionStorage } from '../hooks/useStorage';
 import axios from '../lib/axios';
 export const AuthContext = createContext({});
 
@@ -10,8 +11,10 @@ export function AuthProvider({ children }) {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(null);
+    const [sessionName, setsessionName, removesessionName] = useSessionStorage(SESSION_NAME, false);
+    const [assistant, setAssistant, removeAssistant] = useSessionStorage('assistant', {});
     const navigate = useNavigate();
-    const sessionData = window.localStorage.getItem(SESSION_NAME);
+    const sessionData = sessionName;
     const initialSessionVerified = sessionData ? JSON.parse(sessionData) : false;
     const [sessionVerified, setSessionVerified] = useState(initialSessionVerified);
 
@@ -27,7 +30,7 @@ export function AuthProvider({ children }) {
             const { data } = await axios.get('/api/user');
             setUser(data);
             setSessionVerified(true);
-            window.localStorage.setItem(SESSION_NAME, 'true');
+            setsessionName(true);
         }
         catch (e) {
             console.warn('Error ', e);
@@ -39,7 +42,8 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            await axios.post('/login', data);
+            const temp = await axios.post('/login', data);
+            setAssistant(temp.data.data);
             await getUser();
         }
         catch (e) {
@@ -155,7 +159,8 @@ export function AuthProvider({ children }) {
             setSessionVerified(false);
             await axios.post('/logout');
             setUser(null);
-            window.localStorage.removeItem(SESSION_NAME);
+            removesessionName();
+            removeAssistant();
         }
         catch (e) {
             console.warn(e);
