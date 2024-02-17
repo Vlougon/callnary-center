@@ -81,7 +81,7 @@ export default function AssistantForm() {
 
         for (const key in phones) {
             if ((phones[key] && key === 'phone_number' && !phones[key].match(/^[6][0-9]{8}$/)) ||
-                phones[key] === undefined) {
+                !phones[key]) {
                 handleFormFieldsValues(document.querySelector('#' + key));
                 failed = true;
             }
@@ -186,7 +186,7 @@ export default function AssistantForm() {
             role: '',
         });
         setPhones({
-            phone_number: start ? undefined : '',
+            phone_number: '',
         });
     }
 
