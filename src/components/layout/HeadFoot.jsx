@@ -4,6 +4,8 @@ import PathsList from '../../classes/PathsList';
 import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/components/HeadFoot.css';
 
+const userName = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).name : 'Anon';
+
 export default function HeadFoot() {
     const location = useLocation();
     const { logout } = useAuthContext();
@@ -113,7 +115,7 @@ export default function HeadFoot() {
                             <div className="dropdown">
                                 <button type="button" id="profileBox" className="btn btn-light" name="Perfil de Usuario" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="../images/defaultUserIcon.png" alt="Icono de Perfil de Usuario" className="d-inline-block" />
-                                    <span id="usersName">Manolo</span>
+                                    <span id="usersName">{userName}</span>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end">
                                     <li>
