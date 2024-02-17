@@ -1,20 +1,27 @@
+import { useEffect, useState } from 'react';
 import TableRows from '../../components/tablerows/TableRows';
+import useAuthContext from '../../hooks/useAuthContext';
+import Spinner from '../../components/ui/Spinner';
 import '../../assets/pages/lists/AssistantList.css';
 
-const users = [
-    {
-        id: 1,
-        name: 'Judas Iscariote',
-        role: 'Supervisor',
-    },
-    {
-        id: 2,
-        name: 'San Pedro',
-        role: 'Asistente',
-    },
-]
-
 export default function AssistantList() {
+    const [users, setUsers] = useState([]);
+    const [fetchedData, setFetchedData] = useState(false);
+    const { getAllUsers, loading } = useAuthContext();
+
+    useEffect(() => {
+        async function setGetResponse() {
+            const getResponse = await getAllUsers();
+
+            if (getResponse.data.status && getResponse.data.status === 'success') {
+                setUsers(getResponse.data.data);
+            }
+        }
+        setGetResponse();
+
+        setFetchedData(true);
+    }, []);
+
     return (
         <div id='assistantList' className='container-fluid'>
             <div className='table-responsive'>
@@ -29,9 +36,15 @@ export default function AssistantList() {
                     </thead>
 
                     <tbody>
-                        <TableRows columns={4} list={'user'} dataArray={users} />
+                        {!loading &&
+                            <TableRows columns={4} list={'user'} dataArray={users} />
+                        }
                     </tbody>
                 </table>
+
+                {loading &&
+                    <Spinner loading={loading} spinnerColor={'primary'} />
+                }
             </div>
         </div>
     )
