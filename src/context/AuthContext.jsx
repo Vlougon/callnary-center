@@ -215,6 +215,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const getPhoneUser = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/userPhone/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* #####################################   END OF GET   ####################################### */
     /* ############################################################################################ */
@@ -247,6 +269,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const createPhoneUser = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/phone_users', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ####################################   END OF POST   ####################################### */
     /* ############################################################################################ */
@@ -264,6 +308,28 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.put('/api/V1/users/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const updatePhoneUser = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/phone_users/' + id, data);
             return response
         }
         catch (e) {
@@ -344,6 +410,7 @@ export function AuthProvider({ children }) {
             sessionVerified,
             sendPasswordResetLink, newPassword, sendEmailVerificationLink,
             getAllUsers, getOneUser, createUser, updateUser, deleteUser,
+            getPhoneUser, createPhoneUser, updatePhoneUser,
         }}>
             {children}
         </AuthContext.Provider>

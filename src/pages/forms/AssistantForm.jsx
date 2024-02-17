@@ -14,9 +14,8 @@ export default function AssistantForm() {
         message: '',
         type: '',
     });
-    const { getOneUser, createUser, updateUser, loading } = useAuthContext();
-    const { assistantData, setAssistantData } = useContext(FormContext);
-    const { phones, setPhones } = useContext(FormContext);
+    const { getOneUser, createUser, updateUser, getPhoneUser, createPhoneUser, updatePhoneUser, loading } = useAuthContext();
+    const { assistantData, setAssistantData, phones, setPhones } = useContext(FormContext);
     const assistantID = useParams();
 
     useEffect(() => {
@@ -24,9 +23,12 @@ export default function AssistantForm() {
 
         if (assistantID.id) {
             async function setGetResponse() {
+                let succeded = false;
                 const getAssistantResponse = await getOneUser(assistantID.id);
 
                 if (getAssistantResponse.data.status && getAssistantResponse.data.status === 'success') {
+                    succeded = true;
+
                     setAssistantData({
                         name: getAssistantResponse.data.data.name,
                         email: getAssistantResponse.data.data.email,
@@ -34,6 +36,24 @@ export default function AssistantForm() {
                         role: getAssistantResponse.data.data.role,
                     });
                 }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Cargar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                const phoneResponse = await getPhoneUser(getAssistantResponse.data.data.id);
+
+                if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
+                    setPhones(phoneResponse.data.data[0]);
+                }
+
             }
             setGetResponse();
         }
@@ -42,6 +62,7 @@ export default function AssistantForm() {
     const handleSubmit = (element) => {
         element.preventDefault();
         let failed = false;
+        let succeded = false;
 
         if (!passwordConfirmation || passwordConfirmation.match(/^(?=\s*$)/) ||
             passwordConfirmation !== assistantData['password']
@@ -78,16 +99,31 @@ export default function AssistantForm() {
 
         if (assistantID.id) {
             async function setPutResponse() {
-                const createdUser = await updateUser(assistantData, assistantID.id);
+                const updatedUser = await updateUser(assistantData, assistantID.id);
 
-                if (createdUser.data.status && createdUser.data.status === 'success') {
+                if (updatedUser.data.status && updatedUser.data.status === 'success') {
+                    succeded = true;
+
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: createdUser.data.message,
-                        type: createdUser.data.status,
+                        message: updatedUser.data.message,
+                        type: updatedUser.data.status,
                     });
                 }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Actualizar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                await updatePhoneUser({ user_id: updatedUser.data.data.id, phone_number: phones.phone_number }, phones.id);
 
                 clearForm();
             }
@@ -97,6 +133,8 @@ export default function AssistantForm() {
                 const createdUser = await createUser(assistantData);
 
                 if (createdUser.data.status && createdUser.data.status === 'success') {
+                    succeded = true;
+
                     setShowFM({
                         ...showFM,
                         render: true,
@@ -104,6 +142,19 @@ export default function AssistantForm() {
                         type: createdUser.data.status,
                     });
                 }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Enviar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                await createPhoneUser({ user_id: createdUser.data.data.id, phone_number: phones.phone_number });
 
                 clearForm();
             }
