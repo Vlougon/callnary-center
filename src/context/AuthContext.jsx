@@ -290,7 +290,27 @@ export function AuthProvider({ children }) {
     /* ###################################   DELETE METHODS   ##################################### */
     /* ######################################              ######################################## */
     /* ############################################################################################ */
-
+    const deleteUser = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.delete('/api/V1/users/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ##################################   END OF DELETE   ####################################### */
     /* ############################################################################################ */
@@ -323,7 +343,7 @@ export function AuthProvider({ children }) {
             status, setStatus,
             sessionVerified,
             sendPasswordResetLink, newPassword, sendEmailVerificationLink,
-            getAllUsers, getOneUser, createUser, updateUser
+            getAllUsers, getOneUser, createUser, updateUser, deleteUser,
         }}>
             {children}
         </AuthContext.Provider>

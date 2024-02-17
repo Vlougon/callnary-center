@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import ConfirmationModal from '../../components/modals/ConfirmationModal';
 
-export default function TableRows({ columns, list, dataArray }) {
+export default function TableRows({ columns, list, dataArray, arrayHandler }) {
     const tableRows = [];
 
     const TableCellRender = () => {
@@ -40,7 +40,7 @@ export default function TableRows({ columns, list, dataArray }) {
                                     </svg>
                                 </button>
 
-                                <ConfirmationModal modalID={'userModal' + user.id} modalOn={'Asistente'} elementID={user.id} />
+                                <ConfirmationModal modalID={'userModal' + user.id} modalOn={'Asistente'} elementID={user.id} array={dataArray} handler={arrayHandler} />
                             </td>
                         </tr>
                     )

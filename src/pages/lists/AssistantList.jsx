@@ -6,7 +6,6 @@ import '../../assets/pages/lists/AssistantList.css';
 
 export default function AssistantList() {
     const [users, setUsers] = useState([]);
-    const [fetchedData, setFetchedData] = useState(false);
     const { getAllUsers, loading } = useAuthContext();
 
     useEffect(() => {
@@ -18,8 +17,6 @@ export default function AssistantList() {
             }
         }
         setGetResponse();
-
-        setFetchedData(true);
     }, []);
 
     return (
@@ -37,15 +34,17 @@ export default function AssistantList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={4} list={'user'} dataArray={users} />
+                            <TableRows columns={4} list={'user'} dataArray={users} arrayHandler={setUsers} />
                         }
                     </tbody>
                 </table>
-
-                {loading &&
-                    <Spinner loading={loading} spinnerColor={'primary'} />
-                }
             </div>
+
+            {loading &&
+                <Spinner loading={loading} spinnerColor={'primary'}
+                    spinnerStyle={{ width: '5rem', height: '5rem', }}
+                />
+            }
         </div>
     )
 }
