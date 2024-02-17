@@ -193,6 +193,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const getOneUser = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/users/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* #####################################   END OF GET   ####################################### */
     /* ############################################################################################ */
@@ -204,7 +226,27 @@ export function AuthProvider({ children }) {
     /* #####################################   POST METHODS   ##################################### */
     /* #######################################              ####################################### */
     /* ############################################################################################ */
-
+    const createUser = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/users', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ####################################   END OF POST   ####################################### */
     /* ############################################################################################ */
@@ -216,7 +258,27 @@ export function AuthProvider({ children }) {
     /* #####################################   PUT METHODS   ###################################### */
     /* #######################################              ####################################### */
     /* ############################################################################################ */
-
+    const updateUser = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/users/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ####################################   END OF PUT   ######################################## */
     /* ############################################################################################ */
@@ -260,10 +322,8 @@ export function AuthProvider({ children }) {
             login, register, logout,
             status, setStatus,
             sessionVerified,
-            sendPasswordResetLink,
-            newPassword,
-            sendEmailVerificationLink,
-            getAllUsers,
+            sendPasswordResetLink, newPassword, sendEmailVerificationLink,
+            getAllUsers, getOneUser, createUser, updateUser
         }}>
             {children}
         </AuthContext.Provider>

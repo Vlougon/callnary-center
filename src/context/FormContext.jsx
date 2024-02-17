@@ -3,6 +3,13 @@ import { createContext, useState } from 'react';
 export const FormContext = createContext({});
 
 export function FormProvider({ children }) {
+    const [assistantData, setAssistantData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        role: '',
+    });
+
     const [medicalFormValues, setMedicalFormValues] = useState({
         beneficiary_id: 0,
         allergies: '',
@@ -19,6 +26,7 @@ export function FormProvider({ children }) {
         outpatient_clinic_on_town: null,
         ambulance_on_town: null,
     });
+
     const [beneficiaryData, setBeneficiaryData] = useState({
         name: undefined,
         first_surname: undefined,
@@ -70,6 +78,13 @@ export function FormProvider({ children }) {
 
     const [reminderData, setReminderData] = useState([]);
 
+    const handleAssistantData = (element) => {
+        setAssistantData({
+            ...assistantData,
+            [element.target.name]: element.target.value,
+        });
+    }
+
     const handlePersonalDataChange = (element) => {
         setBeneficiaryData({
             ...beneficiaryData,
@@ -115,6 +130,7 @@ export function FormProvider({ children }) {
     return (
         <FormContext.Provider
             value={{
+                assistantData, setAssistantData,
                 medicalFormValues, setMedicalFormValues,
                 beneficiaryData, setBeneficiaryData,
                 addressData, setAddressData,
@@ -123,7 +139,7 @@ export function FormProvider({ children }) {
                 callData, setCallData,
                 reminderData, setReminderData,
                 handlePersonalDataChange, handleAddressChange, handlePhonesChange, handleContactChange,
-                handleCallChange, handleReminderDataChange,
+                handleCallChange, handleReminderDataChange, handleAssistantData,
             }}
         >
             {children}

@@ -30,7 +30,7 @@ export default function ContactForm() {
         }
 
         for (const key in phones) {
-            if ((phones[key] && phones[key].length !== 9 && key === 'phone_number') ||
+            if ((phones[key] && key === 'phone_number' && !phones[key].match(/^[6][0-9]{8}$/)) ||
                 phones[key] === undefined) {
                 handleFormFieldsValues(document.querySelector('#' + key));
             }

@@ -52,7 +52,7 @@ export default function Login() {
 
             <div>
               <button type="submit" className="btn btn-primary" disabled={loading}>
-                <Spinner loading={loading} spinnerColor={'white'} />
+                <Spinner loading={loading} spinnerColor={'white'} spinnerStyle={{ width: '1rem', height: '1rem', }} />
                 <span>Iniciar Sesión</span>
               </button>
             </div>

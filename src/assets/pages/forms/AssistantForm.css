@@ -23,23 +23,33 @@
 
 #assistantForm input,
 #assistantForm select,
-#assistantForm span {
+#assistantForm div span {
     border: 1px solid black !important;
 }
 
-#assistantForm input[type=submit] {
-    background-color: #EB6300;
+#assistantForm select.is-invalid,
+#assistantForm span.is-invalid,
+#assistantForm input.is-invalid {
+    border: 1px solid red !important;
+}
+
+#assistantForm span.is-invalid {
+    background-color: rgb(255, 181, 181);
+}
+
+#assistantForm div.invalid-feedback p {
+    margin-bottom: 0 !important;
+}
+
+#assistantForm button[type=submit] {
     padding: 5px;
     border-radius: 10px;
+    font-weight: bold;
 }
 
-#assistantForm .btn-orange {
-    background-color: #ffa667 !important;
-    color: black !important;
-}
-
-#assistantForm .btn-orange:hover {
-    background-color: #ff6a00 !important;
+#assistantForm button[type=submit]:hover {
+    background-color: #005be3;
+    box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
 }
 
 @media (max-width: 768px) {

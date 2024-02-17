@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BigShortCut from '../components/shortcuts/BigShortCut';
 import ShortCut from '../components/shortcuts/ShortCut';
 import ShortCutModal from '../components/shortcuts/ShortCutModal';
-import FlashMessage from '../components/flashmessages/FlashMessage'
+import FlashMessage from '../components/flashmessages/FlashMessage';
 import '../assets/pages/Home.css';
 
 export default function Home() {

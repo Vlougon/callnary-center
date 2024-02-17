@@ -22,7 +22,7 @@ export default function PhoneNumberInput({ boxLength }) {
                 </span>
                 <input type="text" id='phone_number' name="phone_number" value={phones.phone_number} className='form-control' placeholder='Número de Teléfono' aria-describedby='beneficiaryPhoneNumber' onChange={handlePhonesChange} onClick={handlePhoneInput} />
                 <div className="invalid-feedback">
-                    ¡Introduce un Número de Teléfono Adecuado!
+                    ¡Introduce un Número de Teléfono Adecuado (9 Dígitos)!
                 </div>
             </div>
         </div>
