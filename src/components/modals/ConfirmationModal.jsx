@@ -50,7 +50,7 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
                 return
         }
 
-        if (parseInt(target.name) === userID) {
+        if (modalOn === 'Asistente' && parseInt(target.name) === userID) {
             setShowFM({
                 render: true,
                 message: '¡No puedes Eliminar tu Propio Usuario!',
