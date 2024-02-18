@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from "../../hooks/useAuthContext";
-
-const userID = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).id : 0;
 
 export default function ConfirmationModal({ modalID, modalOn, elementID, array, handler }) {
     const [showFM, setShowFM] = useState({
@@ -11,7 +9,14 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
         message: '',
         type: '',
     });
+    const [userID, setUserID] = useState(0);
     const { deleteUser, loading } = useAuthContext();
+
+    useEffect(() => {
+        const id = JSON.parse(sessionStorage.getItem('assistant')).id;
+        console.log(id);
+        setUserID(id);
+    }, [userID]);
 
     const handleDeletion = (element) => {
         let target = '';
