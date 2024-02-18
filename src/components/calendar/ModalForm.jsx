@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MainCalendarContext } from "../../pages/Calendar";
 import { FormContext } from "../../context/FormContext";
 import CheckboxInput from "../inputs/CheckboxInput";
@@ -6,10 +6,17 @@ import CheckboxInput from "../inputs/CheckboxInput";
 export default function ModalForm() {
     const [repeat, setRepeat] = useState([]);
     const [beneficiaryToRemind, setBeneficiaryToRemind] = useState(0);
+    const [userId, setUserID] = useState(0);
     const { events, setEvents } = useContext(MainCalendarContext);
     const { title, setTitle } = useContext(MainCalendarContext);
     const { selectedDates } = useContext(MainCalendarContext);
-    const { handleReminderDataChange } = useContext(FormContext);
+    const { reminderData, handleReminderDataChange } = useContext(FormContext);
+
+    useEffect(() => {
+        const id = JSON.parse(sessionStorage.getItem('assistant')).id;
+
+        setUserID(id);
+    });
 
     const handleTitleChange = (element) => {
         setTitle(element.target.value);
@@ -56,7 +63,7 @@ export default function ModalForm() {
         }
 
         handleReminderDataChange({
-            user_id: 0,
+            user_id: userId,
             beneficiary_id: parseInt(beneficiaryToRemind),
             title: title,
             start_date: selectedDates.firstDate,
