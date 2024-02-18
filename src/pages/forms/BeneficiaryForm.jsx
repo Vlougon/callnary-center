@@ -12,15 +12,17 @@ import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/BeneficiaryForm.css';
 
 export default function BeneficiaryForm() {
+    const [globalPhoneId, setGlobalPhoneId] = useState(0);
+    const [globalAddressId, setGlobalAddressId] = useState(0);
     const [showFM, setShowFM] = useState({
         render: false,
         message: '',
         type: '',
     });
-    const { beneficiaryData, addressData, setAddressData, phones, clearBeneficiaryForm } = useContext(FormContext);
+    const { beneficiaryData, setBeneficiaryData, addressData, setAddressData, phones, setPhones, clearBeneficiaryForm } = useContext(FormContext);
     const { getOneBeneficiary, createBeneficiary, updateBeneficiary, loading } = useAuthContext();
     const { getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary } = useAuthContext();
-    const { createAddress } = useAuthContext();
+    const { getBeneficiaryAddress, createAddress, updateAddress } = useAuthContext();
     const beneficiaryID = useParams();
 
     useEffect(() => {
@@ -28,7 +30,7 @@ export default function BeneficiaryForm() {
 
         setAddressData({
             ...addressData,
-            addressable_type: 'Beneficiary',
+            addressable_type: 'App\\Models\\Beneficiary',
         });
 
         if (beneficiaryID.id) {
@@ -36,29 +38,52 @@ export default function BeneficiaryForm() {
                 let succeded = false;
                 const getBeneficiaryResponse = await getOneBeneficiary(beneficiaryID.id);
 
-                console.log(getBeneficiaryResponse);
+                if (getBeneficiaryResponse.data.status && getBeneficiaryResponse.data.status === 'success') {
+                    succeded = true;
 
-                // if (getBeneficiaryResponse.data.status && getBeneficiaryResponse.data.status === 'success') {
-                //     succeded = true;
+                    const beneficiaryObject = getBeneficiaryResponse.data.data;
+                    beneficiaryObject.birth_date = beneficiaryObject.birth_date.split('T')[0];
+                    beneficiaryObject.second_surname = beneficiaryObject.second_surname ? second_surname : '';
+                    beneficiaryObject.rutine = beneficiaryObject.rutine ? rutine : '';
 
-                //     setBeneficiaryData({
-                //         name: getAssistantResponse.data.data.name,
-                //         email: getAssistantResponse.data.data.email,
-                //         password: '',
-                //         role: getAssistantResponse.data.data.role,
-                //     });
-                // }
+                    delete beneficiaryObject.id;
 
-                // if (!succeded) {
-                //     setShowFM({
-                //         ...showFM,
-                //         render: true,
-                //         message: '¡Error al Cargar los Datos!',
-                //         type: 'danger',
-                //     });
+                    setBeneficiaryData(beneficiaryObject);
+                }
 
-                //     return
-                // }
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Cargar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                const phoneResponse = await getPhoneBeneficiary(beneficiaryID.id);
+                if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
+
+                    const phoneObject = phoneResponse.data.data[0];
+                    phoneObject.beneficiary_id = phoneObject.beneficiary_id.id;
+
+                    setGlobalPhoneId(phoneObject.id);
+                    delete phoneObject.id;
+
+                    setPhones(phoneObject);
+                }
+
+                const addressResponse = await getBeneficiaryAddress(beneficiaryID.id);
+                if (addressResponse.data.status && addressResponse.data.status === 'success') {
+
+                    const addressObject = addressResponse.data.data[0];
+
+                    setGlobalAddressId(addressObject.id);
+                    delete addressObject.id;
+
+                    setAddressData(addressObject);
+                }
             }
             setGetResponse();
         }
@@ -98,8 +123,6 @@ export default function BeneficiaryForm() {
             }
         }
 
-        console.log(beneficiaryData, addressData, phones);
-
         if (failed) {
             setShowFM({
                 ...showFM,
@@ -111,6 +134,38 @@ export default function BeneficiaryForm() {
         }
 
         if (beneficiaryID.id) {
+
+            async function setPutResponse() {
+                const updatedBenficiary = await updateBeneficiary(beneficiaryData, beneficiaryID.id);
+                if (updatedBenficiary.data.status && updatedBenficiary.data.status === 'success') {
+                    succeded = true;
+
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: updatedBenficiary.data.message,
+                        type: updatedBenficiary.data.status,
+                    });
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Actualizar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                await updatePhoneBeneficiary(phones, globalPhoneId);
+
+                await updateAddress(addressData, globalAddressId);
+
+                clearBeneficiaryForm();
+            }
+            setPutResponse();
 
         } else {
             async function setPostResponse() {
@@ -145,6 +200,8 @@ export default function BeneficiaryForm() {
                 const address = addressData;
                 address['addressable_id'] = createdBeneficiary.data.data.id;
                 await createAddress(address);
+
+                clearBeneficiaryForm();
             }
             setPostResponse();
         }

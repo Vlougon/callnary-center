@@ -83,7 +83,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                                     </svg>
                                 </button>
 
-                                <ConfirmationModal modalID={'beneficiaryModal' + beneficiary.id} modalOn={'Beneficiario'} elementID={beneficiary.id} />
+                                <ConfirmationModal modalID={'beneficiaryModal' + beneficiary.id} modalOn={'Beneficiario'} elementID={beneficiary.id} array={dataArray} handler={arrayHandler} />
                             </td>
                         </tr>
                     )

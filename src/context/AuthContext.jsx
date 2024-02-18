@@ -309,6 +309,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getBeneficiaryAddress = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/beneficiaryAddress/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getAllReminders = async () => {
         setErrors({});
         setLoading(true);
@@ -570,6 +592,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const updateAddress = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/addresses/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ####################################   END OF PUT   ######################################## */
     /* ############################################################################################ */
@@ -660,7 +704,7 @@ export function AuthProvider({ children }) {
             getAllBeneficiaries, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
             getPhoneUser, createPhoneUser, updatePhoneUser,
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
-            createAddress, 
+            getBeneficiaryAddress, createAddress, updateAddress,
             getAllReminders, createReminder,
         }}>
             {children}
