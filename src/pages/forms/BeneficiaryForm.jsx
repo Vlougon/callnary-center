@@ -20,6 +20,7 @@ export default function BeneficiaryForm() {
     const { beneficiaryData, addressData, setAddressData, phones, clearBeneficiaryForm } = useContext(FormContext);
     const { getOneBeneficiary, createBeneficiary, updateBeneficiary, loading } = useAuthContext();
     const { getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary } = useAuthContext();
+    const { createAddress } = useAuthContext();
     const beneficiaryID = useParams();
 
     useEffect(() => {
@@ -109,7 +110,44 @@ export default function BeneficiaryForm() {
             return
         }
 
-        console.log('Listo Para Enviar');
+        if (beneficiaryID.id) {
+
+        } else {
+            async function setPostResponse() {
+                const createdBeneficiary = await createBeneficiary(beneficiaryData);
+
+                if (createdBeneficiary.data.status && createdBeneficiary.data.status === 'success') {
+                    succeded = true;
+
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: createdBeneficiary.data.message,
+                        type: createdBeneficiary.data.status,
+                    });
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Enviar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                const phone = phones;
+                phone['beneficiary_id'] = createdBeneficiary.data.data.id;
+                await createPhoneBeneficiary(phone);
+
+                const address = addressData;
+                address['addressable_id'] = createdBeneficiary.data.data.id;
+                await createAddress(address);
+            }
+            setPostResponse();
+        }
     };
 
     const handleFormFieldsValues = (target) => {
