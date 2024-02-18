@@ -10,11 +10,11 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
         type: '',
     });
     const [userID, setUserID] = useState(0);
-    const { deleteUser, loading } = useAuthContext();
+    const { deleteUser, deleteBeneficiary, loading } = useAuthContext();
 
     useEffect(() => {
         const id = JSON.parse(sessionStorage.getItem('assistant')).id;
-        console.log(id);
+
         setUserID(id);
     }, [userID]);
 
@@ -63,6 +63,9 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
         switch (modalOn) {
             case 'Asistente':
                 dumpElement(deleteUser(target.name), parseInt(target.name));
+                break;
+            case 'Beneficiario':
+                dumpElement(deleteBeneficiary(target.name), parseInt(target.name));
                 break;
             default:
                 setShowFM({

@@ -1,26 +1,27 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/lists/BeneficiaryList.css';
 
-const beneficiaries = [
-    {
-        id: 1,
-        name: 'Judas Iscariote',
-        dni: '78443838S',
-        medicaldata_id: 1,
-    },
-    {
-        id: 2,
-        name: 'Maria Magdalena',
-        dni: '78285648L',
-        medicaldata_id: 2,
-    },
-];
-
 export default function BeneficiaryList() {
+    const [beneficiaries, setBeneficiaries] = useState([]);
+    const { getAllBeneficiaries, loading } = useAuthContext();
     const params = useParams();
     const tableCols = Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
     const listType = Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
+
+    useEffect(() => {
+        async function setGetResponse() {
+            const getResponse = await getAllBeneficiaries();
+
+            if (getResponse.data.status && getResponse.data.status === 'success') {
+                setBeneficiaries(getResponse.data.data);
+            }
+        }
+        setGetResponse();
+    }, []);
 
     const TableHeadRender = () => {
         if (Object.keys(params).length === 0) {
@@ -63,10 +64,18 @@ export default function BeneficiaryList() {
                     </thead>
 
                     <tbody>
-                        <TableRows columns={tableCols} list={listType} dataArray={beneficiaries} />
+                        {!loading &&
+                            <TableRows columns={tableCols} list={listType} dataArray={beneficiaries} arrayHandler={setBeneficiaries} />
+                        }
                     </tbody>
                 </table>
             </div>
+
+            {loading &&
+                <Spinner loading={loading} spinnerColor={'primary'}
+                    spinnerStyle={{ width: '5rem', height: '5rem', }}
+                />
+            }
         </div>
     )
 }

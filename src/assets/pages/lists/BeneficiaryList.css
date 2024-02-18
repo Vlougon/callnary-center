@@ -31,7 +31,7 @@
     color: white;
 }
 
-#beneficiaryList .btn-primary,
+#beneficiaryList .btn-primary.callButton,
 #beneficiaryList .btn-info,
 #beneficiaryList .btn-warning,
 #beneficiaryList .btn-outline-danger,
