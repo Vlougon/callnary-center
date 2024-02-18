@@ -20,34 +20,34 @@ export function FormProvider({ children }) {
         preferent_morning_calls_hour: '--:--',
         preferent_afternoon_calls_hour: '--:--',
         preferent_night_calls_hour: '--:--',
-        emergency_room_on_town: null,
-        firehouse_on_town: null,
-        police_station_on_town: null,
-        outpatient_clinic_on_town: null,
-        ambulance_on_town: null,
+        emergency_room_on_town: '',
+        firehouse_on_town: '',
+        police_station_on_town: '',
+        outpatient_clinic_on_town: '',
+        ambulance_on_town: '',
     });
 
     const [beneficiaryData, setBeneficiaryData] = useState({
-        name: undefined,
-        first_surname: undefined,
+        name: '',
+        first_surname: '',
         second_surname: '',
-        dni: undefined,
+        dni: '',
         birth_date: '----/--/--',
-        social_security_number: undefined,
+        social_security_number: '',
         rutine: '',
-        gender: undefined,
-        marital_status: undefined,
-        beneficiary_type: undefined,
+        gender: '',
+        marital_status: '',
+        beneficiary_type: '',
     });
 
     const [addressData, setAddressData] = useState({
-        locality: undefined,
-        postal_code: undefined,
-        province: undefined,
-        number: undefined,
-        street: undefined,
+        locality: '',
+        postal_code: '',
+        province: '',
+        number: '',
+        street: '',
         addressable_type: '',
-        addressable_id: 0
+        addressable_id: 0,
     });
 
     const [phones, setPhones] = useState({
@@ -66,18 +66,23 @@ export function FormProvider({ children }) {
         beneficiary_id: 0,
         date: new Date().getFullYear() + '-' + (new Date().getMonth() + 1).toString().padStart(2, '0') + '-' + new Date().getDate().toString().padStart(2, '0'),
         time: new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
-        turn: undefined,
+        turn: '',
         duration: 0,
-        call_type: undefined,
-        call_kind: undefined,
-        answered_call: undefined,
-        observations: undefined,
+        call_type: '',
+        call_kind: '',
+        answered_call: '',
+        observations: '',
         description: '',
         contacted_112: false,
     });
 
     const [reminderData, setReminderData] = useState([]);
 
+
+
+    /* ############################################################################################ */
+    /* ####################################    HANDLERS    ######################################## */
+    /* ############################################################################################ */
     const handleAssistantData = (element) => {
         setAssistantData({
             ...assistantData,
@@ -127,6 +132,123 @@ export function FormProvider({ children }) {
         ]);
     };
 
+
+
+    /* ############################################################################################ */
+    /* ####################################    CLEARERS    ######################################## */
+    /* ############################################################################################ */
+    const clearAssitantForm = () => {
+        setAssistantData({
+            name: '',
+            email: '',
+            password: '',
+            role: '',
+        });
+
+        setPhones({
+            phone_number: '',
+        });
+    };
+
+    const clearBeneficiaryForm = () => {
+        setBeneficiaryData({
+            name: '',
+            first_surname: '',
+            second_surname: '',
+            dni: '',
+            birth_date: '----/--/--',
+            social_security_number: '',
+            rutine: '',
+            gender: '',
+            marital_status: '',
+            beneficiary_type: '',
+        });
+
+        setAddressData({
+            locality: '',
+            postal_code: '',
+            province: '',
+            number: '',
+            street: '',
+            addressable_type: '',
+            addressable_id: 0,
+        });
+
+        setPhones({
+            phone_number: '',
+        });
+    };
+
+    const clearContactData = () => {
+        setContactData({
+            name: '',
+            first_surname: '',
+            second_surname: '',
+            contact_type: '',
+        });
+
+        setAddressData({
+            locality: '',
+            postal_code: '',
+            province: '',
+            number: '',
+            street: '',
+            addressable_type: '',
+            addressable_id: 0,
+        });
+
+        setPhones({
+            phone_number: '',
+        });
+    };
+
+    const clearMedicalData = () => {
+        setMedicalFormValues({
+            beneficiary_id: 0,
+            allergies: '',
+            illnesses: '',
+            morning_medication: '',
+            afternoon_medication: '',
+            night_medication: '',
+            preferent_morning_calls_hour: '--:--',
+            preferent_afternoon_calls_hour: '--:--',
+            preferent_night_calls_hour: '--:--',
+            emergency_room_on_town: '',
+            firehouse_on_town: '',
+            police_station_on_town: '',
+            outpatient_clinic_on_town: '',
+            ambulance_on_town: '',
+        });
+    };
+
+    const clearCallForm = () => {
+        setCallData({
+            user_id: 0,
+            beneficiary_id: 0,
+            date: new Date().getFullYear() + '-' + (new Date().getMonth() + 1).toString().padStart(2, '0') + '-' + new Date().getDate().toString().padStart(2, '0'),
+            time: new Date().getHours().toString().padStart(2, '0') + ':' + new Date().getMinutes().toString().padStart(2, '0'),
+            turn: '',
+            duration: 0,
+            call_type: '',
+            call_kind: '',
+            answered_call: '',
+            observations: '',
+            description: '',
+            contacted_112: false,
+        });
+    };
+
+    const clearReminderForm = () => {
+        setReminderData({
+
+        });
+    };
+
+
+
+    /* ############################################################################################ */
+    /* ####################################     RETURN     ######################################## */
+    /* ############################################################################################ */
     return (
         <FormContext.Provider
             value={{
@@ -140,6 +262,8 @@ export function FormProvider({ children }) {
                 reminderData, setReminderData,
                 handlePersonalDataChange, handleAddressChange, handlePhonesChange, handleContactChange,
                 handleCallChange, handleReminderDataChange, handleAssistantData,
+                clearAssitantForm, clearBeneficiaryForm, clearCallForm, clearContactData,
+                clearMedicalData, clearReminderForm,
             }}
         >
             {children}
