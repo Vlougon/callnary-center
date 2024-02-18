@@ -1,4 +1,14 @@
+import { useEffect, useState } from "react"
+
 export default function ShortCutModal({ currentShortCuts, addHandler }) {
+    const [userRole, setUserRole] = useState('');
+
+    useEffect(() => {
+        const role = JSON.parse(sessionStorage.getItem('assistant')).role;
+
+        setUserRole(role);
+    }, [userRole]);
+
     return (
         <div className="modal fade" id="shortCutModal" tabIndex="-1" aria-labelledby="shortCutModalLabel" aria-hidden="true">
             <div className="modal-dialog">
@@ -8,8 +18,12 @@ export default function ShortCutModal({ currentShortCuts, addHandler }) {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="row modal-body row-cols-3 justify-content-center">
-                        <img src="../images/addAssistantIcon.png" alt="Añadir Trabajador" title='Añadir Trabajador' prefix='/assistantform' onClick={addHandler} />
-                        <img src="../images/assistantIcon.png" alt="Asistentes" title='Listado de Asistentes' prefix='/assistantlist' onClick={addHandler} />
+                        {userRole === 'supervisor' &&
+                            <>
+                                < img src="../images/addAssistantIcon.png" alt="Añadir Trabajador" title='Añadir Trabajador' prefix='/assistantform' onClick={addHandler} />
+                                <img src="../images/assistantIcon.png" alt="Asistentes" title='Listado de Asistentes' prefix='/assistantlist' onClick={addHandler} />
+                            </>
+                        }
 
                         <img src="../images/addBeneficiaryIcon.png" alt="Añadir Beneficiario" title='Añadir Beneficiario' prefix='/beneficiaryform' onClick={addHandler} />
                         <img src="../images/medicalDataIcon.png" alt="Datos Médicos" title='Datos Médicos' prefix='/medicaldatalist' onClick={addHandler} />

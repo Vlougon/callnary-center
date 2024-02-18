@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { FormContext } from '../../context/FormContext';
 import AssistantPersonalDataFieldSet from '../../components/fieldsets/AssistntPersonalDataFieldSet';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
@@ -8,6 +8,10 @@ import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/AssistantForm.css';
 
 export default function AssistantForm() {
+    if (JSON.parse(sessionStorage.getItem('assistant')).role !== 'supervisor') {
+        return <Navigate to='/' />
+    }
+
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [showFM, setShowFM] = useState({
         render: false,

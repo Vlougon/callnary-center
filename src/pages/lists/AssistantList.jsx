@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
 import useAuthContext from '../../hooks/useAuthContext';
 import Spinner from '../../components/ui/Spinner';
 import '../../assets/pages/lists/AssistantList.css';
 
 export default function AssistantList() {
+    if (JSON.parse(sessionStorage.getItem('assistant')).role !== 'supervisor') {
+        return <Navigate to='/' />
+    }
+
     const [users, setUsers] = useState([]);
     const { getAllUsers, loading } = useAuthContext();
 

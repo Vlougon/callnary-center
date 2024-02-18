@@ -51,7 +51,7 @@ export function FormProvider({ children }) {
     });
 
     const [phones, setPhones] = useState({
-        phone_number: undefined,
+        phone_number: '',
     });
 
     const [contactData, setContactData] = useState({

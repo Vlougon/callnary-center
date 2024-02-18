@@ -4,16 +4,21 @@ import PathsList from '../../classes/PathsList';
 import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/components/HeadFoot.css';
 
-const userName = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).name : 'Anon';
-
 export default function HeadFoot() {
     const location = useLocation();
     const { logout } = useAuthContext();
+    const [userName, setuserName] = useState('');
     const [paths, setPaths] = useState([{
         id: 1,
         href: '/',
         name: 'Inicio'
     }]);
+
+    useEffect(() => {
+        const name = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).name : 'Anon';
+
+        setuserName(name);
+    }, [userName]);
 
     useEffect(() => {
         if (location.pathname === '/') {

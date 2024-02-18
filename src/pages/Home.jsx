@@ -15,11 +15,16 @@ export default function Home() {
         message: '',
         type: '',
     });
+    const [userRole, setUserRole] = useState('');
     let [shortCutsID, setShortCutsID] = useState(shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => shortcut.id)) + 1 : 1);
 
     useEffect(() => {
         localStorage.setItem('shortCuts', JSON.stringify(shortCuts));
-    }, [shortCuts]);
+
+        const role = JSON.parse(sessionStorage.getItem('assistant')).role;
+
+        setUserRole(role);
+    }, [shortCuts, userRole]);
 
     const handleShortCutInsert = (element) => {
         const target = element.target;
@@ -75,6 +80,10 @@ export default function Home() {
                     <ul className='row'>
                         {
                             shortCuts.map((shortcut) => {
+                                if (shortcut.link.includes('assistant') && userRole === 'assistant') {
+                                    return
+                                }
+
                                 return <ShortCut key={shortcut.id} linkID={shortcut.id} hrefLink={shortcut.link} textLink={shortcut.text} imageSource={shortcut.source} deleteFunction={handleShortCutDelete} />
                             })
                         }
