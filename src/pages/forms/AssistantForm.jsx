@@ -12,6 +12,7 @@ export default function AssistantForm() {
         return <Navigate to='/' />
     }
 
+    const [globalPhoneId, setGlobalPhoneId] = useState(0);
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [showFM, setShowFM] = useState({
         render: false,
@@ -19,11 +20,11 @@ export default function AssistantForm() {
         type: '',
     });
     const { getOneUser, createUser, updateUser, getPhoneUser, createPhoneUser, updatePhoneUser, loading } = useAuthContext();
-    const { assistantData, setAssistantData, phones, setPhones } = useContext(FormContext);
+    const { assistantData, setAssistantData, phones, setPhones, clearAssitantForm } = useContext(FormContext);
     const assistantID = useParams();
 
     useEffect(() => {
-        clearForm(true);
+        clearAssitantForm();
 
         if (assistantID.id) {
             async function setGetResponse() {
@@ -33,12 +34,12 @@ export default function AssistantForm() {
                 if (getAssistantResponse.data.status && getAssistantResponse.data.status === 'success') {
                     succeded = true;
 
-                    setAssistantData({
-                        name: getAssistantResponse.data.data.name,
-                        email: getAssistantResponse.data.data.email,
-                        password: '',
-                        role: getAssistantResponse.data.data.role,
-                    });
+                    const assitantObject = getAssistantResponse.data.data;
+                    assitantObject['password'] = '';
+                    
+                    delete assitantObject.id;
+
+                    setAssistantData(assitantObject);
                 }
 
                 if (!succeded) {
@@ -52,10 +53,17 @@ export default function AssistantForm() {
                     return
                 }
 
-                const phoneResponse = await getPhoneUser(getAssistantResponse.data.data.id);
+                const phoneResponse = await getPhoneUser(assistantID.id);
 
                 if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
-                    setPhones(phoneResponse.data.data[0]);
+
+                    const phoneObject = phoneResponse.data.data[0];
+                    phoneObject.user_id = phoneObject.user_id.id;
+
+                    setGlobalPhoneId(phoneObject.id);
+                    delete phoneObject.id;
+
+                    setPhones(phoneObject);
                 }
 
             }
@@ -127,9 +135,9 @@ export default function AssistantForm() {
                     return
                 }
 
-                await updatePhoneUser({ user_id: updatedUser.data.data.id, phone_number: phones.phone_number }, phones.id);
+                await updatePhoneUser(phones, globalPhoneId);
 
-                clearForm();
+                clearAssitantForm();
             }
             setPutResponse();
         } else {
@@ -160,7 +168,7 @@ export default function AssistantForm() {
 
                 await createPhoneUser({ user_id: createdUser.data.data.id, phone_number: phones.phone_number });
 
-                clearForm();
+                clearAssitantForm();
             }
             setPostResponse();
         }
@@ -180,19 +188,6 @@ export default function AssistantForm() {
             type: '',
         });
     };
-
-    const clearForm = (start = false) => {
-        setPasswordConfirmation('');
-        setAssistantData({
-            name: '',
-            email: '',
-            password: '',
-            role: '',
-        });
-        setPhones({
-            phone_number: '',
-        });
-    }
 
     return (
         <div id='assistantForm' className="container-fluid">
