@@ -626,6 +626,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const createBeneficiaryContactLink = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/beneficiary_contacts', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ####################################   END OF POST   ####################################### */
     /* ############################################################################################ */
@@ -906,6 +928,7 @@ export function AuthProvider({ children }) {
             getPhoneContact, createPhoneContact, updatePhoneContact,
             getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
             getAllReminders, createReminder,
+            createBeneficiaryContactLink,
         }}>
             {children}
         </AuthContext.Provider>

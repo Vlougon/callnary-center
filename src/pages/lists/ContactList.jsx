@@ -1,20 +1,26 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/lists/ContactList.css';
 
-const contact = [
-    {
-        id: 1,
-        name: 'Jesus Cristo Redentor',
-        beneficiary_name: 'Judas Iscariote',
-    },
-    {
-        id: 2,
-        name: 'Jesus Cristo Redentor',
-        beneficiary_name: 'San Pedro',
-    },
-]
-
 export default function ContactList() {
+    const [contacts, setContacts] = useState([]);
+    const { getAllContacts, loading } = useAuthContext();
+    const beneficiaryID = useParams();
+
+    useEffect(() => {
+        async function setGetResponse() {
+            const getResponse = await getAllContacts();
+
+            if (getResponse.data.status && getResponse.data.status === 'success') {
+                setContacts(getResponse.data.data);
+            }
+        }
+        setGetResponse();
+    }, []);
+
     return (
         <div id="contactList" className="container-fluid">
             <div className='table-responsive'>
@@ -24,15 +30,20 @@ export default function ContactList() {
                             <th>Nombre del Contacto</th>
                             <th>Beneficiarios Relacionados</th>
                             <th>Modificar Datos del Contacto</th>
-                            <th>Eliminar</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <TableRows columns={4} list={'contact'} dataArray={contact} />
+                        <TableRows columns={4} list={'contact'} dataArray={contacts} arrayHandler={setContacts} />
                     </tbody>
                 </table>
             </div>
+
+            {loading &&
+                <Spinner loading={loading} spinnerColor={'primary'} spinnerType={'spinner-border'}
+                    spinnerStyle={{ width: '5rem', height: '5rem', }}
+                />
+            }
         </div>
     )
 }
