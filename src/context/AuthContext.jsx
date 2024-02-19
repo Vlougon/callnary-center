@@ -265,6 +265,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllBeneficiariesFullData = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/fullbeneficiary');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getOneBeneficiary = async (id) => {
         setErrors({});
         setLoading(true);
@@ -1057,10 +1079,10 @@ export function AuthProvider({ children }) {
             getAllContacts, getOneContact, createContact, updateContact, deleteContact,
             getAllMedicalData, getOneMedicalData, createMedicalData, updateMedicalData,
             getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
+            createBeneficiaryContactLink, getBeneficiaryContacts, getContactsBeneficiary, getAllBeneficiariesFullData,
             getPhoneUser, createPhoneUser, updatePhoneUser,
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
             getPhoneContact, createPhoneContact, updatePhoneContact,
-            createBeneficiaryContactLink, getBeneficiaryContacts, getContactsBeneficiary,
             getAllReminders, createReminder,
         }}>
             {children}

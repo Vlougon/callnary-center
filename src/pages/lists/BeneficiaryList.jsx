@@ -7,14 +7,16 @@ import '../../assets/pages/lists/BeneficiaryList.css';
 
 export default function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
-    const { getAllBeneficiaries, loading } = useAuthContext();
+    const { getAllBeneficiariesFullData, loading } = useAuthContext();
     const params = useParams();
     const tableCols = Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
     const listType = Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getAllBeneficiaries();
+            const getResponse = await getAllBeneficiariesFullData();
+
+            console.log(getResponse);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setBeneficiaries(getResponse.data.data);
