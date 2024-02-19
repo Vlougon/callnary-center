@@ -13,6 +13,7 @@ import '../assets/pages/Calendar.css';
 export const MainCalendarContext = createContext();
 
 export default function Calendar() {
+    const [beneficiaries, setBeneficiaries] = useState([]);
     const [events, setEvents] = useState([]);
     const [title, setTitle] = useState('');
     const [selectedDates, setSelectedDates] = useState({
@@ -30,35 +31,40 @@ export default function Calendar() {
     const modalRef = useRef(null);
 
     useEffect(() => {
-        async function getResponse() {
+        async function getReminderResponse() {
             const remindersResposne = await getAllReminders();
+            const reminderArray = [];
 
-            if (!remindersResposne || remindersResposne.data.status !== 'success') {
-                setShowFM({
-                    render: true,
-                    message: '¡Error al Cargar los Recordatorios!',
-                    type: 'danger',
+            for (const reminder of remindersResposne.data.data) {
+                reminder.start_date = reminder.start_date.split('T')[0];
+                reminder.end_date = reminder.end_date.split('T')[0];
+                reminder.repeat = !reminder.repeat ? '' : reminder.repeat.split(',');
+
+                reminderArray.push({
+                    title: reminder.title,
+                    start: reminder.start_date + 'T' + reminder.start_time + 'Z',
+                    end: reminder.end_date + 'T' + reminder.end_time + 'Z',
+                    backgroundColor: reminder.background_color,
+                    daysOfWeek: reminder.repeat,
                 });
-
-                return
             }
 
-            console.log(remindersResposne);
-
-            // remindersResposne.data.data.map((reminder) => {
-            //     setEvents([
-            //         ...events,
-            //         {
-            //             title: reminder.title,
-            //             start: reminder.start_date + 'T' + reminder.start_time + 'Z',
-            //             end: reminder.end_date + 'T' + reminder.end_time + 'Z',
-            //             backgroundColor: reminder.background_color,
-            //             daysOfWeek: reminder.repeat,
-            //         }
-            //     ]);
-            // });
+            setEvents(reminderArray);
         }
-        getResponse();
+        getReminderResponse();
+
+        async function getBeneficiaryResponse() {
+            const beneficiaryResponse = await getAllBeneficiaries();
+
+            if (beneficiaryResponse.data.status && beneficiaryResponse.data.status === 'success') {
+                const beneficiaryObjectArray = beneficiaryResponse.data.data.map((beneficiary) => {
+                    return { value: beneficiary.id, text: beneficiary.name }
+                });
+
+                setBeneficiaries(beneficiaryObjectArray);
+            }
+        }
+        getBeneficiaryResponse();
     }, []);
 
     const handleSelectedDates = (info) => {
@@ -120,7 +126,7 @@ export default function Calendar() {
 
             <MainCalendarContext.Provider
                 value={{
-                    events, setEvents, title, setTitle, selectedDates, setSelectedDates, modalRef
+                    events, setEvents, title, setTitle, selectedDates, setSelectedDates, modalRef, beneficiaries
                 }}>
                 <ReminderModal modalReference={modalRef} selecDates={selectedDates} datesHandler={setSelectedDates} />
             </MainCalendarContext.Provider>

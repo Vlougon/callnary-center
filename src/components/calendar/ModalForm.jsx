@@ -1,16 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { MainCalendarContext } from "../../pages/Calendar";
-import { FormContext } from "../../context/FormContext";
 import CheckboxInput from "../inputs/CheckboxInput";
+import Spinner from "../ui/Spinner";
+import useAuthContext from '../../hooks/useAuthContext';
 
 export default function ModalForm() {
     const [repeat, setRepeat] = useState([]);
     const [beneficiaryToRemind, setBeneficiaryToRemind] = useState(0);
     const [userId, setUserID] = useState(0);
-    const { events, setEvents } = useContext(MainCalendarContext);
-    const { title, setTitle } = useContext(MainCalendarContext);
-    const { selectedDates } = useContext(MainCalendarContext);
-    const { reminderData, handleReminderDataChange } = useContext(FormContext);
+    const [showFM, setShowFM] = useState({
+        render: false,
+        message: '',
+        type: '',
+    });
+    const { events, setEvents, title, setTitle, selectedDates, beneficiaries } = useContext(MainCalendarContext);
+    const { createReminder, loading } = useAuthContext();
 
     useEffect(() => {
         const id = JSON.parse(sessionStorage.getItem('assistant')).id;
@@ -62,7 +66,7 @@ export default function ModalForm() {
             return
         }
 
-        handleReminderDataChange({
+        const reminderObject = {
             user_id: userId,
             beneficiary_id: parseInt(beneficiaryToRemind),
             title: title,
@@ -70,9 +74,9 @@ export default function ModalForm() {
             end_date: selectedDates.secondDate,
             start_time: selectedDates.firstTime,
             end_time: selectedDates.secondTime,
-            repeat: repeatValue,
-            backgroundColor: backGorundColor,
-        });
+            repeat: typeof repeatValue === 'string' ? repeatValue : repeatValue.join(','),
+            background_color: backGorundColor,
+        }
 
         const event = {
             title: title,
@@ -82,7 +86,32 @@ export default function ModalForm() {
             daysOfWeek: repeatValue,
         };
 
-        setEvents([...events, event]);
+        async function setPostResponse() {
+            const createdReminder = await createReminder(reminderObject);
+
+            if (createdReminder.data.status && createdReminder.data.status === 'success') {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: createdReminder.data.message,
+                    type: createdReminder.data.status,
+                });
+
+                setEvents([...events, event]);
+            } else {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: 'Error al Crear el Recordatorio',
+                    type: 'danger',
+                });
+            }
+
+            setTitle('');
+            setRepeat([]);
+            setBeneficiaryToRemind(0);
+        }
+        setPostResponse();
     };
 
     const handleFormFieldsValues = (target) => {
@@ -185,9 +214,11 @@ export default function ModalForm() {
                         </span>
                         <select id='beneficiary_id' name="beneficiary_id" value={beneficiaryToRemind} onClick={handleCalendarInput} aria-describedby='calendarBeneficiary' className="form-select" aria-label='calendarBeneficiary' onChange={handleBeneficiaryChange} required>
                             <option>Beneficiario</option>
-                            <option value="1">Beneficiario 1</option>
-                            <option value="2">Beneficiario 2</option>
-                            <option value="3">Beneficiario 3</option>
+                            {
+                                beneficiaries.map(beneficiary =>
+                                    <option key={beneficiary.value} value={beneficiary.value}>{beneficiary.text}</option>
+                                )
+                            }
                         </select>
                         <div className="invalid-feedback">
                             ¡Introduzca un Beneficiario al que Recordar!
@@ -215,7 +246,12 @@ export default function ModalForm() {
                 </div>
             </div>
             <div className='row justify-content-center mt-4'>
-                <button type="submit" className="btn btn-primary">Poner Recordatorio</button>
+                <button type="submit" className="btn btn-primary">
+                    <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
+                    <span>Poner Recordatorio</span>
+                </button>
             </div>
         </form>
     )

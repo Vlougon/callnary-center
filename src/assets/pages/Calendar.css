@@ -23,7 +23,7 @@
 
 #calendar input,
 #calendar select,
-#calendar form span {
+#calendar form div.col-12 span {
     border: 1px solid black !important;
 }
 
@@ -35,4 +35,15 @@
 
 #calendar span.is-invalid {
     background-color: rgb(255, 181, 181);
+}
+
+#calendar button[type=submit] {
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#calendar button[type=submit]:hover {
+    background-color: #005be3;
+    box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
 }
