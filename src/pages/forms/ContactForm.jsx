@@ -35,12 +35,15 @@ export default function ContactForm() {
             async function setResponse() {
                 let succeded = false;
 
-                const getContactResponse = await getOneContact();
+                const getContactResponse = await getOneContact(params.id);
 
                 if (getContactResponse.data.status && getContactResponse.data.status === 'success') {
                     succeded = true;
 
                     const contactObject = getContactResponse.data.data;
+                    contactObject.second_surname = contactObject.second_surname ? contactObject.second_surname : '';
+
+                    delete contactObject.id;
 
                     setContactData(contactObject);
                 }
@@ -79,6 +82,7 @@ export default function ContactForm() {
                     setAddressData(addressObject);
                 }
             }
+            setResponse();
         }
     }, []);
 
@@ -128,8 +132,36 @@ export default function ContactForm() {
 
         if (params.id) {
             async function getPutResponse() {
+                const updatedContact = await updateContact(contactData, params.id);
+                if (updatedContact.data.status && updatedContact.data.status === 'success') {
+                    succeded = true;
 
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: updatedContact.data.message,
+                        type: updatedContact.data.status,
+                    });
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Actualizar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                await updatePhoneContact(phones, globalPhoneId);
+
+                await updateAddress(addressData, globalAddressId);
+
+                clearContactData();
             }
+            getPutResponse();
         } else {
             async function getPostResponse() {
                 const createdContact = await createContact(contactData);
