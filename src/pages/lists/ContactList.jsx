@@ -60,7 +60,7 @@ export default function ContactList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={4} list={'contact'} dataArray={contacts} arrayHandler={setContacts} />
+                            <TableRows columns={3} list={'contact'} dataArray={contacts} arrayHandler={setContacts} />
                         }
                     </tbody>
                 </table>
