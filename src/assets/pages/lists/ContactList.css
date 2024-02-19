@@ -38,3 +38,8 @@
 #contactList .btn-warning {
     width: 60%;
 }
+
+#contactList .bi-plus-square {
+    vertical-align: -1px;
+    margin-right: 5px;
+}

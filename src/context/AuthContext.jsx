@@ -397,6 +397,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getContactsBeneficiary = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/beneficiaryContacts/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getPhoneContact = async (id) => {
         setErrors({});
         setLoading(true);
@@ -950,7 +972,7 @@ export function AuthProvider({ children }) {
             getPhoneContact, createPhoneContact, updatePhoneContact,
             getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
             getAllReminders, createReminder,
-            createBeneficiaryContactLink, getBeneficiaryContacts,
+            createBeneficiaryContactLink, getBeneficiaryContacts, getContactsBeneficiary,
         }}>
             {children}
         </AuthContext.Provider>

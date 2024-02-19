@@ -26,10 +26,10 @@ export default function ContactForm() {
     useEffect(() => {
         clearContactData();
 
-        setAddressData({
-            ...addressData,
+        setAddressData((previousAddressData) => ({
+            ...previousAddressData,
             addressable_type: 'App\\Models\\Contact',
-        });
+        }));
 
         if (params.id) {
             async function setResponse() {
