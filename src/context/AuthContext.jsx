@@ -331,6 +331,50 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllMedicalData = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/medical_data');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getOneMedicalData = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/medical_data/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getAllContacts = async () => {
         setErrors({});
         setLoading(true);
@@ -583,6 +627,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const createMedicalData = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/medical_data', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const createContact = async ({ ...data }) => {
         setErrors({});
         setLoading(true);
@@ -791,6 +857,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const updateMedicalData = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/medical_data/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const updateContact = async ({ ...data }, id) => {
         setErrors({});
         setLoading(true);
@@ -967,12 +1055,13 @@ export function AuthProvider({ children }) {
             getAllUsers, getOneUser, createUser, updateUser, deleteUser,
             getAllBeneficiaries, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
             getAllContacts, getOneContact, createContact, updateContact, deleteContact,
+            getAllMedicalData, getOneMedicalData, createMedicalData, updateMedicalData,
+            getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
             getPhoneUser, createPhoneUser, updatePhoneUser,
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
             getPhoneContact, createPhoneContact, updatePhoneContact,
-            getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
-            getAllReminders, createReminder,
             createBeneficiaryContactLink, getBeneficiaryContacts, getContactsBeneficiary,
+            getAllReminders, createReminder,
         }}>
             {children}
         </AuthContext.Provider>
