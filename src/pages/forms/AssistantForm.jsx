@@ -36,7 +36,7 @@ export default function AssistantForm() {
 
                     const assitantObject = getAssistantResponse.data.data;
                     assitantObject['password'] = '';
-                    
+
                     delete assitantObject.id;
 
                     setAssistantData(assitantObject);
@@ -204,7 +204,9 @@ export default function AssistantForm() {
                 />
 
                 <button type="submit" className='btn btn-primary' disabled={loading}>
-                    <Spinner loading={loading} spinnerColor={'light'} spinnerStyle={{ width: '1rem', height: '1rem', }} />
+                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
                     <span>{assistantID.id ? 'Modificar Datos del Asistente' : 'Añadir Asistente'}</span>
                 </button>
             </form>

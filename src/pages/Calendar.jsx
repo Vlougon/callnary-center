@@ -6,6 +6,7 @@ import interactPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import ReminderModal from '../components/calendar/ReminderModal';
 import FlashMessage from '../components/flashmessages/FlashMessage';
+import Spinner from '../components/ui/Spinner';
 import useAuthContext from '../hooks/useAuthContext';
 import '../assets/pages/Calendar.css';
 
@@ -25,7 +26,7 @@ export default function Calendar() {
         message: '',
         type: '',
     });
-    const { getAllReminders } = useAuthContext();
+    const { getAllReminders, getAllBeneficiaries, loading } = useAuthContext();
     const modalRef = useRef(null);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function Calendar() {
 
             if (!remindersResposne || remindersResposne.data.status !== 'success') {
                 setShowFM({
-                    render: false,
+                    render: true,
                     message: '¡Error al Cargar los Recordatorios!',
                     type: 'danger',
                 });
@@ -42,18 +43,20 @@ export default function Calendar() {
                 return
             }
 
-            remindersResposne.data.data.map((reminder) => {
-                setEvents([
-                    ...events,
-                    {
-                        title: reminder.title,
-                        start: reminder.start_date + 'T' + reminder.start_time + 'Z',
-                        end: reminder.end_date + 'T' + reminder.end_time + 'Z',
-                        backgroundColor: reminder.background_color,
-                        daysOfWeek: reminder.repeat,
-                    }
-                ]);
-            });
+            console.log(remindersResposne);
+
+            // remindersResposne.data.data.map((reminder) => {
+            //     setEvents([
+            //         ...events,
+            //         {
+            //             title: reminder.title,
+            //             start: reminder.start_date + 'T' + reminder.start_time + 'Z',
+            //             end: reminder.end_date + 'T' + reminder.end_time + 'Z',
+            //             backgroundColor: reminder.background_color,
+            //             daysOfWeek: reminder.repeat,
+            //         }
+            //     ]);
+            // });
         }
         getResponse();
     }, []);
@@ -69,8 +72,25 @@ export default function Calendar() {
         modalRef.current.className += ' d-block';
     };
 
+    const hiddeAlert = () => {
+        setShowFM({
+            ...showFM,
+            render: false,
+            message: '',
+            type: '',
+        });
+    };
+
     return (
         <div id='calendar'>
+            {loading &&
+                <div id='loadingScreen'>
+                    <Spinner loading={loading} spinnerColor={'dark'} spinnerType={'spinner-grow'}
+                        spinnerStyle={{ width: '7rem', height: '7rem', }}
+                    />
+                </div>
+            }
+
             {showFM.render &&
                 <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
             }

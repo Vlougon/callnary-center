@@ -72,7 +72,7 @@ export default function BeneficiaryList() {
             </div>
 
             {loading &&
-                <Spinner loading={loading} spinnerColor={'primary'}
+                <Spinner loading={loading} spinnerColor={'primary'} spinnerType={'spinner-border'}
                     spinnerStyle={{ width: '5rem', height: '5rem', }}
                 />
             }

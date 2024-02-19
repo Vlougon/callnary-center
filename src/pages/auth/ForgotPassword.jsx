@@ -46,7 +46,9 @@ export default function ForgotPassword() {
 
             <div className='mb-3'>
               <button type="submit" className="btn btn-primary" disabled={loading}>
-                <Spinner loading={loading} />
+                <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
+                  spinnerStyle={{ width: '1rem', height: '1rem', }}
+                />
                 <span>Enviar Link</span>
               </button>
             </div>

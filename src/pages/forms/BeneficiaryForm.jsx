@@ -243,7 +243,9 @@ export default function BeneficiaryForm() {
                 <AddresFieldSet />
 
                 <button type="submit" className='btn btn-primary' disabled={loading}>
-                    <Spinner loading={loading} spinnerColor={'light'} spinnerStyle={{ width: '1rem', height: '1rem', }} />
+                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
                     <span>{beneficiaryID.id ? 'Modificar Datos del Beneficiario' : 'Añadir Beneficiario'}</span>
                 </button>
             </form>
