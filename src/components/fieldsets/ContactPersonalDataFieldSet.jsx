@@ -12,7 +12,7 @@ export default function ContactPersonalDataFieldSet() {
 
                 <TextInput nameID={'first_surname'} sublimText={'Primer Apellido'} formUsed={'contact'} boxLength={'col-md-4'} needFeedback={true} />
 
-                <TextInput nameID={'second_surname'} sublimText={'Segundo Apellido'} formUsed={'contact'} boxLength={'col-md-4'} />
+                <TextInput nameID={'second_surname'} sublimText={'Segundo Apellido'} formUsed={'contact'} boxLength={'col-md-4'} needFeedback={true} />
 
                 <SelectInput
                     selectNameID={'contact_type'}

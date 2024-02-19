@@ -1,22 +1,98 @@
-// import { useParams, Link } from 'react-router-dom';
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import { FormContext } from "../../context/FormContext";
 import ContactPersonalDataFieldSet from "../../components/fieldsets/ContactPersonalDataFieldSet";
 import AddresFieldSet from "../../components/fieldsets/AddresFieldSet";
+import FlashMessage from '../../components/flashmessages/FlashMessage';
+import Spinner from '../../components/ui/Spinner';
 import PCGenerator from "../../classes/PCGenerator";
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/ContactForm.css';
 
 export default function ContactForm() {
-    const { contactData } = useContext(FormContext);
-    const { addressData } = useContext(FormContext);
-    const { phones } = useContext(FormContext);
+    const [globalPhoneId, setGlobalPhoneId] = useState(0);
+    const [globalAddressId, setGlobalAddressId] = useState(0);
+    const [showFM, setShowFM] = useState({
+        render: false,
+        message: '',
+        type: '',
+    });
+    const { contactData, setContactData, addressData, setAddressData, phones, setPhones, clearContactData } = useContext(FormContext);
+    const { getOneContact, createContact, updateContact, loading } = useAuthContext();
+    const { getPhoneContact, createPhoneContact, updatePhoneContact } = useAuthContext();
+    const { getContactAddress, createAddress, updateAddress } = useAuthContext();
+    const contactID = useParams();
+
+    useEffect(() => {
+        clearContactData();
+
+        setAddressData({
+            ...addressData,
+            addressable_type: 'App\\Models\\Contact',
+        });
+
+        if (contactID.id) {
+            async function setResponse() {
+                let succeded = false;
+
+                const getContactResponse = await getOneContact();
+
+                if (getContactResponse.data.status && getContactResponse.data.status === 'success') {
+                    succeded = true;
+
+                    const contactObject = getContactResponse.data.data;
+
+                    setContactData(contactObject);
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Cargar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                const phoneResponse = await getPhoneContact(contactID.id);
+                if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
+
+                    const phoneObject = phoneResponse.data.data[0];
+                    phoneObject.contact_id = phoneObject.contact_id.id;
+
+                    setGlobalPhoneId(phoneObject.id);
+                    delete phoneObject.id;
+
+                    setPhones(phoneObject);
+                }
+
+                const addressResponse = await getBeneficiaryAddress(contactID.id);
+                if (addressResponse.data.status && addressResponse.data.status === 'success') {
+
+                    const addressObject = addressResponse.data.data[0];
+
+                    setGlobalAddressId(addressObject.id);
+                    delete addressObject.id;
+
+                    setAddressData(addressObject);
+                }
+            }
+        }
+    }, []);
 
     const handleSubmit = (element) => {
         element.preventDefault();
+        let failed = false;
+        let succeded = false;
 
         for (const key in contactData) {
-            if ((key !== 'second_surname' && contactData[key] === undefined) ||
-                (key !== 'second_surname' && contactData[key].match(/^(?=\s*$)/))) {
+            if ((!contactData[key] && key !== 'second_surname') ||
+                (contactData[key] && key !== 'second_surname' && contactData[key].match(/^(?=\s*$)/)) ||
+                (contactData[key] && key === 'second_surname' && contactData[key].match(/^(?=\s*$)/))
+            ) {
+                failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
             }
         }
@@ -24,19 +100,73 @@ export default function ContactForm() {
         for (const key in addressData) {
             if ((addressData[key] && key === 'postal_code' && !addressData[key].match(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/)) ||
                 (addressData[key] && key === 'postal_code' && addressData.province && !PCGenerator.validPC(addressData[key], addressData.province)) ||
-                addressData[key] === undefined) {
+                (!addressData[key] && key !== 'addressable_type' && key !== 'addressable_id')
+            ) {
+                failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
             }
         }
 
         for (const key in phones) {
             if ((phones[key] && key === 'phone_number' && !phones[key].match(/^[6][0-9]{8}$/)) ||
-                phones[key] === undefined) {
+                !phones[key]
+            ) {
+                failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
             }
         }
 
-        console.log(contactData, addressData, phones);
+        if (failed) {
+            setShowFM({
+                ...showFM,
+                render: true,
+                message: '¡Hay Campos del Formulario que Requieren Revisión!',
+                type: 'danger',
+            });
+            return
+        }
+
+        if (contactID.id) {
+            async function getPutResponse() {
+
+            }
+        } else {
+            async function getPostResponse() {
+                const createdContact = await createContact(contactData);
+                if (createdContact.data.status && createdContact.data.status === 'success') {
+                    succeded = true;
+
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: createdContact.data.message,
+                        type: createdContact.data.status,
+                    });
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Actualizar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                const phone = phones;
+                phone['contact_id'] = createdContact.data.data.id;
+                await createPhoneContact(phone);
+
+                const address = addressData;
+                address['addressable_id'] = createdContact.data.data.id;
+                await createAddress(address);
+
+                clearContactData();
+            }
+            getPostResponse();
+        }
     };
 
     const handleFormFieldsValues = (target) => {
@@ -52,15 +182,33 @@ export default function ContactForm() {
         target.nextElementSibling.className += ' d-block';
     };
 
+    const hiddeAlert = () => {
+        setShowFM({
+            ...showFM,
+            render: false,
+            message: '',
+            type: '',
+        });
+    };
+
     return (
         <div id="contactForm" className="container-fluid">
+            {showFM.render &&
+                <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
+            }
+
             <form action="#" method="post" onSubmit={handleSubmit}>
 
                 <ContactPersonalDataFieldSet />
 
                 <AddresFieldSet />
 
-                <input type="submit" className="btn btn-primary" value="Asignar Contacto" />
+                <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
+                    <span>{contactID.id ? 'Modificar Datos del Contacto' : 'Añadir Contacto'}</span>
+                </button>
             </form>
         </div>
     )

@@ -23,7 +23,7 @@
 
 #contactForm input,
 #contactForm select,
-#contactForm span {
+#contactForm fieldset span {
     border: 1px solid black !important;
 }
 
@@ -37,13 +37,13 @@
     background-color: rgb(255, 181, 181);
 }
 
-#contactForm input[type=submit] {
+#contactForm button[type=submit] {
     padding: 5px;
     border-radius: 10px;
     font-weight: bold;
 }
 
-#contactForm input[type=submit]:hover {
+#contactForm button[type=submit]:hover {
     background-color: #005be3;
     box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
 }
