@@ -331,6 +331,94 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllContacts = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contacts');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getOneContact = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contacts/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getPhoneContact = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contactPhone/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getContactAddress = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contactAddress/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getAllReminders = async () => {
         setErrors({});
         setLoading(true);
@@ -435,6 +523,50 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.post('/api/V1/phone_beneficiaries', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const createContact = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/contacts', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const createPhoneContact = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/phone_contacts', data);
             return response
         }
         catch (e) {
@@ -593,6 +725,50 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const updateContact = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/contacts/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const updatePhoneContact = async ({ ...data }, id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.put('/api/V1/phone_contacts/' + id, data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const updateAddress = async ({ ...data }, id) => {
         setErrors({});
         setLoading(true);
@@ -668,6 +844,28 @@ export function AuthProvider({ children }) {
             setTimeout(() => setLoading(false), 2000);
         }
     };
+
+    const deleteContact = async (id) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.delete('/api/V1/beneficiaries/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
     /* ############################################################################################ */
     /* ##################################   END OF DELETE   ####################################### */
     /* ############################################################################################ */
@@ -702,9 +900,11 @@ export function AuthProvider({ children }) {
             sendPasswordResetLink, newPassword, sendEmailVerificationLink,
             getAllUsers, getOneUser, createUser, updateUser, deleteUser,
             getAllBeneficiaries, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
+            getAllContacts, getOneContact, createContact, updateContact, deleteContact,
             getPhoneUser, createPhoneUser, updatePhoneUser,
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
-            getBeneficiaryAddress, createAddress, updateAddress,
+            getPhoneContact, createPhoneContact, updatePhoneContact,
+            getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
             getAllReminders, createReminder,
         }}>
             {children}
