@@ -20,8 +20,8 @@ export default function ContactForm() {
     const { contactData, setContactData, addressData, setAddressData, phones, setPhones, clearContactData } = useContext(FormContext);
     const { getOneContact, createContact, updateContact, loading } = useAuthContext();
     const { getPhoneContact, createPhoneContact, updatePhoneContact } = useAuthContext();
-    const { getContactAddress, createAddress, updateAddress } = useAuthContext();
-    const contactID = useParams();
+    const { getContactAddress, createAddress, updateAddress, createBeneficiaryContactLink } = useAuthContext();
+    const params = useParams();
 
     useEffect(() => {
         clearContactData();
@@ -31,7 +31,7 @@ export default function ContactForm() {
             addressable_type: 'App\\Models\\Contact',
         });
 
-        if (contactID.id) {
+        if (params.id) {
             async function setResponse() {
                 let succeded = false;
 
@@ -56,7 +56,7 @@ export default function ContactForm() {
                     return
                 }
 
-                const phoneResponse = await getPhoneContact(contactID.id);
+                const phoneResponse = await getPhoneContact(params.id);
                 if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
 
                     const phoneObject = phoneResponse.data.data[0];
@@ -68,7 +68,7 @@ export default function ContactForm() {
                     setPhones(phoneObject);
                 }
 
-                const addressResponse = await getBeneficiaryAddress(contactID.id);
+                const addressResponse = await getContactAddress(params.id);
                 if (addressResponse.data.status && addressResponse.data.status === 'success') {
 
                     const addressObject = addressResponse.data.data[0];
@@ -126,7 +126,7 @@ export default function ContactForm() {
             return
         }
 
-        if (contactID.id) {
+        if (params.id) {
             async function getPutResponse() {
 
             }
@@ -154,6 +154,8 @@ export default function ContactForm() {
 
                     return
                 }
+
+                await createBeneficiaryContactLink({ beneficiary_id: params.userid, contact_id: createdContact.data.data.id });
 
                 const phone = phones;
                 phone['contact_id'] = createdContact.data.data.id;
@@ -207,7 +209,7 @@ export default function ContactForm() {
                     <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
                         spinnerStyle={{ width: '1rem', height: '1rem', }}
                     />
-                    <span>{contactID.id ? 'Modificar Datos del Contacto' : 'Añadir Contacto'}</span>
+                    <span>{params.id ? 'Modificar Datos del Contacto' : 'Añadir Contacto'}</span>
                 </button>
             </form>
         </div>

@@ -7,12 +7,12 @@ import '../../assets/pages/lists/ContactList.css';
 
 export default function ContactList() {
     const [contacts, setContacts] = useState([]);
-    const { getAllContacts, loading } = useAuthContext();
+    const { getBeneficiaryContacts, loading } = useAuthContext();
     const beneficiaryID = useParams();
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getAllContacts();
+            const getResponse = await getBeneficiaryContacts();
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setContacts(getResponse.data.data);
@@ -34,7 +34,9 @@ export default function ContactList() {
                     </thead>
 
                     <tbody>
-                        <TableRows columns={4} list={'contact'} dataArray={contacts} arrayHandler={setContacts} />
+                        {!loading &&
+                            <TableRows columns={4} list={'contact'} dataArray={contacts} arrayHandler={setContacts} />
+                        }
                     </tbody>
                 </table>
             </div>
