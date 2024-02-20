@@ -13,6 +13,7 @@ export default function MedicalDataList() {
             const getResponse = await getAllMedicalData();
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
+
                 setMedicalDatas(getResponse.data.data);
             }
         }
