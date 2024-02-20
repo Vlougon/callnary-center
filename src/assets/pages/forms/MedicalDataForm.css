@@ -22,7 +22,7 @@
 }
 
 #medicalForm textarea,
-#medicalForm span,
+#medicalForm fieldset span,
 #medicalForm input {
     border: 1px solid black !important;
     resize: none !important;
@@ -46,13 +46,13 @@
     margin-bottom: 0 !important;
 }
 
-#medicalForm input[type=submit] {
+#medicalForm button[type=submit] {
     padding: 5px;
     border-radius: 10px;
     font-weight: bold;
 }
 
-#medicalForm input[type=submit]:hover {
+#medicalForm button[type=submit]:hover {
     background-color: #005be3;
     box-shadow: 0 0 10px 3px rgba(13, 110, 253, .6);
 }

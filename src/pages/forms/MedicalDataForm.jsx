@@ -1,14 +1,46 @@
-import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 import { FormContext } from '../../context/FormContext';
 import AllergiesIllnessesFieldSet from '../../components/fieldsets/Allergies&IllnessesFieldSet';
 import MedicinesFieldSet from '../../components/fieldsets/MedicinesFieldSet';
 import LocalStrucutresFieldSet from '../../components/fieldsets/LocalStructures';
+import FlashMessage from '../../components/flashmessages/FlashMessage';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/MedicalDataForm.css';
 
 export default function MedicalDataForm() {
-    const beneficiaryID = parseInt(useParams().userid);
-    const { medicalFormValues, setMedicalFormValues } = useContext(FormContext);
+    const params = useParams();
+    if (params.id && params.id === 'null') {
+        const url = '/medicaldataform/' + params.userid;
+        return <Navigate to={url} />
+    }
+
+    const [showFM, setShowFM] = useState({
+        render: false,
+        message: '',
+        type: '',
+    });
+    const { medicalFormValues, setMedicalFormValues, clearMedicalData } = useContext(FormContext);
+    const { getOneMedicalData, createMedicalData, updateMedicalData, loading } = useAuthContext();
+
+    useEffect(() => {
+        clearMedicalData();
+
+        setMedicalFormValues({
+            ...medicalFormValues,
+            beneficiary_id: parseInt(params.userid),
+        });
+
+        if (params.id) {
+            async function getResponse() {
+                const getMedicalResponse = await getOneMedicalData(params.id);
+
+                console.log(getMedicalResponse);
+            }
+            getResponse();
+        }
+    }, []);
 
     const handleChange = (element) => {
         setMedicalFormValues({
@@ -19,25 +51,61 @@ export default function MedicalDataForm() {
 
     const handleSubmit = (element) => {
         element.preventDefault();
-
-        // Fix This. Wee Need to Load the userDI when page loads.
-        setMedicalFormValues({
-            ...medicalFormValues,
-            'beneficiary_id': beneficiaryID,
-        });
+        let failed = false;
 
         for (const key in medicalFormValues) {
             if ((key === 'preferent_morning_calls_hour' && (medicalFormValues[key] < '06:00' || medicalFormValues[key] > '13:59')) ||
                 (key === 'preferent_afternoon_calls_hour' && (medicalFormValues[key] < '14:00' || medicalFormValues[key] > '21:59')) ||
                 (key === 'preferent_night_calls_hour' && medicalFormValues[key] >= '06:00' && medicalFormValues[key] <= '21:59') ||
-                medicalFormValues[key] === '--:--' ||
-                medicalFormValues[key] === null
+                (
+                    key !== 'allergies' && key !== 'illnesses' && key !== 'morning_medication' &&
+                    key !== 'afternoon_medication' && key !== 'night_medication' && !medicalFormValues[key]
+                ) ||
+                medicalFormValues[key] === '--:--'
             ) {
+                failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
             }
         }
 
-        console.log(medicalFormValues);
+        if (failed) {
+            setShowFM({
+                ...showFM,
+                render: true,
+                message: '¡Hay Campos del Formulario que Requieren Revisión!',
+                type: 'danger',
+            });
+            return
+        }
+
+        if (params.id) {
+
+        } else {
+            async function setPostResponse() {
+                const createdMedicalData = await createMedicalData(medicalFormValues);
+
+                if (createdMedicalData.data.status && createdMedicalData.data.status !== 'success') {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Enviar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: createdMedicalData.data.message,
+                    type: createdMedicalData.data.status,
+                });
+
+                clearMedicalData();
+            }
+            setPostResponse();
+        }
     };
 
     const handleFormFieldsValues = (target) => {
@@ -51,8 +119,21 @@ export default function MedicalDataForm() {
         target.nextElementSibling.className += ' d-block';
     };
 
+    const hiddeAlert = () => {
+        setShowFM({
+            ...showFM,
+            render: false,
+            message: '',
+            type: '',
+        });
+    };
+
     return (
         <div id='medicalForm' className='container-fluid'>
+            {showFM.render &&
+                <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
+            }
+
             <form action="#" method="post" className='needs-validation' noValidate onSubmit={handleSubmit}>
 
                 <AllergiesIllnessesFieldSet
@@ -80,7 +161,12 @@ export default function MedicalDataForm() {
                     handler={handleChange}
                 />
 
-                <input type="submit" className='btn btn-primary' value="Asignar Datos Médicos" />
+                <button type="submit" className='btn btn-primary' disabled={loading}>
+                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
+                    <span>{params.id ? 'Modificar Datos Médicos' : 'Añadir Datos Médicos'}</span>
+                </button>
             </form>
         </div>
     )
