@@ -529,6 +529,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllCalls = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/calls');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getAllReminders = async () => {
         setErrors({});
         setLoading(true);
@@ -721,6 +743,28 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.post('/api/V1/addresses', data);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const createCall = async ({ ...data }) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.post('/api/V1/calls', data);
             return response
         }
         catch (e) {
@@ -1084,6 +1128,7 @@ export function AuthProvider({ children }) {
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
             getPhoneContact, createPhoneContact, updatePhoneContact,
             getAllReminders, createReminder,
+            getAllCalls, createCall,
         }}>
             {children}
         </AuthContext.Provider>
