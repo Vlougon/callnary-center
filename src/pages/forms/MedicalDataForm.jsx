@@ -27,16 +27,29 @@ export default function MedicalDataForm() {
     useEffect(() => {
         clearMedicalData();
 
-        setMedicalFormValues({
-            ...medicalFormValues,
+        setMedicalFormValues((previousMedicalData) => ({
+            ...previousMedicalData,
             beneficiary_id: parseInt(params.userid),
-        });
+        }));
 
         if (params.id) {
             async function getResponse() {
                 const getMedicalResponse = await getOneMedicalData(params.id);
 
-                console.log(getMedicalResponse);
+                if (getMedicalResponse.data.status && getMedicalResponse.data.status === 'success') {
+                    const medicalObject = getMedicalResponse.data.data;
+
+                    for (const key in medicalObject) {
+                        if (medicalObject[key] === null) {
+                            medicalObject[key] = '';
+                        }
+                    }
+
+                    medicalObject.beneficiary_id = parseInt(params.userid);
+                    delete medicalObject.id;
+
+                    setMedicalFormValues(medicalObject)
+                }
             }
             getResponse();
         }
@@ -79,7 +92,35 @@ export default function MedicalDataForm() {
         }
 
         if (params.id) {
+            async function setPutResponse() {
+                const updatedMEdicalData = await updateMedicalData(medicalFormValues, params.id);
 
+                if (updatedMEdicalData.data.status && updatedMEdicalData.data.status !== 'success') {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Enviar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: updatedMEdicalData.data.message,
+                    type: updatedMEdicalData.data.status,
+                });
+
+                clearMedicalData();
+
+                setMedicalFormValues((previousMedicalData) => ({
+                    ...previousMedicalData,
+                    beneficiary_id: parseInt(params.userid),
+                }));
+            }
+            setPutResponse();
         } else {
             async function setPostResponse() {
                 const createdMedicalData = await createMedicalData(medicalFormValues);
@@ -103,6 +144,11 @@ export default function MedicalDataForm() {
                 });
 
                 clearMedicalData();
+
+                setMedicalFormValues((previousMedicalData) => ({
+                    ...previousMedicalData,
+                    beneficiary_id: parseInt(params.userid),
+                }));
             }
             setPostResponse();
         }
