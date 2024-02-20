@@ -1,8 +1,38 @@
-import { Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../components/modals/ConfirmationModal';
 
 export default function TableRows({ columns, list, dataArray, arrayHandler }) {
     const tableRows = [];
+    const callKind = useParams().kind;
+    const navigate = useNavigate();
+
+    const callHandler = (element) => {
+        element.preventDefault();
+        let target = '';
+
+        switch (element.target.tagName) {
+            case 'path':
+                target = element.target.parentElement.parentElement;
+                break;
+            case 'svg':
+                target = element.target.parentElement;
+                break;
+            case 'A':
+                target = element.target;
+                break;
+            default:
+                console.error('Error al Obtener el Elemento');
+                return
+        }
+
+        const beneficiaryID = parseInt(target.getAttribute('about'));
+
+        const kindObject = { beneficiary_id: beneficiaryID, kind: callKind }
+
+        window.localStorage.setItem('kindObject', JSON.stringify(kindObject));
+
+        navigate('/callform');
+    };
 
     const TableCellRender = () => {
 
@@ -130,14 +160,14 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                         <tr key={beneficiary.id}>
                             <td>{beneficiary.name}</td>
                             <td>
-                                <Link className="btn btn-primary callButton" to='/callform'>
+                                <Link className="btn btn-primary callButton" about={beneficiary.id} to='/callform' onClick={callHandler}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone-inbound-fill" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zM15.854.146a.5.5 0 0 1 0 .708L11.707 5H14.5a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 1 0v2.793L15.146.146a.5.5 0 0 1 .708 0"></path>
                                     </svg>
                                 </Link>
                             </td>
                             <td>
-                                <Link className="btn btn-outline-dark" to='/callform'>
+                                <Link className="btn btn-outline-dark" about={beneficiary.id} to='/callform' onClick={callHandler}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-phone-vibrate-fill" viewBox="0 0 16 16">
                                         <path d="M4 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm5 7a1 1 0 1 0-2 0 1 1 0 0 0 2 0M1.807 4.734a.5.5 0 1 0-.884-.468A8 8 0 0 0 0 8c0 1.347.334 2.618.923 3.734a.5.5 0 1 0 .884-.468A7 7 0 0 1 1 8c0-1.18.292-2.292.807-3.266m13.27-.468a.5.5 0 0 0-.884.468C14.708 5.708 15 6.819 15 8c0 1.18-.292 2.292-.807 3.266a.5.5 0 0 0 .884.468A8 8 0 0 0 16 8a8 8 0 0 0-.923-3.734M3.34 6.182a.5.5 0 1 0-.93-.364A6 6 0 0 0 2 8c0 .769.145 1.505.41 2.182a.5.5 0 1 0 .93-.364A5 5 0 0 1 3 8c0-.642.12-1.255.34-1.818m10.25-.364a.5.5 0 0 0-.93.364c.22.563.34 1.176.34 1.818s-.12 1.255-.34 1.818a.5.5 0 0 0 .93.364C13.856 9.505 14 8.769 14 8s-.145-1.505-.41-2.182"></path>
                                     </svg>
@@ -153,7 +183,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                         <tr key={beneficiary.id}>
                             <td>{beneficiary.name}</td>
                             <td>
-                                <Link className="btn btn-primary callButton" to='/callform'>
+                                <Link className="btn btn-primary callButton" about={beneficiary.id} to='/callform' onClick={callHandler}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone-outbound-fill" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zM11 .5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V1.707l-4.146 4.147a.5.5 0 0 1-.708-.708L14.293 1H11.5a.5.5 0 0 1-.5-.5"></path>
                                     </svg>

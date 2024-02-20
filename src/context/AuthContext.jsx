@@ -265,6 +265,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getFirstBeneficiary = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/firstbeneficiary');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getAllBeneficiariesFullData = async () => {
         setErrors({});
         setLoading(true);
@@ -1119,7 +1141,7 @@ export function AuthProvider({ children }) {
             sessionVerified,
             sendPasswordResetLink, newPassword, sendEmailVerificationLink,
             getAllUsers, getOneUser, createUser, updateUser, deleteUser,
-            getAllBeneficiaries, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
+            getAllBeneficiaries, getFirstBeneficiary, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
             getAllContacts, getOneContact, createContact, updateContact, deleteContact,
             getAllMedicalData, getOneMedicalData, createMedicalData, updateMedicalData,
             getBeneficiaryAddress, getContactAddress, createAddress, updateAddress,
