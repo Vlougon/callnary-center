@@ -16,8 +16,6 @@ export default function BeneficiaryList() {
         async function setGetResponse() {
             const getResponse = await getAllBeneficiariesFullData();
 
-            console.log(getResponse);
-
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setBeneficiaries(getResponse.data.data);
             }

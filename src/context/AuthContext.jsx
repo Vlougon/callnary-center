@@ -358,7 +358,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/medical_data');
+            const response = await axios.get('/api/V1/medical_datas');
             return response
         }
         catch (e) {
@@ -380,7 +380,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/medical_data/' + id);
+            const response = await axios.get('/api/V1/medical_datas/' + id);
             return response
         }
         catch (e) {
@@ -654,7 +654,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.post('/api/V1/medical_data', data);
+            const response = await axios.post('/api/V1/medical_datas', data);
             return response
         }
         catch (e) {
@@ -884,7 +884,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.put('/api/V1/medical_data/' + id, data);
+            const response = await axios.put('/api/V1/medical_datas/' + id, data);
             return response
         }
         catch (e) {
