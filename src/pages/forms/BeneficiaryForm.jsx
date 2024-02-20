@@ -28,10 +28,10 @@ export default function BeneficiaryForm() {
     useEffect(() => {
         clearBeneficiaryForm();
 
-        setAddressData({
-            ...addressData,
+        setAddressData((previousAddressData) => ({
+            ...previousAddressData,
             addressable_type: 'App\\Models\\Beneficiary',
-        });
+        }));
 
         if (beneficiaryID.id) {
             async function setGetResponse() {
@@ -164,6 +164,11 @@ export default function BeneficiaryForm() {
                 await updateAddress(addressData, globalAddressId);
 
                 clearBeneficiaryForm();
+
+                setAddressData((previousAddressData) => ({
+                    ...previousAddressData,
+                    addressable_type: 'App\\Models\\Beneficiary',
+                }));
             }
             setPutResponse();
 
@@ -202,6 +207,11 @@ export default function BeneficiaryForm() {
                 await createAddress(address);
 
                 clearBeneficiaryForm();
+
+                setAddressData((previousAddressData) => ({
+                    ...previousAddressData,
+                    addressable_type: 'App\\Models\\Beneficiary',
+                }));
             }
             setPostResponse();
         }

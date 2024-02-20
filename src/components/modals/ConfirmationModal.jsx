@@ -126,7 +126,7 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
                     </div>
                     <div className="modal-footer justify-content-between">
                         <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" name={elementID} className="btn btn-danger px-4" data-bs-dismiss={userID === elementID ? 'nothing' : 'modal'} onClick={handleDeletion} disabled={loading}>
+                        <button type="button" name={elementID} className="btn btn-danger px-4" data-bs-dismiss={modalOn === 'Asistente' && userID === elementID ? 'nothing' : 'modal'} onClick={handleDeletion} disabled={loading}>
                             <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
                                 spinnerStyle={{ width: '1rem', height: '1rem', }}
                             />
