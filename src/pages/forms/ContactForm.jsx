@@ -160,6 +160,11 @@ export default function ContactForm() {
                 await updateAddress(addressData, globalAddressId);
 
                 clearContactData();
+
+                setAddressData((previousAddressData) => ({
+                    ...previousAddressData,
+                    addressable_type: 'App\\Models\\Contact',
+                }));
             }
             getPutResponse();
         } else {
@@ -198,6 +203,11 @@ export default function ContactForm() {
                 await createAddress(address);
 
                 clearContactData();
+
+                setAddressData((previousAddressData) => ({
+                    ...previousAddressData,
+                    addressable_type: 'App\\Models\\Contact',
+                }));
             }
             getPostResponse();
         }
