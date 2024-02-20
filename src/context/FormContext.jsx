@@ -70,7 +70,7 @@ export function FormProvider({ children }) {
         duration: 0,
         call_type: '',
         call_kind: '',
-        answered_call: '',
+        answered_call: false,
         observations: '',
         description: '',
         contacted_112: false,
@@ -119,9 +119,11 @@ export function FormProvider({ children }) {
     };
 
     const handleCallChange = (element) => {
+        const value = element.target.value === 'true' ? true : element.target.value === 'false' ? false : element.target.value;
+
         setCallData({
             ...callData,
-            [element.target.name]: element.target.value,
+            [element.target.name]: value,
         });
     };
 
@@ -231,7 +233,7 @@ export function FormProvider({ children }) {
             duration: 0,
             call_type: '',
             call_kind: '',
-            answered_call: '',
+            answered_call: false,
             observations: '',
             description: '',
             contacted_112: false,

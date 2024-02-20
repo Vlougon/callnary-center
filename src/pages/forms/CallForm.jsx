@@ -1,34 +1,46 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { FormContext } from '../../context/FormContext';
 import TimeDataFieldSet from '../../components/fieldsets/TimeDataFieldSet';
 import CallDataFieldSet from '../../components/fieldsets/CallDataFieldSet';
 import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
+import FlashMessage from '../../components/flashmessages/FlashMessage';
+import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/CallForm.css';
 
-let callDuration = 0;
-
-const callKind = JSON.parse(localStorage.getItem('callData')) ? 'A' : 'B';
+const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
+const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
+const beneficiaryId = JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id;
 
 export default function CallForm() {
-    const { callData, setCallData } = useContext(FormContext);
+    const [showFM, setShowFM] = useState({
+        render: false,
+        message: '',
+        type: '',
+    });
+    const { callData, setCallData, clearCallForm } = useContext(FormContext);
+    const { createCall, loading } = useAuthContext();
     const durationRef = useRef();
     const turn = callData.time >= '06:00' && callData.time <= '13:59' ? 'morning' :
         callData.time >= '14:00' && callData.time <= '21:59' ? 'afternoon' : 'night';
 
     useEffect(() => {
+        clearCallForm();
+
+        setCallData((previousCallData) => ({
+            ...previousCallData,
+            turn: turn,
+            call_kind: callKind,
+            beneficiary_id: beneficiaryId,
+            user_id: userId,
+        }));
+
         durationRef.current = setInterval(() => {
             setCallData((previousCallData) => ({
                 ...previousCallData,
-                duration: callDuration,
+                duration: parseInt(previousCallData.duration) + 1,
             }));
-            callDuration++;
         }, 1000);
-
-        setCallData({
-            ...callData,
-            turn: turn,
-            call_kind: callKind,
-        });
 
         return () => {
             clearInterval(durationRef.current);
@@ -37,16 +49,62 @@ export default function CallForm() {
 
     const handleSubmit = (element) => {
         element.preventDefault();
-        clearInterval(durationRef.current);
+        let failed = false;
 
         for (const key in callData) {
-            if (callData[key] === undefined ||
-                (key !== 'description' && key !== 'contacted_112' && typeof callData[key] === 'string' && callData[key].match(/^(?=\s*$)/))) {
+            if (key !== 'description' && key !== 'contacted_112' && typeof callData[key] === 'string' && callData[key].match(/^(?=\s*$)/)) {
+                failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
             }
         }
 
-        console.log(callData);
+        if (failed) {
+            setShowFM({
+                ...showFM,
+                render: true,
+                message: '¡Hay Campos del Formulario que Requieren Revisión!',
+                type: 'danger',
+            });
+
+            return
+        }
+
+        clearInterval(durationRef.current);
+
+        failed = false;
+
+        // const hours = Math.floor(callData.duration / 3600);
+        // const minutes = Math.floor(callData.duration % 3600 / 60);
+        // const seocnds = Math.floor(callData.duration % 3600 % 60);
+        // const prettyDuration = hours + 'h ' + minutes + 'm ' + seocnds + 's';
+
+        // const betterCallData = { ...callData, duration: prettyDuration };
+
+        async function setPostResponse() {
+            const createdCall = await createCall(callData);
+
+            if (createdCall.data.status && createdCall.data.status !== 'success') {
+                failed = true;
+            }
+
+            setShowFM({
+                ...showFM,
+                render: true,
+                message: createdCall.data.message,
+                type: failed ? 'danger' : createdCall.data.status,
+            });
+
+            clearCallForm();
+
+            setCallData((previousCallData) => ({
+                ...previousCallData,
+                turn: turn,
+                call_kind: callKind,
+                beneficiary_id: beneficiaryId,
+                user_id: userId,
+            }));
+        }
+        setPostResponse();
     };
 
     const handleFormFieldsValues = (target) => {
@@ -55,8 +113,21 @@ export default function CallForm() {
         target.nextElementSibling.className += ' d-block';
     };
 
+    const hiddeAlert = () => {
+        setShowFM({
+            ...showFM,
+            render: false,
+            message: '',
+            type: '',
+        });
+    };
+
     return (
         <div id="callForm" className="container-fluid">
+            {showFM.render &&
+                <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
+            }
+
             <form action="#" method="post" onSubmit={handleSubmit}>
 
                 <TimeDataFieldSet />
@@ -65,7 +136,12 @@ export default function CallForm() {
 
                 <EmergencyFieldSet />
 
-                <input type="submit" className="btn btn-danger" value="Finalizar Llamada" />
+                <button type="submit" className='btn btn-danger' disabled={loading}>
+                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                    />
+                    <span>Finalizar Llamada</span>
+                </button>
             </form>
         </div>
     )

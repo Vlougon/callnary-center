@@ -24,7 +24,7 @@
 #callForm input,
 #callForm select,
 #callForm textarea,
-#callForm span {
+#callForm fieldset span {
     border: 1px solid black !important;
 }
 
@@ -41,6 +41,17 @@
 
 #callForm textarea {
     resize: none !important;
+}
+
+#callForm button[type=submit] {
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#callForm button[type=submit]:hover {
+    background-color: #dc3545;
+    box-shadow: 0 0 10px 3px rgba(220, 53, 69, .6);
 }
 
 #callForm label {

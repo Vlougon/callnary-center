@@ -21,7 +21,7 @@ export default function CallDataFieldSet() {
                     selectLabel={'¿Respondió a la Llamada?'}
                     selectValues={
                         [
-                            { value: 'true', text: 'Llamada Atendida' }, { value: 'false', text: 'Llamada No Atendida' },
+                            { value: true, text: 'Llamada Atendida' }, { value: false, text: 'Llamada No Atendida' },
                         ]
                     }
                     formUsed={'call'}
