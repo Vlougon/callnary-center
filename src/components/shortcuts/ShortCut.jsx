@@ -23,7 +23,7 @@ export default function ShortCut({ linkID, hrefLink, textLink, imageSource, benI
         const beneficiaryID = benID;
         const callKind = Math.floor(Math.random() * 2) > 0 ? 'incoming' : 'outgoing';
 
-        const kindObject = { beneficiary_id: beneficiaryID, kind: callKind };
+        const kindObject = { beneficiary_id: beneficiaryID, kind: callKind, type: 'Anonymous' };
 
         window.localStorage.setItem('kindObject', JSON.stringify(kindObject));
 

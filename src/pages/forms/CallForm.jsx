@@ -6,7 +6,12 @@ import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
+import AudiosPaths from '../../classes/AudiosPaths';
 import '../../assets/pages/forms/CallForm.css';
+
+window.addEventListener('popstate', function () {
+    console.log('A');
+});
 
 export default function CallForm() {
     const [showFM, setShowFM] = useState({
@@ -17,9 +22,10 @@ export default function CallForm() {
     const { callData, setCallData, clearCallForm } = useContext(FormContext);
     const { createCall, loading } = useAuthContext();
     const durationRef = useRef();
-    const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
     const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
     const beneficiaryId = JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id;
+    const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
+    const type = JSON.parse(window.localStorage.getItem('kindObject')).type;
     const turn = callData.time >= '06:00' && callData.time <= '13:59' ? 'morning' :
         callData.time >= '14:00' && callData.time <= '21:59' ? 'afternoon' : 'night';
 
@@ -41,6 +47,31 @@ export default function CallForm() {
             }));
         }, 1000);
 
+        if (type && type === 'Anonymous') {
+            const selectedAudioID = Math.floor(Math.random() * 5);
+            const audio = AudiosPaths.audios.filter(audio => audio.id === selectedAudioID)[0];
+
+            const beneficiaryCall = new Audio(audio.audioPath);
+            beneficiaryCall.autoplay = true;
+            beneficiaryCall.muted = false;
+            beneficiaryCall.play();
+
+            // Event listener that handles the end of the audio
+            const handleEnded = () => {
+                beneficiaryCall.pause();
+            };
+
+            beneficiaryCall.addEventListener('ended', handleEnded);
+
+            // Cleanup Function (Runs when the Component Unmounts)
+            return () => {
+                beneficiaryCall.removeEventListener('ended', handleEnded);
+                beneficiaryCall.pause();
+                clearInterval(durationRef.current);
+            };
+        }
+
+        // Cleanup Function (Runs when the Component Unmounts)
         return () => {
             clearInterval(durationRef.current);
         };
