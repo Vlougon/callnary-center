@@ -1,6 +1,33 @@
 import '../assets/pages/DocumentGenerator.css';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import MyDocument from './../components/pdf/MyDocument';
+import { AuthContext } from '../context/AuthContext';
+import { useContext, useEffect } from 'react';
+
 
 export default function DocumentGenerator() {
+    const { getAllUsers, setErrors, setLoading } = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+
+            try {
+                const usersResponse = await getAllUsers();
+                const users = usersResponse.data; // asumiendo que los datos se encuentran en la propiedad 'data' de la respuesta
+                console.log('Lista de usuarios:', users);
+            } catch (error) {
+                console.error('Error:', error);
+                // Manejar errores
+            } finally {
+                setTimeout(() => setLoading(false), 2000);
+            }
+        };
+
+        fetchData();
+    }, [getAllUsers, setErrors, setLoading]);
+
+
     return (
         <div id='documentGenerator' className='container-fluid'>
             <div className='input-group'>
@@ -16,6 +43,22 @@ export default function DocumentGenerator() {
                     <option value="incomingcallslist">Listado de Llamadas de Entrada</option>
                     <option value="outcomingcallslist">Listado de Llamadas de Salida</option>
                 </select>
+
+
+                {/* Mostrar el documento */}
+                {/* <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                    <MyDocument />
+                </PDFViewer> */}
+
+                {/* Enlace para descargar el PDF */}
+                <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
+                    <PDFDownloadLink document={<MyDocument />} fileName="listadoUsers.pdf"  >
+                        {
+                            ({ loading }) =>
+                                loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
+                        }
+                    </PDFDownloadLink>
+                </div>
             </div>
         </div>
     )

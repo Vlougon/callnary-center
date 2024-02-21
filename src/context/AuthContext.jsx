@@ -183,6 +183,7 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.get('/api/V1/users');
+            console.log(response);
             return response
         }
         catch (e) {
