@@ -1,72 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
+import { ShortCutsContext, ShortCutsDispatchContext } from '../context/ShortCutContext';
 import BigShortCut from '../components/shortcuts/BigShortCut';
-import ShortCut from '../components/shortcuts/ShortCut';
+import ShortCutList from '../components/shortcuts/ShortCutList';
 import ShortCutModal from '../components/shortcuts/ShortCutModal';
 import FlashMessage from '../components/flashmessages/FlashMessage';
-import useAuthContext from '../hooks/useAuthContext';
 import '../assets/pages/Home.css';
 
 export default function Home() {
-    const [beneficiaryID, setBeneficiaryID] = useState(null);
-    const [shortCuts, setShortCuts] = useState(() => {
-        const storedShortCuts = localStorage.getItem('shortCuts');
-        return storedShortCuts ? JSON.parse(storedShortCuts) : [];
-    });
+    const [shortCuts, dispatch] = useReducer(shortcutReducer,
+        localStorage.getItem('shortCuts') ? JSON.parse(localStorage.getItem('shortCuts')) : [],
+    );
     const [showFM, setShowFM] = useState({
         render: false,
         message: '',
         type: '',
     });
-    const [userRole, setUserRole] = useState('');
-    let [shortCutsID, setShortCutsID] = useState(shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => shortcut.id)) + 1 : 1);
-    const { getFirstBeneficiary } = useAuthContext();
 
     useEffect(() => {
         localStorage.setItem('shortCuts', JSON.stringify(shortCuts));
+    }, [shortCuts]);
 
-        const role = JSON.parse(sessionStorage.getItem('assistant')).role;
+    // const handleShortCutInsert = (element) => {
+    //     const target = element.target;
 
-        setUserRole(role);
+    //     if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
+    //         setShowFM({
+    //             ...showFM,
+    //             render: true,
+    //             message: '¡El Atajo ya está siendo usado!',
+    //             type: 'warning',
+    //         });
+    //         return
+    //     }
 
-        async function setResponse() {
-            const response = await getFirstBeneficiary();
+    //     setShortCuts([
+    //         ...shortCuts,
+    //         {
+    //             id: shortCutsID,
+    //             link: target.getAttribute('prefix'),
+    //             text: target.alt,
+    //             source: target.src,
+    //         }
+    //     ])
 
-            setBeneficiaryID(response.data.data.id);
-        }
-        setResponse();
+    //     setShortCutsID(shortCutsID + 1);
+    // };
 
-    }, [shortCuts, userRole]);
-
-    const handleShortCutInsert = (element) => {
-        const target = element.target;
-
-        if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
-            setShowFM({
-                ...showFM,
-                render: true,
-                message: '¡El Atajo ya está siendo usado!',
-                type: 'warning',
-            });
-            return
-        }
-
-        setShortCuts([
-            ...shortCuts,
-            {
-                id: shortCutsID,
-                link: target.getAttribute('prefix'),
-                text: target.alt,
-                source: target.src,
-            }
-        ])
-
-        setShortCutsID(shortCutsID + 1);
-    };
-
-    const handleShortCutDelete = (element) => {
-        const toDeleteID = parseInt(element.target.parentElement.id);
-        setShortCuts(shortCuts.filter(shortcut => shortcut.id !== toDeleteID));
-    };
+    // const handleShortCutDelete = (element) => {
+    //     const toDeleteID = parseInt(element.target.parentElement.id);
+    //     setShortCuts(shortCuts.filter(shortcut => shortcut.id !== toDeleteID));
+    // };
 
     const hiddeAlert = () => {
         setShowFM({
@@ -84,33 +67,24 @@ export default function Home() {
             }
             <div className='row'>
                 <aside className="col-md-3 column">
-                    <div className='row'>
-                        <h3 className='text-white'>Atajos</h3>
-                    </div>
+                    <ShortCutsContext.Provider value={shortCuts}>
+                        <ShortCutsDispatchContext.Provider value={dispatch}>
 
-                    <ul className='row'>
-                        {
-                            shortCuts.map((shortcut) => {
-                                if (shortcut.link.includes('assistant') && userRole === 'assistant') {
-                                    return
-                                }
+                            <div className='row'>
+                                <h3 className='text-white'>Atajos</h3>
+                            </div>
 
-                                return <ShortCut key={shortcut.id} linkID={shortcut.id}
-                                    hrefLink={shortcut.link} textLink={shortcut.text}
-                                    imageSource={shortcut.source} deleteFunction={handleShortCutDelete}
-                                    FM={showFM} setFM={setShowFM} benID={beneficiaryID}
-                                />
-                            })
-                        }
-                    </ul>
+                            <ShortCutList FM={showFM} setFM={setShowFM} />
 
-                    <div className='row justify-content-center align-items-end addSection'>
-                        <button id='addButton' type="button" data-bs-toggle="modal" data-bs-target="#shortCutModal">
-                            +
-                        </button>
-                    </div>
+                            <div className='row justify-content-center align-items-end addSection'>
+                                <button id='addButton' type="button" data-bs-toggle="modal" data-bs-target="#shortCutModal">
+                                    +
+                                </button>
+                            </div>
 
-                    <ShortCutModal currentShortCuts={shortCuts.length} addHandler={handleShortCutInsert} />
+                            <ShortCutModal currentShortCuts={shortCuts.length} FM={showFM} setFM={setShowFM} />
+                        </ShortCutsDispatchContext.Provider>
+                    </ShortCutsContext.Provider>
                 </aside>
 
                 <div className="col-md-9 main">
@@ -125,3 +99,16 @@ export default function Home() {
         </div>
     );
 };
+
+const shortcutReducer = (state, action) => {
+    switch (action.type) {
+        case 'ADD_SHORTCUT':
+            return { shortCuts: [...state.shortCuts, action.payload] };
+
+        case 'REMOVE_SHORTCUT':
+            return { shortCuts: state.shortCuts.filter(shortcut => shortcut.id !== action.payload) };
+
+        default:
+            return state;
+    }
+}
