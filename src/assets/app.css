@@ -30,11 +30,11 @@
 
 #searchBox span {
     background-color: white;
-    padding-right: 0;
 }
 
 #searchBox input {
     border-left: none;
+    padding-left: 0;
 }
 
 #searchBox input:focus {

@@ -53,8 +53,8 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const user of dataArray) {
                     tableRows.push(
                         <tr key={user.id}>
-                            <td>{user.name}</td>
-                            <td>{user.role}</td>
+                            <td>{user.name.charAt(0).toUpperCase() + user.name.slice(1)}</td>
+                            <td>{user.role === 'supervisor' ? 'Supervisor' : 'Asistente'}</td>
                             <td>
                                 <Link className="btn btn-warning" to={'/assistantform/' + user.id}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -80,7 +80,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const beneficiary of dataArray) {
                     tableRows.push(
                         <tr key={beneficiary.id}>
-                            <td>{beneficiary.name}</td>
+                            <td>{beneficiary.name.charAt(0).toUpperCase() + beneficiary.name.slice(1)}</td>
                             <td>{beneficiary.dni}</td>
                             <td>
                                 <Link className="btn btn-info" to={'/contactlist/' + beneficiary.id}>
@@ -123,7 +123,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const medicalData of dataArray) {
                     tableRows.push(
                         <tr key={medicalData.id}>
-                            <td>{medicalData.beneficiary_id.name}</td>
+                            <td>{medicalData.beneficiary_id.name.charAt(0).toUpperCase() + medicalData.beneficiary_id.name.slice(1)}</td>
                             <td>
                                 <Link className="btn btn-success" to={'/medicaldataform/' + medicalData.beneficiary_id.id + '/' + medicalData.id}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -140,8 +140,8 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const contact of dataArray) {
                     tableRows.push(
                         <tr key={contact.contact_id.id}>
-                            <td>{contact.contact_id.name}</td>
-                            <td>{contact.beneficiary_id.name}</td>
+                            <td>{contact.contact_id.name.charAt(0).toUpperCase() + contact.contact_id.name.slice(1)}</td>
+                            <td>{contact.beneficiary_id.name.charAt(0).toUpperCase() + contact.beneficiary_id.name.slice(1)}</td>
                             <td>
                                 <Link className="btn btn-warning" to={'/contactform/' + contact.beneficiary_id.id + '/' + contact.contact_id.id}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -158,7 +158,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const beneficiary of dataArray) {
                     tableRows.push(
                         <tr key={beneficiary.id}>
-                            <td>{beneficiary.name}</td>
+                            <td>{beneficiary.name.charAt(0).toUpperCase() + beneficiary.name.slice(1)}</td>
                             <td>
                                 <Link className="btn btn-primary callButton" about={beneficiary.id} to='/callform' onClick={callHandler}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone-inbound-fill" viewBox="0 0 16 16">
@@ -181,7 +181,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                 for (const beneficiary of dataArray) {
                     tableRows.push(
                         <tr key={beneficiary.id}>
-                            <td>{beneficiary.name}</td>
+                            <td>{beneficiary.name.charAt(0).toUpperCase() + beneficiary.name.slice(1)}</td>
                             <td>
                                 <Link className="btn btn-primary callButton" about={beneficiary.id} to='/callform' onClick={callHandler}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-telephone-outbound-fill" viewBox="0 0 16 16">
