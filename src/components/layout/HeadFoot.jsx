@@ -17,7 +17,7 @@ export default function HeadFoot() {
     useEffect(() => {
         const name = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).name : 'Anon';
 
-        setuserName(name);
+        setuserName(name.charAt(0).toUpperCase() + name.slice(1));
     }, [userName]);
 
     useEffect(() => {
@@ -118,9 +118,9 @@ export default function HeadFoot() {
                             </ul>
 
                             <div className="dropdown">
-                                <button type="button" id="profileBox" className="btn btn-light" name="Perfil de Usuario" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" id="profileBox" name="Perfil de Usuario" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="../images/defaultUserIcon.png" alt="Icono de Perfil de Usuario" className="d-inline-block" />
-                                    <span id="usersName">{userName}</span>
+                                    <span id="usersName" className='text-light'>{userName}</span>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end">
                                     <li>

@@ -20,6 +20,20 @@ nav.navbar a {
     text-overflow: ellipsis;
 }
 
+nav.navbar .dropdown button {
+    background: none;
+    border: none;
+}
+
+nav.navbar .dropdown span:hover {
+    text-decoration: underline;
+}
+
+nav.navbar .dropdown img {
+    background-color: white;
+    border-radius: 50%;
+}
+
 nav.navbar .dropdown a {
     color: black !important;
 }
