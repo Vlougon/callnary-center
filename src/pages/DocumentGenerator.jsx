@@ -7,11 +7,11 @@ import { useContext, useEffect } from 'react';
 
 export default function DocumentGenerator() {
     //Fetch para obtener datos segun el listado
-    const { getAllUsers } = useContext(AuthContext);
+    const { getAllBeneficiaries } = useContext(AuthContext);
 
     useEffect(() => {
         async function setGetResponse() {
-            const response = await getAllUsers();
+            const response = await getAllBeneficiaries();
 
             console.log(response);
         }
@@ -38,9 +38,9 @@ export default function DocumentGenerator() {
 
 
                 {/* Mostrar el documento */}
-                {/* <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
                     <MyDocument />
-                </PDFViewer> */}
+                </PDFViewer>
 
                 {/* Enlace para descargar el PDF */}
                 <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
