@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
+import SearchBox from '../../components/inputs/SearchBox';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/lists/BeneficiaryList.css';
 
 export default function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
+    const [currentBeneficiaries, setCurrentBeneficiaries] = useState([]);
     const { getAllBeneficiariesFullData, loading } = useAuthContext();
     const params = useParams();
     const tableCols = Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
@@ -18,6 +20,7 @@ export default function BeneficiaryList() {
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setBeneficiaries(getResponse.data.data);
+                setCurrentBeneficiaries(getResponse.data.data);
             }
         }
         setGetResponse();
@@ -57,6 +60,9 @@ export default function BeneficiaryList() {
 
     return (
         <div id='beneficiaryList' className="container-fluid">
+
+            <SearchBox view={'Beneficiario'} rootArray={beneficiaries} setVolatileArray={setCurrentBeneficiaries} />
+
             <div className='table-responsive'>
                 <table id='beneficiaryTable' className="table table-striped table-hover">
                     <thead>
@@ -65,7 +71,7 @@ export default function BeneficiaryList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={tableCols} list={listType} dataArray={beneficiaries} arrayHandler={setBeneficiaries} />
+                            <TableRows columns={tableCols} list={listType} dataArray={currentBeneficiaries} arrayHandler={setBeneficiaries} />
                         }
                     </tbody>
                 </table>
