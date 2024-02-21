@@ -11,11 +11,6 @@ import '../../assets/pages/forms/MedicalDataForm.css';
 
 export default function MedicalDataForm() {
     const params = useParams();
-    if (params.id && params.id === 'null') {
-        const url = '/medicaldataform/' + params.userid;
-        return <Navigate to={url} />
-    }
-
     const [showFM, setShowFM] = useState({
         render: false,
         message: '',
@@ -32,7 +27,7 @@ export default function MedicalDataForm() {
             beneficiary_id: parseInt(params.userid),
         }));
 
-        if (params.id) {
+        if (params.id && params.id !== 'null') {
             async function getResponse() {
                 const getMedicalResponse = await getOneMedicalData(params.id);
 
@@ -54,6 +49,11 @@ export default function MedicalDataForm() {
             getResponse();
         }
     }, []);
+
+    if (params.id && params.id === 'null') {
+        const url = '/medicaldataform/' + params.userid;
+        return <Navigate to={url} />
+    }
 
     const handleChange = (element) => {
         setMedicalFormValues({
