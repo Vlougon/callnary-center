@@ -6,26 +6,18 @@ import { useContext, useEffect } from 'react';
 
 
 export default function DocumentGenerator() {
-    const { getAllUsers, setErrors, setLoading } = useContext(AuthContext);
+    //Fetch para obtener datos segun el listado
+    const { getAllUsers } = useContext(AuthContext);
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
+        async function setGetResponse() {
+            const response = await getAllUsers();
 
-            try {
-                const usersResponse = await getAllUsers();
-                const users = usersResponse.data; // asumiendo que los datos se encuentran en la propiedad 'data' de la respuesta
-                console.log('Lista de usuarios:', users);
-            } catch (error) {
-                console.error('Error:', error);
-                // Manejar errores
-            } finally {
-                setTimeout(() => setLoading(false), 2000);
-            }
-        };
-
-        fetchData();
-    }, [getAllUsers, setErrors, setLoading]);
+            console.log(response);
+        }
+        
+        setGetResponse(); 
+    }, []);
 
 
     return (
