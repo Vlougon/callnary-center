@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
     const getUser = async () => {
         try {
             const { data } = await axios.get('/api/user');
+            await setAssistant(data)
             setUser(data);
             setSessionVerified(true);
             setsessionName(true);

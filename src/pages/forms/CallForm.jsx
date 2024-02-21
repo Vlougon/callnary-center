@@ -8,10 +8,6 @@ import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/CallForm.css';
 
-const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
-const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
-const beneficiaryId = JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id;
-
 export default function CallForm() {
     const [showFM, setShowFM] = useState({
         render: false,
@@ -21,6 +17,9 @@ export default function CallForm() {
     const { callData, setCallData, clearCallForm } = useContext(FormContext);
     const { createCall, loading } = useAuthContext();
     const durationRef = useRef();
+    const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
+    const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
+    const beneficiaryId = JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id;
     const turn = callData.time >= '06:00' && callData.time <= '13:59' ? 'morning' :
         callData.time >= '14:00' && callData.time <= '21:59' ? 'afternoon' : 'night';
 

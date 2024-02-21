@@ -7,7 +7,7 @@ import '../../assets/pages/auth/Login.css';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, errors, loading } = useAuthContext();
+  const { login, socialLogin, errors, loading } = useAuthContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,6 +25,14 @@ export default function Login() {
 
         <div className="row">
           <form method="POST" onSubmit={handleLogin}>
+
+            <div id='googleLogIn'>
+              <a type='button' className='btn btn-light' href="http://localhost:8000/auth/google/redirect">
+                <img src="/images/google.png" alt="Icono de Google" />
+                <span className='ms-2'>Iniciar Sesión con Google</span>
+              </a>
+            </div>
+
             <div className='col-12 text-sm-start mb-4'>
               <label htmlFor="email" className="form-label">
                 Email:
