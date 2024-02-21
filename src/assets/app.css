@@ -28,6 +28,20 @@
     color: #61dafb;
 }
 
+#searchBox span {
+    background-color: white;
+    padding-right: 0;
+}
+
+#searchBox input {
+    border-left: none;
+}
+
+#searchBox input:focus {
+    border-color: #dee2e6;
+    box-shadow: 5px 0 5px 1px rgba(84, 152, 255, 0.7);
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);

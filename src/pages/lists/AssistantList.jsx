@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import TableRows from '../../components/tablerows/TableRows';
-import useAuthContext from '../../hooks/useAuthContext';
+import SearchBox from '../../components/inputs/SearchBox';
 import Spinner from '../../components/ui/Spinner';
+import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/lists/AssistantList.css';
 
 export default function AssistantList() {
@@ -11,6 +12,7 @@ export default function AssistantList() {
     }
 
     const [users, setUsers] = useState([]);
+    const [currentUsers, setCurrentUsers] = useState([]);
     const { getAllUsers, loading } = useAuthContext();
 
     useEffect(() => {
@@ -19,6 +21,7 @@ export default function AssistantList() {
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setUsers(getResponse.data.data);
+                setCurrentUsers(getResponse.data.data);
             }
         }
         setGetResponse();
@@ -26,6 +29,9 @@ export default function AssistantList() {
 
     return (
         <div id='assistantList' className='container-fluid'>
+
+            <SearchBox view={'Asistente'} rootArray={users} setVolatileArray={setCurrentUsers} />
+
             <div className='table-responsive'>
                 <table id='assistantTable' className="table table-striped table-hover">
                     <thead>
@@ -39,7 +45,7 @@ export default function AssistantList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={4} list={'user'} dataArray={users} arrayHandler={setUsers} />
+                            <TableRows columns={4} list={'user'} dataArray={currentUsers} arrayHandler={setUsers} />
                         }
                     </tbody>
                 </table>
