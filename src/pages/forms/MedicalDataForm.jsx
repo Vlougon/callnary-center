@@ -95,11 +95,11 @@ export default function MedicalDataForm() {
             async function setPutResponse() {
                 const updatedMEdicalData = await updateMedicalData(medicalFormValues, params.id);
 
-                if (updatedMEdicalData.data.status && updatedMEdicalData.data.status !== 'success') {
+                if (!updatedMEdicalData || updatedMEdicalData.data.status !== 'success') {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Enviar los Datos!',
+                        message: '¡Error al Actualizar los Datos!',
                         type: 'danger',
                     });
 
@@ -112,24 +112,17 @@ export default function MedicalDataForm() {
                     message: updatedMEdicalData.data.message,
                     type: updatedMEdicalData.data.status,
                 });
-
-                clearMedicalData();
-
-                setMedicalFormValues((previousMedicalData) => ({
-                    ...previousMedicalData,
-                    beneficiary_id: parseInt(params.userid),
-                }));
             }
             setPutResponse();
         } else {
             async function setPostResponse() {
                 const createdMedicalData = await createMedicalData(medicalFormValues);
 
-                if (createdMedicalData.data.status && createdMedicalData.data.status !== 'success') {
+                if (!createdMedicalData || createdMedicalData.data.status !== 'success') {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Enviar los Datos!',
+                        message: createdMedicalData.data.message,
                         type: 'danger',
                     });
 

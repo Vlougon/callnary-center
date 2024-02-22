@@ -51,7 +51,7 @@ export default function MedicalDataList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={2} list={'medical'} dataArray={curretnMedicalDatas} arrayHandler={setCurrentContacts} />
+                            <TableRows columns={2} list={'medical'} dataArray={curretnMedicalDatas} arrayHandler={setCurrentMedicalDatas} />
                         }
                     </tbody>
                 </table>
