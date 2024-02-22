@@ -2,22 +2,30 @@ import '../assets/pages/DocumentGenerator.css';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import MyDocument from './../components/pdf/MyDocument';
 import { AuthContext } from '../context/AuthContext';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 
 export default function DocumentGenerator() {
     //Fetch para obtener datos segun el listado
     const { getAllBeneficiaries } = useContext(AuthContext);
+    const [listData, setListData] = useState([]);
+
+    useEffect(() => {
+        async function setGetBeneficiaries() {
+            const response = await getAllBeneficiaries();
+            setListData(response.data.data);
+        }
+        setGetBeneficiaries(); 
+    }, []);
 
     useEffect(() => {
         async function setGetResponse() {
             const response = await getAllBeneficiaries();
-
-            console.log(response);
+            setListData(response.data.data);
         }
-        
         setGetResponse(); 
     }, []);
+
 
 
     return (
@@ -39,12 +47,12 @@ export default function DocumentGenerator() {
 
                 {/* Mostrar el documento */}
                 <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
-                    <MyDocument />
+                    <MyDocument data={listData} />
                 </PDFViewer>
 
                 {/* Enlace para descargar el PDF */}
                 <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
-                    <PDFDownloadLink document={<MyDocument />} fileName="listadoUsers.pdf"  >
+                    <PDFDownloadLink document={<MyDocument data={listData} />} fileName="listadoUsers.pdf"  >
                         {
                             ({ loading }) =>
                                 loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>

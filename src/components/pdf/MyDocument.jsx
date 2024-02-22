@@ -1,7 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
-// Define styles for the document
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'row',
@@ -9,63 +8,38 @@ const styles = StyleSheet.create({
         padding: 20,
         fontSize: 12,
     },
-
-    center: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
-    },
-    text: {
-        textAlign: 'center',
-        fontSize: 20,
-        color: '#333333',
-    },
-
     section: {
-        display: 'flex',
-        flexGrow: 1,
-        flexDirection: 'column', // Cambia la dirección del flujo a column
         margin: 10,
         padding: 10,
-        backgroundColor: '#2121eb',
-        border: '1px solid #CCCCCC',
-        borderRadius: 8,
+        flexGrow: 1,
+        flexDirection: 'column',
+        backgroundColor: '#F1E2E2',
+        border: '3px solid #EB6300',
+        borderRadius: 7,
+        textAlign: 'start',
+        boxShadow: '1px 3px 7px 3px rgba(0, 0, 0, .3)',
     },
     label: {
         fontWeight: 'bold',
         margin: 10,
-        color: '#FFFFFF'
-        
+        color: '#000000',
     },
-    input: {
-        margin: 10,
-        border: '1px solid #B0B0B0',
-        borderRadius: 4,
-        width: '200px',
-        textAlign: 'center',
-        padding: '10px',
-        color: '#FFFFFF'
+    dataRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #EB6300',
+        paddingBottom: 10,
+        marginBottom: 10,
     },
-
-    buttonContainer: {
-        color: '#2121eb',
-        textAlign: 'center',
-        marginTop: 20, // Ajusta el margen superior según tus necesidades
-        width: '100px',
-
+    dataPair: {
+        flexBasis: '48%',
+        marginBottom: 5,
     },
-    button: {
-        backgroundColor: '#2121eb',
-        color: '#FFFFFF',
-        padding: '10px',
-        margin: '5px',
-        border: 'none',
-        borderRadius: 4,
-        cursor: 'pointer',
-        width: '60px',
-        textAlign:'justify'
+    dataLabel: {
+        color: '#000000',
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
     pageNumber: {
         position: 'absolute',
@@ -73,41 +47,36 @@ const styles = StyleSheet.create({
         right: 10,
         fontSize: 10,
     },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        margin: 10,
+        textAlign: 'center',
+        color: '#000000',
+    },
 });
 
-// Create Document Component
-const MyDocument = () => (
+const MyDocument = ({ data }) => (
     <Document>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.center}>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Nombre Completo:</Text>
-                    <Text style={styles.input}>John Doe</Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Email:</Text>
-                    <Text style={styles.input}>john.doe@example.com</Text>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.label}>Rol:</Text>
-                    <Text style={styles.input}>Asistente</Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Contraseña:</Text>
-                    <Text style={styles.input}>********</Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Confirmar Contraseña:</Text>
-                    <Text style={styles.input}>********</Text>
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Número de Teléfono:</Text>
-                    <Text style={styles.input}>123-456-7890</Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Text style={styles.button}>Guardar</Text>
-                </View>
+        <Page size="A3">
+            <View style={styles.section}>
+                <Text style={styles.title}>Listado de Beneficiarios</Text>
+                {data.map((beneficiary, index) => (
+                    <View key={beneficiary.id} style={styles.dataRow}>
+                        <View style={styles.dataPair}>
+                            <Text style={styles.dataLabel}>ID: {beneficiary.id}</Text>
+                            <Text style={styles.dataLabel}>Nombre: {beneficiary.name}</Text>
+                            <Text style={styles.dataLabel}>Primer Apellido: {beneficiary.first_surname}</Text>
+                            <Text style={styles.dataLabel}>Segundo Apellido: {beneficiary.second_surname}</Text>
+                            <Text style={styles.dataLabel}>DNI: {beneficiary.dni}</Text>
+                            <Text style={styles.dataLabel}>Número de Seguridad Social: {beneficiary.social_security_number}</Text>
+                            <Text style={styles.dataLabel}>Género: {beneficiary.gender}</Text>
+                            <Text style={styles.dataLabel}>Estado Civil: {beneficiary.marital_status}</Text>
+                            <Text style={styles.dataLabel}>Tipo de Beneficiario: {beneficiary.beneficiary_type}</Text>
+                        </View>
+                        {index < data.length - 1 && <View style={{ borderBottom: '1px solid #B0B0B0', width: '100%' }} />}
+                    </View>
+                ))}
                 <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
                     `${pageNumber} / ${totalPages}`
                 )} />
