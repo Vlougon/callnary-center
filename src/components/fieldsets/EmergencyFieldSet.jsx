@@ -1,9 +1,18 @@
 import { useContext } from "react"
 import { FormContext } from "../../context/FormContext";
 
-export default function EmergencyFieldSet() {
+export default function EmergencyFieldSet({ FM, setFM }) {
     const { callData } = useContext(FormContext);
     const { handleCallChange } = useContext(FormContext);
+
+    const handle112 = () => {
+        setFM({
+            ...FM,
+            render: true,
+            message: '¡Enviada Descripción al 112!',
+            type: 'success',
+        });
+    }
 
     return (
         <fieldset>
@@ -18,7 +27,7 @@ export default function EmergencyFieldSet() {
                             </svg>
                         </span>
                         <textarea id="description" name="description" value={callData['description']} className="form-control" onChange={handleCallChange}></textarea>
-                        <input className='btn btn-primary' type="button" value="Enviar al 112" />
+                        <input className='btn btn-primary' type="button" value="Enviar al 112" onClick={handle112} />
                     </div>
                 </div>
 

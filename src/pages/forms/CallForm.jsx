@@ -23,9 +23,9 @@ export default function CallForm() {
     const { createCall, loading } = useAuthContext();
     const durationRef = useRef();
     const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
-    const beneficiaryId = JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id;
-    const callKind = JSON.parse(window.localStorage.getItem('kindObject')).kind;
-    const type = JSON.parse(window.localStorage.getItem('kindObject')).type;
+    const beneficiaryId = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id : 0;
+    const callKind = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).kind : '';
+    const type = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).type : '';
     const turn = callData.time >= '06:00' && callData.time <= '13:59' ? 'morning' :
         callData.time >= '14:00' && callData.time <= '21:59' ? 'afternoon' : 'night';
 
@@ -133,6 +133,8 @@ export default function CallForm() {
                 beneficiary_id: beneficiaryId,
                 user_id: userId,
             }));
+
+            window.localStorage.getItem('kindObject') ? window.localStorage.removeItem('kindObject') : null;
         }
         setPostResponse();
     };
@@ -164,7 +166,7 @@ export default function CallForm() {
 
                 <CallDataFieldSet />
 
-                <EmergencyFieldSet />
+                <EmergencyFieldSet FM={showFM} setFM={setShowFM} />
 
                 <button type="submit" className='btn btn-danger' disabled={loading}>
                     <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
