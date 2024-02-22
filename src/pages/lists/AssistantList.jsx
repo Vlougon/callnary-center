@@ -45,7 +45,7 @@ export default function AssistantList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={4} list={'user'} dataArray={currentUsers} arrayHandler={setUsers} />
+                            <TableRows columns={4} list={'user'} dataArray={currentUsers} arrayHandler={setCurrentUsers} />
                         }
                     </tbody>
                 </table>

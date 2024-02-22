@@ -85,7 +85,7 @@ export default function ContactList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={3} list={'contact'} dataArray={curretnContacts} arrayHandler={setContacts} />
+                            <TableRows columns={3} list={'contact'} dataArray={curretnContacts} arrayHandler={setCurrentContacts} />
                         }
                     </tbody>
                 </table>

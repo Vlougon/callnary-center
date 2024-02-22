@@ -71,7 +71,7 @@ export default function BeneficiaryList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={tableCols} list={listType} dataArray={currentBeneficiaries} arrayHandler={setBeneficiaries} />
+                            <TableRows columns={tableCols} list={listType} dataArray={currentBeneficiaries} arrayHandler={setCurrentBeneficiaries} />
                         }
                     </tbody>
                 </table>
