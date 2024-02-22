@@ -35,7 +35,7 @@ export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM 
 
         dispatch({ type: 'ADD_SHORTCUT', payload: newShortCut });
 
-        // setShortCutsID(shortCutsID + 1);
+        setShortCutsID(shortCutsID + 1);
     }
 
     return (

@@ -82,7 +82,7 @@ export default function Home() {
                                 </button>
                             </div>
 
-                            <ShortCutModal currentShortCuts={shortCuts.length} FM={showFM} setFM={setShowFM} />
+                            <ShortCutModal currentShortCuts={shortCuts.shortCuts.length} FM={showFM} setFM={setShowFM} />
                         </ShortCutsDispatchContext.Provider>
                     </ShortCutsContext.Provider>
                 </aside>
