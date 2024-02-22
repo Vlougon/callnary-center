@@ -17,7 +17,7 @@ export default function HeadFoot() {
     useEffect(() => {
         const name = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).name : 'Anon';
 
-        setuserName(name.charAt(0).toUpperCase() + name.slice(1));
+        setuserName(name ? name.charAt(0).toUpperCase() + name.slice(1) : 'Anon');
     }, [userName]);
 
     useEffect(() => {

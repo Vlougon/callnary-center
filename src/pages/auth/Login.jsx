@@ -38,7 +38,7 @@ export default function Login() {
                 Email:
               </label>
               <input id="email" name="email" type="email" autoComplete="email" className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
-              {errors.email && (<span className="text-danger">{errors.email[0]}</span>)}
+              {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
             </div>
 
             <div className='col-12 text-sm-start mb-4'>
@@ -55,7 +55,7 @@ export default function Login() {
               <div className="col-12">
                 <input id="password" name="password" type="password" autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-              {errors.password && (<span className="text-danger">{errors.password[0]}</span>)}
+              {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
             </div>
 
             <div>

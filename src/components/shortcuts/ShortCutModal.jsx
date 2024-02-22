@@ -8,9 +8,9 @@ export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM 
     let [shortCutsID, setShortCutsID] = useState(shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => shortcut.id)) + 1 : 1);
 
     useEffect(() => {
-        const role = JSON.parse(sessionStorage.getItem('assistant')).role;
+        const role = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).role : 'assistant';
 
-        setUserRole(role);
+        setUserRole(role && role !== null ? role : 'assitant');
     }, [userRole]);
 
     const shortCutAddHandler = (element) => {

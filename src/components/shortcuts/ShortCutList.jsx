@@ -10,13 +10,13 @@ export default function ShortCutList({ FM, setFM }) {
     const { getFirstBeneficiary } = useAuthContext();
 
     useEffect(() => {
-        const role = JSON.parse(sessionStorage.getItem('assistant')).role;
+        const role = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).role : 'assistant';
 
-        setUserRole(role);
+        setUserRole(role && role !== null ? role : 'assitant');
 
         async function setResponse() {
             const response = await getFirstBeneficiary();
-            const responseID = response.data.data ? response.data.data.id : null;
+            const responseID = response ? response.data.data.id : null;
 
             setBeneficiaryID(responseID);
         }
