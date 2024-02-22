@@ -1,5 +1,7 @@
 // import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import ScreeReader from './classes/ScreenReader';
 import AuthLayout from './components/layout/AuthLayout';
 import GuestLayout from './components/layout/GuestLayout';
 import HeadFoot from './components/layout/HeadFoot';
@@ -25,6 +27,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './assets/app.css';
 
 export default function App() {
+
+  useEffect(() => {
+    window.addEventListener('keyup', ScreeReader.speaker);
+  }, []);
+
   return (
     <div className="App">
       <Routes>
