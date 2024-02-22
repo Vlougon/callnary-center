@@ -92,7 +92,6 @@ export default function BeneficiaryForm() {
     const handleSubmit = (element) => {
         element.preventDefault();
         let failed = false;
-        let succeded = false;
 
         for (const key in beneficiaryData) {
             if ((beneficiaryData[key] && key === 'dni' && !DNIGenerator.verifyDNI(beneficiaryData[key])) ||
@@ -137,31 +136,36 @@ export default function BeneficiaryForm() {
 
             async function setPutResponse() {
                 const updatedBenficiary = await updateBeneficiary(beneficiaryData, beneficiaryID.id);
-                if (updatedBenficiary.data.status && updatedBenficiary.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: updatedBenficiary.data.message,
-                        type: updatedBenficiary.data.status,
-                    });
+                if (!updatedBenficiary || updatedBenficiary.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                const updatedPhone = await updatePhoneBeneficiary(phones, globalPhoneId);
+                if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                    failed = true;
+                }
+
+                const updatedAddress = await updateAddress(addressData, globalAddressId);
+                if (!updatedAddress || updatedAddress.data.status !== 'success') {
+                    failed = true;
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
                         message: '¡Error al Actualizar los Datos!',
                         type: 'danger',
                     });
-
                     return
                 }
 
-                await updatePhoneBeneficiary(phones, globalPhoneId);
-
-                await updateAddress(addressData, globalAddressId);
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: updatedBenficiary.data.message,
+                    type: updatedBenficiary.data.status,
+                });
 
                 clearBeneficiaryForm();
 
@@ -175,36 +179,40 @@ export default function BeneficiaryForm() {
         } else {
             async function setPostResponse() {
                 const createdBeneficiary = await createBeneficiary(beneficiaryData);
-
-                if (createdBeneficiary.data.status && createdBeneficiary.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: createdBeneficiary.data.message,
-                        type: createdBeneficiary.data.status,
-                    });
+                if (!createdBeneficiary || createdBeneficiary.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                const phone = phones;
+                phone['beneficiary_id'] = createdBeneficiary.data.data.id;
+                const createdPhones = await createPhoneBeneficiary(phone);
+                if (!createdPhones || createdPhones.data.status !== 'success') {
+                    failed = true;
+                }
+
+                const address = addressData;
+                address['addressable_id'] = createdBeneficiary.data.data.id;
+                const createdAddress = await createAddress(address);
+                if (!createdAddress || createdAddress.data.status !== 'success') {
+                    failed = true;
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
                         message: '¡Error al Enviar los Datos!',
                         type: 'danger',
                     });
-
                     return
                 }
 
-                const phone = phones;
-                phone['beneficiary_id'] = createdBeneficiary.data.data.id;
-                await createPhoneBeneficiary(phone);
-
-                const address = addressData;
-                address['addressable_id'] = createdBeneficiary.data.data.id;
-                await createAddress(address);
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: createdBeneficiary.data.message,
+                    type: createdBeneficiary.data.status,
+                });
 
                 clearBeneficiaryForm();
 
