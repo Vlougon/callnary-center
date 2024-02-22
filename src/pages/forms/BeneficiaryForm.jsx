@@ -140,14 +140,18 @@ export default function BeneficiaryForm() {
                     failed = true;
                 }
 
-                const updatedPhone = await updatePhoneBeneficiary(phones, globalPhoneId);
-                if (!updatedPhone || updatedPhone.data.status !== 'success') {
-                    failed = true;
+                if (!failed) {
+                    const updatedPhone = await updatePhoneBeneficiary(phones, globalPhoneId);
+                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                        failed = true;
+                    }
                 }
 
-                const updatedAddress = await updateAddress(addressData, globalAddressId);
-                if (!updatedAddress || updatedAddress.data.status !== 'success') {
-                    failed = true;
+                if (!failed) {
+                    const updatedAddress = await updateAddress(addressData, globalAddressId);
+                    if (!updatedAddress || updatedAddress.data.status !== 'success') {
+                        failed = true;
+                    }
                 }
 
                 if (failed) {
@@ -166,13 +170,6 @@ export default function BeneficiaryForm() {
                     message: updatedBenficiary.data.message,
                     type: updatedBenficiary.data.status,
                 });
-
-                clearBeneficiaryForm();
-
-                setAddressData((previousAddressData) => ({
-                    ...previousAddressData,
-                    addressable_type: 'App\\Models\\Beneficiary',
-                }));
             }
             setPutResponse();
 
@@ -183,18 +180,22 @@ export default function BeneficiaryForm() {
                     failed = true;
                 }
 
-                const phone = phones;
-                phone['beneficiary_id'] = createdBeneficiary.data.data.id;
-                const createdPhones = await createPhoneBeneficiary(phone);
-                if (!createdPhones || createdPhones.data.status !== 'success') {
-                    failed = true;
+                if (!failed) {
+                    const phone = phones;
+                    phone['beneficiary_id'] = createdBeneficiary.data.data.id;
+                    const createdPhones = await createPhoneBeneficiary(phone);
+                    if (!createdPhones || createdPhones.data.status !== 'success') {
+                        failed = true;
+                    }
                 }
 
-                const address = addressData;
-                address['addressable_id'] = createdBeneficiary.data.data.id;
-                const createdAddress = await createAddress(address);
-                if (!createdAddress || createdAddress.data.status !== 'success') {
-                    failed = true;
+                if (!failed) {
+                    const address = addressData;
+                    address['addressable_id'] = createdBeneficiary.data.data.id;
+                    const createdAddress = await createAddress(address);
+                    if (!createdAddress || createdAddress.data.status !== 'success') {
+                        failed = true;
+                    }
                 }
 
                 if (failed) {

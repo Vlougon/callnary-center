@@ -155,9 +155,6 @@ export default function AssistantForm() {
                     message: updatedUser.data.message,
                     type: updatedUser.data.status,
                 });
-
-                clearAssitantForm();
-                setPasswordConfirmation('');
             }
             setPutResponse();
         } else {
