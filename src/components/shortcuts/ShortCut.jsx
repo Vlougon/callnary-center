@@ -38,7 +38,7 @@ export default function ShortCut({ linkID, hrefLink, textLink, imageSource, benI
 
     return (
         <li id={linkID} className="col-sm-6 col-md-12 d-flex justify-content-between columrow">
-            <Link to={hrefLink} onClick={hrefLink == '/callform' ? callHandler : null}>
+            <Link to={hrefLink} onClick={hrefLink == '/callform' ? callHandler : null} title={textLink}>
                 <img
                     src={imageSource}
                     alt={textLink}
@@ -48,9 +48,9 @@ export default function ShortCut({ linkID, hrefLink, textLink, imageSource, benI
                     {textLink}
                 </p>
             </Link>
-            <button onClick={deleteShorCutHandler}>
+            <button onClick={deleteShorCutHandler} name={'Eliminar el Atajo para: ' + textLink}>
                 -
             </button>
-        </li>
+        </li >
     )
 }

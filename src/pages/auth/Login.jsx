@@ -27,7 +27,7 @@ export default function Login() {
           <form method="POST" onSubmit={handleLogin}>
 
             <div id='googleLogIn'>
-              <a type='button' className='btn btn-light' href="http://localhost:8000/auth/google/redirect">
+              <a type='button' className='btn btn-light' href="http://localhost:8000/auth/google/redirect" title='Iniciar Sesión con Google'>
                 <img src="/images/google.png" alt="Icono de Google" />
                 <span className='ms-2'>Iniciar Sesión con Google</span>
               </a>
@@ -37,7 +37,7 @@ export default function Login() {
               <label htmlFor="email" className="form-label">
                 Email:
               </label>
-              <input id="email" name="email" type="email" autoComplete="email" className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input id="email" name="email" type="email" autoComplete="email" placeholder='Email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
               {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
             </div>
 
@@ -47,13 +47,13 @@ export default function Login() {
                   Contraseña:
                 </label>
                 <div className="text-sm">
-                  <Link to={'/forgot-password'} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                  <Link to={'/forgot-password'} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" title='Pedir cambio de Contraseña'>
                     ¿Olvidó su Contraseña?
                   </Link>
                 </div>
               </div>
               <div className="col-12">
-                <input id="password" name="password" type="password" autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input id="password" name="password" type="password" placeholder='Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
             </div>

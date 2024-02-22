@@ -15,7 +15,7 @@ export default function ReminderModal() {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Recordatorio</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleModalClose}></button>
+                        <button type="button" name="Cerrar Pestaña de Crear Evento" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleModalClose}></button>
                     </div>
                     <div className="modal-body text-start">
                         <ModalForm />

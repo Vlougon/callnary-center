@@ -100,7 +100,7 @@ export default function BeneficiaryPersonalDataFieldSet() {
                 </div>
 
                 <div className='col-md-3'>
-                    <label htmlFor="birth_date" className="form-label">Fecha de Nacimineto:</label>
+                    <label htmlFor="birth_date" className="form-label">Fecha de Nacimiento:</label>
                     <div className='input-group has-validation'>
                         <span className='input-group-text' id='beneficiaryBirthDate'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 448 512">

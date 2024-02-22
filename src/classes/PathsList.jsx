@@ -43,12 +43,12 @@ export default class PathsList {
         {
             id: 9,
             href: '/contactform/:userid',
-            name: 'Añadir Contatco'
+            name: 'Añadir Contacto'
         },
         {
             id: 10,
             href: '/contactform/:userid/:id?',
-            name: 'Modificar Contatco'
+            name: 'Modificar Contacto'
         },
         {
             id: 11,

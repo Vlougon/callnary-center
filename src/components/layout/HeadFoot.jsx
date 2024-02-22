@@ -90,7 +90,7 @@ export default function HeadFoot() {
 
         for (const path of paths) {
             links.push(
-                <Link key={path.id} className="nav-link" to={path.href}>{path.name}</Link>
+                <Link key={path.id} className="nav-link" to={path.href} title={path.name}>{path.name}</Link>
             );
         }
 
@@ -104,7 +104,7 @@ export default function HeadFoot() {
             <header>
                 <nav className="navbar navbar-expand-md">
                     <div className="container-fluid">
-                        <a className="navbar-brand" href="../images/logoMajada.png" target='_blank'>
+                        <a className="navbar-brand" href="../images/logoMajada.png" target='_blank' title='Logo del Centro de Telecomunicaciones del Majada'>
                             <img src="../images/logoMajada.png" alt="Logo del Majada Marcial" />
                             Majada's Call Center
                         </a>
@@ -146,16 +146,16 @@ export default function HeadFoot() {
             <footer>
                 <p>
                     Call Center Emulator by &#169; 2024 Acoray & Victor is licensed under
-                    <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer"> Attribution-NonCommercial-NoDerivatives 4.0 International
+                    <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" title='Licencias de Creative Common'> Attribution-NonCommercial-NoDerivatives 4.0 International
                         <img src="../images/creativecommons.png" alt='Licensias de Creative Common' />
                     </a>
-                    <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel='noreferrer'>
+                    <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel='noreferrer' title='Licencia de Accesibilidad Web WCAG 2.2 WAI-AA'>
                         <img src="../images/wcag2.2AA.png" alt='Licensia de Accesibilidad Web' />
                     </a>
                 </p>
 
                 <p>
-                    Iconos proporcionados por <a href="https://fontawesome.com/" target='_blank' rel='noreferrer'>Font Awesome</a> y <a href="https://icons.getbootstrap.com/" target='_blank' rel='noreferrer'>Bootstrap Icons</a>.
+                    Iconos proporcionados por <a href="https://fontawesome.com/" target='_blank' rel='noreferrer' title='Iconos utilizados de Fontawesome'>Font Awesome</a> y <a href="https://icons.getbootstrap.com/" target='_blank' rel='noreferrer' title='Iconos utilizados de Bootstrap Icons'>Bootstrap Icons</a>.
                 </p>
             </footer>
         </div>

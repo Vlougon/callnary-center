@@ -117,7 +117,7 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
                 <div className="modal-content">
                     <div className="modal-header bg-danger text-white">
                         <h1 className="modal-title fs-5" id={modalID + 'Label'}>¡Confirmar Eliminación de {modalOn}!</h1>
-                        <button type="button" className="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" name='Cerrar Pestaña de Borrado de Datos' className="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body text-start">
                         <p className="mb-0">
@@ -125,7 +125,7 @@ export default function ConfirmationModal({ modalID, modalOn, elementID, array, 
                         </p>
                     </div>
                     <div className="modal-footer justify-content-between">
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" name='Cancelar Borrado de Datos' className="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="button" name={elementID} className="btn btn-danger px-4" data-bs-dismiss={modalOn === 'Asistente' && userID === elementID ? 'nothing' : 'modal'} onClick={handleDeletion} disabled={loading}>
                             <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
                                 spinnerStyle={{ width: '1rem', height: '1rem', }}

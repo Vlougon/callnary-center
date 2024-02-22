@@ -77,7 +77,7 @@ export default function Home() {
                             <ShortCutList FM={showFM} setFM={setShowFM} />
 
                             <div className='row justify-content-center align-items-end addSection'>
-                                <button id='addButton' type="button" data-bs-toggle="modal" data-bs-target="#shortCutModal">
+                                <button id='addButton' name='Añadir Atajo' type="button" data-bs-toggle="modal" data-bs-target="#shortCutModal">
                                     +
                                 </button>
                             </div>
