@@ -38,7 +38,9 @@ export default function Login() {
                 Email:
               </label>
               <input id="email" name="email" type="email" autoComplete="email" placeholder='Email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
-              {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
+              <p className='text-danger'>
+                {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
+              </p>
             </div>
 
             <div className='col-12 text-sm-start mb-4'>
@@ -55,7 +57,9 @@ export default function Login() {
               <div className="col-12">
                 <input id="password" name="password" type="password" placeholder='Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-              {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
+              <p className='text-danger'>
+                {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
+              </p>
             </div>
 
             <div>

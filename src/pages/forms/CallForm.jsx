@@ -9,10 +9,6 @@ import useAuthContext from '../../hooks/useAuthContext';
 import AudiosPaths from '../../classes/AudiosPaths';
 import '../../assets/pages/forms/CallForm.css';
 
-window.addEventListener('popstate', function () {
-    console.log('A');
-});
-
 export default function CallForm() {
     const [showFM, setShowFM] = useState({
         render: false,
