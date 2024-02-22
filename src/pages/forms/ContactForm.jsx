@@ -89,7 +89,6 @@ export default function ContactForm() {
     const handleSubmit = (element) => {
         element.preventDefault();
         let failed = false;
-        let succeded = false;
 
         for (const key in contactData) {
             if ((!contactData[key] && key !== 'second_surname') ||
@@ -133,18 +132,25 @@ export default function ContactForm() {
         if (params.id) {
             async function getPutResponse() {
                 const updatedContact = await updateContact(contactData, params.id);
-                if (updatedContact.data.status && updatedContact.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: updatedContact.data.message,
-                        type: updatedContact.data.status,
-                    });
+                if (!updatedContact || updatedContact.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                if (!failed) {
+                    const updatedPhone = await updatePhoneContact(phones, globalPhoneId);
+                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (!failed) {
+                    const updatedAddress = await updateAddress(addressData, globalAddressId);
+                    if (!updatedAddress || updatedAddress.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
@@ -155,52 +161,63 @@ export default function ContactForm() {
                     return
                 }
 
-                await updatePhoneContact(phones, globalPhoneId);
-
-                await updateAddress(addressData, globalAddressId);
-
-                clearContactData();
-
-                setAddressData((previousAddressData) => ({
-                    ...previousAddressData,
-                    addressable_type: 'App\\Models\\Contact',
-                }));
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: updatedContact.data.message,
+                    type: updatedContact.data.status,
+                });
             }
             getPutResponse();
         } else {
             async function getPostResponse() {
                 const createdContact = await createContact(contactData);
-                if (createdContact.data.status && createdContact.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: createdContact.data.message,
-                        type: createdContact.data.status,
-                    });
+                if (!createdContact || createdContact.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                if (!failed) {
+                    const createdLink = await createBeneficiaryContactLink({ beneficiary_id: params.userid, contact_id: createdContact.data.data.id });
+                    if (!createdLink || createdLink.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (!failed) {
+                    const phone = phones;
+                    phone['contact_id'] = createdContact.data.data.id;
+                    const createdPhone = await createPhoneContact(phone);
+                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (!failed) {
+                    const address = addressData;
+                    address['addressable_id'] = createdContact.data.data.id;
+                    const createdAddress = await createAddress(address);
+                    if (!createdAddress || createdAddress.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Actualizar los Datos!',
+                        message: '¡Error al Crear los Datos!',
                         type: 'danger',
                     });
 
                     return
                 }
 
-                await createBeneficiaryContactLink({ beneficiary_id: params.userid, contact_id: createdContact.data.data.id });
-
-                const phone = phones;
-                phone['contact_id'] = createdContact.data.data.id;
-                await createPhoneContact(phone);
-
-                const address = addressData;
-                address['addressable_id'] = createdContact.data.data.id;
-                await createAddress(address);
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: createdContact.data.message,
+                    type: createdContact.data.status,
+                });
 
                 clearContactData();
 
