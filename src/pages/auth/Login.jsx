@@ -7,7 +7,7 @@ import '../../assets/pages/auth/Login.css';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, socialLogin, errors, loading } = useAuthContext();
+  const { login, errors, loading } = useAuthContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,11 +48,6 @@ export default function Login() {
                 <label htmlFor="password" className="form-label">
                   Contraseña:
                 </label>
-                <div className="text-sm">
-                  <Link to={'/forgot-password'} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" title='Pedir cambio de Contraseña'>
-                    ¿Olvidó su Contraseña?
-                  </Link>
-                </div>
               </div>
               <div className="col-12">
                 <input id="password" name="password" type="password" placeholder='Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />

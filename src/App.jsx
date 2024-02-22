@@ -1,4 +1,3 @@
-// import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ScreeReader from './classes/ScreenReader';
@@ -21,8 +20,6 @@ import DocumentGenerator from "./pages/DocumentGenerator";
 import NotFound from "./pages/auth/NotFound";
 
 import Login from './pages/auth/Login';
-import ResetPassword from './pages/auth/ResetPassword';
-import ForgotPassword from './pages/auth/ForgotPassword';
 import ErrorBoundary from './components/ErrorBoundary';
 import './assets/app.css';
 
@@ -58,11 +55,8 @@ export default function App() {
           <GuestLayout />
         </ErrorBoundary>}>
           <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/password-reset/:token" element={<ResetPassword />} />
         </Route>
       </Routes>
-      {/* <Toaster position="top-right" toastOptions={{ duration: 6000 }} /> */}
     </div>
   );
 }
