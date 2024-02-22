@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { MainCalendarContext } from "../../pages/Calendar";
+import FlashMessage from '../../components/flashmessages/FlashMessage';
 import CheckboxInput from "../inputs/CheckboxInput";
 import Spinner from "../ui/Spinner";
 import useAuthContext from '../../hooks/useAuthContext';
@@ -45,14 +46,13 @@ export default function ModalForm() {
         let failed = false;
 
         if (!title || title.match(/^(?=\s*$)/) || events.some(event => event.title === title)) {
-            // Error Handler Geoes Here
+            failed = true;
             handleFormFieldsValues(document.querySelector('#title'));
-            return
         }
 
         if (!beneficiaryToRemind || beneficiaryToRemind === 0) {
+            failed = true;
             handleFormFieldsValues(document.querySelector('#beneficiary_id'));
-            return
         }
 
         for (const key in selectedDates) {
@@ -63,6 +63,12 @@ export default function ModalForm() {
         }
 
         if (failed) {
+            setShowFM({
+                ...showFM,
+                render: true,
+                message: '¡Hay Campos del Formulario que Requieren Revisión!',
+                type: 'danger',
+            });
             return
         }
 
@@ -126,8 +132,21 @@ export default function ModalForm() {
         element.target.nextElementSibling.className = 'invalid-feedback';
     };
 
+    const hiddeAlert = () => {
+        setShowFM({
+            ...showFM,
+            render: false,
+            message: '',
+            type: '',
+        });
+    };
+
     return (
         <form action="#" method="post" onSubmit={handleEventSubmit}>
+            {showFM.render &&
+                <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
+            }
+
             <div className="row g-3">
                 <div className='col-12'>
                     <label htmlFor="start_date" className="form-label">Fecha de Inicio:</label>
@@ -246,7 +265,7 @@ export default function ModalForm() {
                 </div>
             </div>
             <div className='row justify-content-center mt-4'>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" disabled={loading}>
                     <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
                         spinnerStyle={{ width: '1rem', height: '1rem', }}
                     />
