@@ -43,8 +43,8 @@ export default function BeneficiaryForm() {
 
                     const beneficiaryObject = getBeneficiaryResponse.data.data;
                     beneficiaryObject.birth_date = beneficiaryObject.birth_date.split('T')[0];
-                    beneficiaryObject.second_surname = beneficiaryObject.second_surname ? second_surname : '';
-                    beneficiaryObject.rutine = beneficiaryObject.rutine ? rutine : '';
+                    beneficiaryObject.second_surname = beneficiaryObject.second_surname ? beneficiaryObject.second_surname : '';
+                    beneficiaryObject.rutine = beneficiaryObject.rutine ? beneficiaryObject.rutine : '';
 
                     delete beneficiaryObject.id;
 
