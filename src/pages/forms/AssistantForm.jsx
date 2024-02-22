@@ -25,6 +25,7 @@ export default function AssistantForm() {
 
     useEffect(() => {
         clearAssitantForm();
+        setPasswordConfirmation('');
 
         if (assistantID.id) {
             async function setGetResponse() {
@@ -58,6 +59,17 @@ export default function AssistantForm() {
                 if (phoneResponse.data.status && phoneResponse.data.status === 'success') {
 
                     const phoneObject = phoneResponse.data.data[0];
+
+                    if (!phoneObject) {
+                        setGlobalPhoneId(0);
+
+                        setPhones({
+                            user_id: parseInt(assistantID.id),
+                            phone_number: '',
+                        });
+                        return
+                    }
+
                     phoneObject.user_id = phoneObject.user_id.id;
 
                     setGlobalPhoneId(phoneObject.id);
@@ -65,7 +77,6 @@ export default function AssistantForm() {
 
                     setPhones(phoneObject);
                 }
-
             }
             setGetResponse();
         }
@@ -74,7 +85,6 @@ export default function AssistantForm() {
     const handleSubmit = (element) => {
         element.preventDefault();
         let failed = false;
-        let succeded = false;
 
         if (!passwordConfirmation || passwordConfirmation.match(/^(?=\s*$)/) ||
             passwordConfirmation !== assistantData['password']
@@ -112,19 +122,23 @@ export default function AssistantForm() {
         if (assistantID.id) {
             async function setPutResponse() {
                 const updatedUser = await updateUser(assistantData, assistantID.id);
-
-                if (updatedUser.data.status && updatedUser.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: updatedUser.data.message,
-                        type: updatedUser.data.status,
-                    });
+                if (!updatedUser || updatedUser.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                if (!failed && globalPhoneId !== 0) {
+                    const updatedPhone = await updatePhoneUser(phones, globalPhoneId);
+                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                        failed = true;
+                    }
+                } else {
+                    const createdPhone = await createPhoneUser(phones);
+                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
@@ -135,27 +149,32 @@ export default function AssistantForm() {
                     return
                 }
 
-                await updatePhoneUser(phones, globalPhoneId);
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: updatedUser.data.message,
+                    type: updatedUser.data.status,
+                });
 
                 clearAssitantForm();
+                setPasswordConfirmation('');
             }
             setPutResponse();
         } else {
             async function setPostResponse() {
                 const createdUser = await createUser(assistantData);
-
-                if (createdUser.data.status && createdUser.data.status === 'success') {
-                    succeded = true;
-
-                    setShowFM({
-                        ...showFM,
-                        render: true,
-                        message: createdUser.data.message,
-                        type: createdUser.data.status,
-                    });
+                if (!createdUser || createdUser.data.status !== 'success') {
+                    failed = true;
                 }
 
-                if (!succeded) {
+                if (!failed) {
+                    const createdPhone = await createPhoneUser({ user_id: createdUser.data.data.id, phone_number: phones.phone_number });
+                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                        failed = true;
+                    }
+                }
+
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
@@ -166,9 +185,15 @@ export default function AssistantForm() {
                     return
                 }
 
-                await createPhoneUser({ user_id: createdUser.data.data.id, phone_number: phones.phone_number });
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: createdUser.data.message,
+                    type: createdUser.data.status,
+                });
 
                 clearAssitantForm();
+                setPasswordConfirmation('');
             }
             setPostResponse();
         }
