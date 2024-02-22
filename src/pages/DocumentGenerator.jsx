@@ -1,14 +1,16 @@
 import '../assets/pages/DocumentGenerator.css';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import MyDocument from './../components/pdf/MyDocument';
+import Reminders from './../components/pdf/Reminders';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useEffect, useState } from 'react';
 
 
 export default function DocumentGenerator() {
     //Fetch para obtener datos segun el listado
-    const { getAllBeneficiaries } = useContext(AuthContext);
+    const { getAllBeneficiaries, getAllReminders } = useContext(AuthContext);
     const [listData, setListData] = useState([]);
+    const [listReminders, setListReminders] = useState([]);
+
 
     useEffect(() => {
         async function setGetBeneficiaries() {
@@ -20,8 +22,10 @@ export default function DocumentGenerator() {
 
     useEffect(() => {
         async function setGetResponse() {
-            const response = await getAllBeneficiaries();
-            setListData(response.data.data);
+            const response = await getAllReminders();
+            setListReminders(response.data.data);
+            console.log(response);
+            console.log(setListReminders(response.data.data));
         }
         setGetResponse(); 
     }, []);
@@ -47,12 +51,12 @@ export default function DocumentGenerator() {
 
                 {/* Mostrar el documento */}
                 <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
-                    <MyDocument data={listData} />
+                    <Reminders data={listReminders} />
                 </PDFViewer>
 
                 {/* Enlace para descargar el PDF */}
                 <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
-                    <PDFDownloadLink document={<MyDocument data={listData} />} fileName="listadoUsers.pdf"  >
+                    <PDFDownloadLink document={<Reminders data={listReminders} />} fileName="listadoUsers.pdf"  >
                         {
                             ({ loading }) =>
                                 loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
