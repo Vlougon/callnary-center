@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     dataPair: {
-        flexBasis: '48%',
+        flexBasis: '100%',
         marginBottom: 5,
     },
     dataLabel: {
@@ -56,25 +55,29 @@ const styles = StyleSheet.create({
     },
 });
 
-const MyDocument = ({ data }) => (
+const Contacts = ({ data }) => (
     <Document>
         <Page size="A3">
             <View style={styles.section}>
-                <Text style={styles.title}>Listado de Beneficiarios</Text>
-                {data.map((beneficiary, index) => (
-                    <View key={index} style={styles.dataRow}>
+                <Text style={styles.title}>Listado de Contactos</Text>
+                {data.map((contact, index) => (
+                    <View key={contact.id} style={styles.dataRow}>
                         <View style={styles.dataRow}>
                             <View style={styles.dataPair}>
-                                <Text style={styles.dataLabel}>Nombre de Contacto: {beneficiary.NameContact}</Text>
-                                <Text style={styles.dataLabel}>Tipo de Contacto: {beneficiary.TypeContact}</Text>
-                                <Text style={styles.dataLabel}>Nombre del Beneficiario: {beneficiary.NameBeneficiary}</Text>
-                                <Text style={styles.dataLabel}>DNI del Beneficiario: {beneficiary.DNIBeneficiary}</Text>
-                                <Text style={styles.dataLabel}>Teléfono del Beneficiario: {beneficiary.PhoneBeneficiary}</Text>
-                            </View>
-                            <View style={styles.dataPair}>
-                                <Text style={styles.dataLabel}>Localidad: {beneficiary.Locality}</Text>
-                                <Text style={styles.dataLabel}>Provincia: {beneficiary.Province}</Text>
-                                <Text style={styles.dataLabel}>Calle: {beneficiary.Street}</Text>
+                                <Text style={styles.dataLabel}>Nombre del Contacto: {contact.contact_name.charAt(0).toUpperCase() + contact.contact_name.slice(1)}</Text>
+                                <Text style={styles.dataLabel}>Primer Apellido del Contacto: {contact.contact_fs.charAt(0).toUpperCase() + contact.contact_fs.slice(1)}</Text>
+                                <Text style={styles.dataLabel}>Segundo Apellido del Contacto: {contact.contact_ss && contact.contact_ss !== null ? contact.contact_ss.charAt(0).toUpperCase() + contact.contact_ss.slice(1) : 'No Especificado'}</Text>
+                                <Text style={styles.dataLabel}>Tipo de Contacto: {contact.contact_type}</Text>
+                                <Text style={styles.dataLabel}>Teléfono del Contacto: {contact.phone_number}</Text>
+
+                                <Text style={styles.dataLabel}>Provincia: {contact.province}</Text>
+                                <Text style={styles.dataLabel}>Localidad: {contact.locality}</Text>
+                                <Text style={styles.dataLabel}>Código Postal: {contact.postal_code}</Text>
+                                <Text style={styles.dataLabel}>Calle: {contact.street}</Text>
+                                <Text style={styles.dataLabel}>Número: {contact.number}</Text>
+
+                                <Text style={styles.dataLabel}>Beneficiario Relacionado: {contact.beneficiary_name + ' ' + contact.beneficiary_fs + ' ' + contact.beneficiary_ss}</Text>
+                                <Text style={styles.dataLabel}>DNI del Beneficiario: {contact.dni}</Text>
                             </View>
                         </View>
 
@@ -89,4 +92,4 @@ const MyDocument = ({ data }) => (
     </Document>
 );
 
-export default MyDocument;
+export default Contacts;

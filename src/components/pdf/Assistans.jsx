@@ -1,4 +1,3 @@
-import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     dataPair: {
-        flexBasis: '48%',
+        flexBasis: '100%',
         marginBottom: 5,
     },
     dataLabel: {
@@ -56,23 +55,18 @@ const styles = StyleSheet.create({
     },
 });
 
-const MyDocument = ({ data }) => (
+const Assistans = ({ data }) => (
     <Document>
         <Page size="A3">
             <View style={styles.section}>
-                <Text style={styles.title}>Listado de Beneficiarios</Text>
-                {data.map((beneficiary, index) => (
-                    <View key={beneficiary.id} style={styles.dataRow}>
+                <Text style={styles.title}>Listado de Asistentes</Text>
+                {data.map((assitant, index) => (
+                    <View key={assitant.id} style={styles.dataRow}>
                         <View style={styles.dataPair}>
-                            <Text style={styles.dataLabel}>ID: {beneficiary.id}</Text>
-                            <Text style={styles.dataLabel}>Nombre: {beneficiary.name}</Text>
-                            <Text style={styles.dataLabel}>Primer Apellido: {beneficiary.first_surname}</Text>
-                            <Text style={styles.dataLabel}>Segundo Apellido: {beneficiary.second_surname}</Text>
-                            <Text style={styles.dataLabel}>DNI: {beneficiary.dni}</Text>
-                            <Text style={styles.dataLabel}>Número de Seguridad Social: {beneficiary.social_security_number}</Text>
-                            <Text style={styles.dataLabel}>Género: {beneficiary.gender}</Text>
-                            <Text style={styles.dataLabel}>Estado Civil: {beneficiary.marital_status}</Text>
-                            <Text style={styles.dataLabel}>Tipo de Beneficiario: {beneficiary.beneficiary_type}</Text>
+                            <Text style={styles.dataLabel}>Nombre: {assitant.name.charAt(0).toUpperCase() + assitant.name.slice(1)}</Text>
+                            <Text style={styles.dataLabel}>Correo Electrónico: {assitant.email}</Text>
+                            <Text style={styles.dataLabel}>Role: {assitant.role === 'supervisor' ? 'Supervisor' : 'Asistente'}</Text>
+                            <Text style={styles.dataLabel}>Número de Teléfono: {assitant.phone_number && assitant.phone_number !== null ? assitant.phone_number : 'No Especificado'}</Text>
                         </View>
                         {index < data.length - 1 && <View style={{ borderBottom: '1px solid #B0B0B0', width: '100%' }} />}
                     </View>
@@ -85,4 +79,4 @@ const MyDocument = ({ data }) => (
     </Document>
 );
 
-export default MyDocument;
+export default Assistans;

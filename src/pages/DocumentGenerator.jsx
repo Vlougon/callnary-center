@@ -1,16 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import FlashMessage from '../components/flashmessages/FlashMessage';
 import Spinner from '../components/ui/Spinner';
-import Contact from '../components/pdf/Contact';
+import Assistans from '../components/pdf/Assistans';
+import Beneficiaries from '../components/pdf/Beneficiaries';
+import Contacts from '../components/pdf/Contact';
+import Calls from '../components/pdf/Calls';
+import IncomingCalls from '../components/pdf/IncomingCalls';
+import OutgoingCalls from '../components/pdf/OutgoingCalls';
 import Reminders from '../components/pdf/Reminders';
-import Beneficiary from '../components/pdf/Beneficiary';
 import useAuthContext from '../hooks/useAuthContext';
 import '../assets/pages/DocumentGenerator.css';
 
 export default function DocumentGenerator() {
     //Fetch para obtener datos segun el listado
     const [renderDPF, setRenderPDF] = useState(false);
+    const [elementToRender, setElementToRender] = useState(null);
     const [beneficiariesData, setBeneficiariesData] = useState([]);
     const [contactsData, setContactsData] = useState([]);
     const [callsData, setCallsData] = useState([]);
@@ -23,6 +27,34 @@ export default function DocumentGenerator() {
         getAllCallsWithDetails, getAllIncomingCallsWithDetails, getAllOutgoingCallsWithDetails,
         getAllRemindersWithDetails, loading
     } = useAuthContext();
+
+    useEffect(() => {
+        setElementToRender(<Assistans data={assistantsData} />);
+    }, [assistantsData]);
+
+    useEffect(() => {
+        setElementToRender(<Beneficiaries data={beneficiariesData} />);
+    }, [beneficiariesData]);
+
+    useEffect(() => {
+        setElementToRender(<Contacts data={contactsData} />);
+    }, [contactsData]);
+
+    useEffect(() => {
+        setElementToRender(<Calls data={callsData} />);
+    }, [callsData]);
+
+    useEffect(() => {
+        setElementToRender(<IncomingCalls data={incomingCallsData} />);
+    }, [incomingCallsData]);
+
+    useEffect(() => {
+        setElementToRender(<OutgoingCalls data={outgoingCallsData} />);
+    }, [outgoingCallsData]);
+
+    useEffect(() => {
+        setElementToRender(<Reminders data={remindersData} />);
+    }, [remindersData]);
 
     const handleChange = (element) => {
         switch (element.target.value) {
@@ -55,20 +87,29 @@ export default function DocumentGenerator() {
 
     const dataFetcher = async function (fetchMethod, arrayList, arraySetter) {
         if (arrayList.length > 0) {
+            arraySetter((previousArray) => [...previousArray]);
+
+            await delayer(3000);
+
+            setRenderPDF(true);
             return
         }
 
         const response = await fetchMethod();
-        console.log(response);
 
         if (response && response.data.status === 'success') {
-            await arraySetter([
-                ...arrayList,
+            arraySetter(
                 response.data.data,
-            ]);
+            );
+
+            await delayer(3000);
 
             setRenderPDF(true);
         }
+    };
+
+    const delayer = (delay) => {
+        return new Promise(res => setTimeout(res, delay));
     };
 
     return (
@@ -80,7 +121,7 @@ export default function DocumentGenerator() {
                         <path fillRule="evenodd" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.7 11.7 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.86.86 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.84.84 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.8 5.8 0 0 0-1.335-.05 11 11 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.24 1.24 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a20 20 0 0 1-1.062 2.227 7.7 7.7 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103"></path>
                     </svg>
                 </span>
-                <select className="form-select" name="selector" id="documentSelect" onChange={handleChange}>
+                <select className="form-select" name="selector" id="documentSelect" onChange={handleChange} disabled={loading}>
                     <option value="">Seleccione Listado</option>
                     <option value="assistantList">Listado de Asistentes</option>
                     <option value="beneficiaryList">Listado de Beneficiarios</option>
@@ -95,7 +136,9 @@ export default function DocumentGenerator() {
                 {renderDPF &&
                     <>
                         <PDFViewer style={{ width: '100%', height: '90vh', border: '1px solid black', borderRadius: '10px', marginTop: '20px' }}>
-                            <Reminders data={remindersData} />
+                            {
+                                elementToRender
+                            }
                         </PDFViewer>
 
                         {/* Enlace para descargar el PDF */}

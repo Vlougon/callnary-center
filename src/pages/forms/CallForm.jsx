@@ -99,13 +99,6 @@ export default function CallForm() {
 
         failed = false;
 
-        // const hours = Math.floor(callData.duration / 3600);
-        // const minutes = Math.floor(callData.duration % 3600 / 60);
-        // const seocnds = Math.floor(callData.duration % 3600 % 60);
-        // const prettyDuration = hours + 'h ' + minutes + 'm ' + seocnds + 's';
-
-        // const betterCallData = { ...callData, duration: prettyDuration };
-
         async function setPostResponse() {
             const createdCall = await createCall(callData);
 
