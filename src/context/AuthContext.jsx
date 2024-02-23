@@ -266,6 +266,28 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllBeneficiariesWithDetails = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/beneficiaryDetails');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     const getOneBeneficiary = async (id) => {
         setErrors({});
         setLoading(true);
@@ -316,6 +338,28 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.get('/api/V1/beneficiaryAddress/' + id);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getAllContactsWithDetails = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('api/V1/contactsDetails');
             return response
         }
         catch (e) {
@@ -702,10 +746,11 @@ export function AuthProvider({ children }) {
             sessionVerified,
             sendPasswordResetLink, newPassword, sendEmailVerificationLink,
             getAllUsers, getOneUser, createUser, updateUser, deleteUser,
-            getAllBeneficiaries, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
+            getAllBeneficiaries, getAllBeneficiariesWithDetails, getOneBeneficiary, createBeneficiary, updateBeneficiary, deleteBeneficiary,
             getPhoneUser, createPhoneUser, updatePhoneUser,
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
             getBeneficiaryAddress, createAddress, updateAddress,
+            getAllContactsWithDetails,
             getAllReminders, createReminder,
         }}>
             {children}
