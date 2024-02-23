@@ -27,7 +27,7 @@ export default function ShortCutList({ FM, setFM }) {
     return (
         <ul className='row'>
             {
-                shortCuts.map((shortcut) => {
+                shortCuts && shortCuts.map((shortcut) => {
                     if (shortcut.link.includes('assistant') && userRole === 'assistant') {
                         return
                     }
