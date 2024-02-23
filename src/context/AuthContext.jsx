@@ -376,6 +376,70 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getAllCalls = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/calls');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+    const getAllCallsOutGoing = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/callsOutgoing');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+    const getAllCallsInGoing = async () => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/callsIngoing');
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+    
     const getAllReminders = async () => {
         setErrors({});
         setLoading(true);
@@ -751,6 +815,7 @@ export function AuthProvider({ children }) {
             getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary,
             getBeneficiaryAddress, createAddress, updateAddress,
             getAllContactsWithDetails,
+            getAllCalls,getAllCallsOutGoing, getAllCallsInGoing,
             getAllReminders, createReminder,
         }}>
             {children}
