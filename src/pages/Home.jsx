@@ -72,11 +72,16 @@ export default function Home() {
 const shortcutReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_SHORTCUT':
+            if (!state || state.length <= 0) {
+                return { shortCuts: [action.payload] };
+            }
             return { shortCuts: [...state.shortCuts, action.payload] };
 
         case 'REMOVE_SHORTCUT':
-            return { shortCuts: state.shortCuts.filter(shortcut => shortcut && shortcut.id !== action.payload) };
-
+            console.log(state, action);
+            if (state && state.shortCuts.length > 0) {
+                return { shortCuts: state.shortCuts.filter(shortcut => shortcut.id !== action.payload) };
+            }
         default:
             return state;
     }
