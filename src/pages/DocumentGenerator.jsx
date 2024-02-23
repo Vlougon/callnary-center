@@ -1,6 +1,57 @@
 import '../assets/pages/DocumentGenerator.css';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+// import Reminders from './../components/pdf/Reminders';
+// import Beneficiary from './../components/pdf/Beneficiary';
+import Contact from './../components/pdf/Contact';
+import { AuthContext } from '../context/AuthContext';
+import { useContext, useEffect, useState } from 'react';
+
 
 export default function DocumentGenerator() {
+    //Fetch para obtener datos segun el listado
+    const { getAllBeneficiaries, getAllReminders, getAllBeneficiariesWithDetails, getAllContactsWithDetails } = useContext(AuthContext);
+    const [listData, setListData] = useState([]);
+    const [listReminders, setListReminders] = useState([]);
+    const [listDetails, setListDetails] = useState([]);
+    const [listContacts, setListContacts] = useState([]);
+
+
+    useEffect(() => {
+        async function setGetBeneficiaries() {
+            const response = await getAllBeneficiaries();
+            setListData(response.data.data);
+        }
+        setGetBeneficiaries();
+    }, []);
+
+    useEffect(() => {
+        async function setGetResponse() {
+            const response = await getAllReminders();
+            setListReminders(response.data.data);
+        }
+        setGetResponse();
+    }, []);
+
+    useEffect(() => {
+        async function setGetAllBeneficiariesWithDetails() {
+            const response = await getAllBeneficiariesWithDetails();
+            setListDetails(response.data.data);
+        }
+        setGetAllBeneficiariesWithDetails();
+    }, []);
+
+    useEffect(() => {
+        async function setGetAllContactsWithDetails() {
+            const response = await getAllContactsWithDetails();
+            setListContacts(response.data.data);
+            console.log(response);
+            console.log(response.data.data);
+        }
+        setGetAllContactsWithDetails();
+    }, []);
+
+
+
     return (
         <div id='documentGenerator' className='container-fluid'>
             <div className='input-group'>
@@ -16,6 +67,60 @@ export default function DocumentGenerator() {
                     <option value="incomingcallslist">Listado de Llamadas de Entrada</option>
                     <option value="outcomingcallslist">Listado de Llamadas de Salida</option>
                 </select>
+
+
+
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/*  ////////////////////// Reminers //////////////////////////// */}
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/* Mostrar el documento*/}
+                {/* <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                    <Reminders data={listReminders} />
+                </PDFViewer> 
+
+                {/* Enlace para descargar el PDF */}
+                {/* <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
+                    <PDFDownloadLink document={<Reminders data={listReminders} />} fileName="listadoUsers.pdf"  >
+                        {
+                            ({ loading }) =>
+                                loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
+                        }
+                    </PDFDownloadLink>
+                </div> */}
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/*  ////////////////////// Beneficiariy //////////////////////////// */}
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/* Mostrar el documento*/}
+                {/* <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                    <Beneficiary data={listDetails} />
+                </PDFViewer> 
+
+                {/* Enlace para descargar el PDF */}
+                {/* <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
+                    <PDFDownloadLink document={<Beneficiary data={listDetails} />} fileName="listadoUsers.pdf"  >
+                        {
+                            ({ loading }) =>
+                                loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
+                        }
+                    </PDFDownloadLink>
+                </div> */}
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/*  ////////////////////// CONTACTS //////////////////////////// */}
+                {/*  ////////////////////// //////////// //////////////////////////// */}
+                {/* Mostrar el documento*/}
+                <PDFViewer style={{ width: '100%', height: '90vh', border: '5px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                    <Contact data={listContacts} />
+                </PDFViewer>
+
+                {/* Enlace para descargar el PDF */}
+                <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
+                    <PDFDownloadLink document={<Contact data={listContacts} />} fileName="listadoUsers.pdf"  >
+                        {
+                            ({ loading }) =>
+                                loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
+                        }
+                    </PDFDownloadLink>
+                </div>
             </div>
         </div>
     )
