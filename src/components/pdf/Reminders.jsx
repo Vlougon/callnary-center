@@ -55,7 +55,6 @@ const MyDocument = ({ data }) => (
                 {data.map((reminder, index) => (
                     <View key={reminder.id} style={styles.dataRow}>
                         <View style={styles.dataPair}>
-                            <Text style={styles.dataLabel}>ID: {reminder.id}</Text>
                             <Text style={styles.dataLabel}>Título: {reminder.title}</Text>
                             <Text style={styles.dataLabel}>Fecha de Inicio: {reminder.start_date}</Text>
                             <Text style={styles.dataLabel}>Fecha de Fin: {reminder.end_date}</Text>
@@ -63,7 +62,6 @@ const MyDocument = ({ data }) => (
                             <Text style={styles.dataLabel}>Hora de Fin: {reminder.end_time}</Text>
                             <Text style={styles.dataLabel}>Repetir: {reminder.repeat}</Text>
                             <Text style={styles.dataLabel}>Color de Fondo: {reminder.background_color}</Text>
-                            <Text style={styles.dataLabel}>Asisstent ID: {reminder.user_id.id}</Text>
                             <Text style={styles.dataLabel}>Nombre de Asisstent: {reminder.user_id.name}</Text>
                             <Text style={styles.dataLabel}>Correo Electrónico: {reminder.user_id.email}</Text>
                             <Text style={styles.dataLabel}>Rol: {reminder.user_id.role}</Text>

@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import { AuthContext } from '../context/AuthContext';
 import FlashMessage from '../components/flashmessages/FlashMessage';
+import Spinner from '../components/ui/Spinner';
 import Contact from '../components/pdf/Contact';
 import Reminders from '../components/pdf/Reminders';
 import Beneficiary from '../components/pdf/Beneficiary';
+import useAuthContext from '../hooks/useAuthContext';
 import '../assets/pages/DocumentGenerator.css';
 
 export default function DocumentGenerator() {
@@ -17,53 +18,56 @@ export default function DocumentGenerator() {
     const [outgoingCallsData, setOutgoingCallsData] = useState([]);
     const [remindersData, setRemidnersData] = useState([]);
     const [assistantsData, setassistantsData] = useState([]);
-    // const { getAllBeneficiaries, getAllReminders, getAllBeneficiariesWithDetails, getAllContactsWithDetails } = useContext(AuthContext);
+    const {
+        getAllAssistantsWithDetails, getAllBeneficiariesWithDetails, getAllContactsWithDetails,
+        getAllCallsWithDetails, getAllIncomingCallsWithDetails, getAllOutgoingCallsWithDetails,
+        getAllRemindersWithDetails, loading
+    } = useAuthContext();
 
     const handleChange = (element) => {
         switch (element.target.value) {
             case 'assistantList':
-                setRenderPDF(true);
+                dataFetcher(getAllAssistantsWithDetails, assistantsData, setassistantsData);
                 break;
             case 'beneficiaryList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllBeneficiariesWithDetails, beneficiariesData, setBeneficiariesData);
                 break;
             case 'conactList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllContactsWithDetails, contactsData, setContactsData);
                 break;
             case 'callsList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllCallsWithDetails, callsData, setCallsData);
                 break;
             case 'incomingCallsList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllIncomingCallsWithDetails, incomingCallsData, setIncomingCallsData);
                 break;
             case 'outgoingCallsList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllOutgoingCallsWithDetails, outgoingCallsData, setOutgoingCallsData);
                 break;
             case 'remidnersList':
-                setRenderPDF(true);
-
+                dataFetcher(getAllRemindersWithDetails, remindersData, setRemidnersData);
                 break;
             default:
                 setRenderPDF(false);
-
                 break;
         }
     };
 
     const dataFetcher = async function (fetchMethod, arrayList, arraySetter) {
+        if (arrayList.length > 0) {
+            return
+        }
+
         const response = await fetchMethod();
         console.log(response);
 
         if (response && response.data.status === 'success') {
-            arraySetter([
+            await arraySetter([
                 ...arrayList,
                 response.data.data,
             ]);
+
+            setRenderPDF(true);
         }
     };
 
@@ -89,19 +93,23 @@ export default function DocumentGenerator() {
 
                 {/* Mostrar el documento*/}
                 {renderDPF &&
-                    <PDFViewer style={{ width: '100%', height: '90vh', border: '1px solid black', borderRadius: '10px', marginTop: '20px' }}>
-                        <Reminders data={remindersData} />
-                    </PDFViewer>
+                    <>
+                        <PDFViewer style={{ width: '100%', height: '90vh', border: '1px solid black', borderRadius: '10px', marginTop: '20px' }}>
+                            <Reminders data={remindersData} />
+                        </PDFViewer>
 
-                    /* Enlace para descargar el PDF */
-                    /* <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
-                        <PDFDownloadLink document={<Reminders data={listReminders} />} fileName="listadoUsers.pdf"  >
-                            {
-                                ({ loading }) =>
-                                    loading ? <button id='downloadButton' className='btn btn-primary' >Loading document...</button> : <button id='downloadButton' className='mx-auto btn btn-primary'>Download now !</button>
-                            }
-                        </PDFDownloadLink>
-                    </div> */
+                        {/* Enlace para descargar el PDF */}
+                        <div id='downloadButtonContainer' style={{ width: '100%', marginTop: '20px' }}>
+                            <PDFDownloadLink document={<Reminders data={remindersData} />} fileName="listadoUsers.pdf"  >
+                                <button type="submit" className='btn btn-primary' disabled={loading}>
+                                    <Spinner loading={loading} spinnerColor={'light'} spinnerType={'spinner-border'}
+                                        spinnerStyle={{ width: '1rem', height: '1rem', }}
+                                    />
+                                    <span>¡Descargar PDF!</span>
+                                </button>
+                            </PDFDownloadLink>
+                        </div>
+                    </>
                 }
             </div>
         </div>
