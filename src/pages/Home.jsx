@@ -20,37 +20,6 @@ export default function Home() {
         localStorage.setItem('shortCuts', JSON.stringify(shortCuts));
     }, [shortCuts]);
 
-    // const handleShortCutInsert = (element) => {
-    //     const target = element.target;
-
-    //     if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
-    //         setShowFM({
-    //             ...showFM,
-    //             render: true,
-    //             message: '¡El Atajo ya está siendo usado!',
-    //             type: 'warning',
-    //         });
-    //         return
-    //     }
-
-    //     setShortCuts([
-    //         ...shortCuts,
-    //         {
-    //             id: shortCutsID,
-    //             link: target.getAttribute('prefix'),
-    //             text: target.alt,
-    //             source: target.src,
-    //         }
-    //     ])
-
-    //     setShortCutsID(shortCutsID + 1);
-    // };
-
-    // const handleShortCutDelete = (element) => {
-    //     const toDeleteID = parseInt(element.target.parentElement.id);
-    //     setShortCuts(shortCuts.filter(shortcut => shortcut.id !== toDeleteID));
-    // };
-
     const hiddeAlert = () => {
         setShowFM({
             ...showFM,

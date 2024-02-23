@@ -86,7 +86,7 @@ export default function DocumentGenerator() {
     };
 
     const dataFetcher = async function (fetchMethod, arrayList, arraySetter) {
-        if (arrayList.length > 0) {
+        if (arrayList && arrayList.length > 0) {
             arraySetter((previousArray) => [...previousArray]);
 
             await delayer(3000);
