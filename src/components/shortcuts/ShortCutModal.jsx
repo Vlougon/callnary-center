@@ -16,7 +16,7 @@ export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM 
     const shortCutAddHandler = (element) => {
         const target = element.target;
 
-        if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
+        if ((shortCuts && shortCuts.length >= 7) || (shortCuts && shortCuts.some(shortCut => shortCut.text === target.alt))) {
             setFM({
                 ...FM,
                 render: true,
