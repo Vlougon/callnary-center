@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { ShortCutsContext, ShortCutsDispatchContext } from '../../context/ShortCutContext';
 
-export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM }) {
+export default function ShortCutModal({ currentShortCuts, FM, setFM }) {
     const [userRole, setUserRole] = useState('');
     const { shortCuts } = useContext(ShortCutsContext);
     const dispatch = useContext(ShortCutsDispatchContext);

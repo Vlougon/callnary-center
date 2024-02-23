@@ -75,7 +75,7 @@ const shortcutReducer = (state, action) => {
             return { shortCuts: [...state.shortCuts, action.payload] };
 
         case 'REMOVE_SHORTCUT':
-            return { shortCuts: state.shortCuts.filter(shortcut => shortcut.id !== action.payload) };
+            return { shortCuts: state.shortCuts.filter(shortcut => shortcut && shortcut.id !== action.payload) };
 
         default:
             return state;
