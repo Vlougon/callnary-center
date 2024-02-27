@@ -27,7 +27,7 @@ export default function Login() {
           <form method="POST" onSubmit={handleLogin}>
 
             <div id='googleLogIn'>
-              <a type='button' className='btn btn-light' href="http://localhost:8000/auth/google/redirect" title='Iniciar Sesión con Google'>
+              <a type='button' className='btn btn-light' href="https://victor.informaticamajada.es/auth/google/redirect" title='Iniciar Sesión con Google'>
                 <img src="/images/google.png" alt="Icono de Google" />
                 <span className='ms-2'>Iniciar Sesión con Google</span>
               </a>
