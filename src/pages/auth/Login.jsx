@@ -26,13 +26,6 @@ export default function Login() {
         <div className="row">
           <form method="POST" onSubmit={handleLogin}>
 
-            <div id='googleLogIn'>
-              <a type='button' className='btn btn-light' href="http://localhost:8000/auth/google/redirect" title='Iniciar Sesión con Google'>
-                <img src="/images/google.png" alt="Icono de Google" />
-                <span className='ms-2'>Iniciar Sesión con Google</span>
-              </a>
-            </div>
-
             <div className='col-12 text-sm-start mb-4'>
               <label htmlFor="email" className="form-label">
                 Email:
