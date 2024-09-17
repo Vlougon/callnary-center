@@ -37,7 +37,7 @@ export default function HeadFoot() {
             const posiblePaths = PathsList.paths.filter((path) => path.href.match(currentPath));
             let currPathObject = '';
 
-            if (posiblePaths.length === 1) {
+            if (posiblePaths && posiblePaths.length === 1) {
 
                 currPathObject = {
                     id: posiblePaths[0].id,
@@ -45,11 +45,11 @@ export default function HeadFoot() {
                     name: posiblePaths[0].name,
                 };
 
-            } else if (posiblePaths.length === 2) {
+            } else if (posiblePaths && posiblePaths.length === 2) {
 
                 for (const path of posiblePaths) {
 
-                    if (path.href.split('/').length === location.pathname.split('/').length) {
+                    if (location && path && path.href.split('/').length === location.pathname.split('/').length) {
                         currPathObject = {
                             id: path.id,
                             href: location.pathname,

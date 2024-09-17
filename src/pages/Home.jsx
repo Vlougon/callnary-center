@@ -20,37 +20,6 @@ export default function Home() {
         localStorage.setItem('shortCuts', JSON.stringify(shortCuts));
     }, [shortCuts]);
 
-    // const handleShortCutInsert = (element) => {
-    //     const target = element.target;
-
-    //     if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
-    //         setShowFM({
-    //             ...showFM,
-    //             render: true,
-    //             message: '¡El Atajo ya está siendo usado!',
-    //             type: 'warning',
-    //         });
-    //         return
-    //     }
-
-    //     setShortCuts([
-    //         ...shortCuts,
-    //         {
-    //             id: shortCutsID,
-    //             link: target.getAttribute('prefix'),
-    //             text: target.alt,
-    //             source: target.src,
-    //         }
-    //     ])
-
-    //     setShortCutsID(shortCutsID + 1);
-    // };
-
-    // const handleShortCutDelete = (element) => {
-    //     const toDeleteID = parseInt(element.target.parentElement.id);
-    //     setShortCuts(shortCuts.filter(shortcut => shortcut.id !== toDeleteID));
-    // };
-
     const hiddeAlert = () => {
         setShowFM({
             ...showFM,
@@ -82,7 +51,7 @@ export default function Home() {
                                 </button>
                             </div>
 
-                            <ShortCutModal currentShortCuts={shortCuts.shortCuts.length} FM={showFM} setFM={setShowFM} />
+                            <ShortCutModal currentShortCuts={shortCuts && shortCuts.shortCuts ? shortCuts.shortCuts.length : 0} FM={showFM} setFM={setShowFM} />
                         </ShortCutsDispatchContext.Provider>
                     </ShortCutsContext.Provider>
                 </aside>
@@ -103,11 +72,15 @@ export default function Home() {
 const shortcutReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_SHORTCUT':
+            if (!state || state.length <= 0) {
+                return { shortCuts: [action.payload] };
+            }
             return { shortCuts: [...state.shortCuts, action.payload] };
 
         case 'REMOVE_SHORTCUT':
-            return { shortCuts: state.shortCuts.filter(shortcut => shortcut.id !== action.payload) };
-
+            if (state && state.shortCuts.length > 0) {
+                return { shortCuts: state.shortCuts.filter(shortcut => shortcut.id !== action.payload) };
+            }
         default:
             return state;
     }
