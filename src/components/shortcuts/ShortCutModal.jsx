@@ -1,15 +1,11 @@
 import { useContext, useEffect, useState } from "react"
 import { ShortCutsContext, ShortCutsDispatchContext } from '../../context/ShortCutContext';
 
-export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM }) {
+export default function ShortCutModal({ currentShortCuts, FM, setFM }) {
     const [userRole, setUserRole] = useState('');
     const { shortCuts } = useContext(ShortCutsContext);
     const dispatch = useContext(ShortCutsDispatchContext);
-    let [shortCutsID, setShortCutsID] = useState(
-        shortCuts ?
-            shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => shortcut.id)) + 1 : 1
-            : 1
-    );
+    let [shortCutsID, setShortCutsID] = useState(shortCuts && shortCuts.length > 0 ? Math.max(...shortCuts.map(shortcut => { shortcut ? shortcut.id : 0 })) + 1 : 1);
 
     useEffect(() => {
         const role = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).role : 'assistant';
@@ -20,7 +16,7 @@ export default function ShortCutModal({ currentShortCuts, addHandler, FM, setFM 
     const shortCutAddHandler = (element) => {
         const target = element.target;
 
-        if (shortCuts.length >= 7 || shortCuts.some(shortCut => shortCut.text === target.alt)) {
+        if ((shortCuts && shortCuts.length >= 7) || (shortCuts && shortCuts.some(shortCut => shortCut.text === target.alt))) {
             setFM({
                 ...FM,
                 render: true,

@@ -45,7 +45,6 @@ export default class ScreeReader {
                     reader.text += document.activeElement.parentElement.previousElementSibling.textContent;
                     break;
                 default:
-                    console.log(document.activeElement.tagName);
                     reader.text = 'Nuevo Elemento';
                     break;
             }
@@ -67,7 +66,6 @@ export default class ScreeReader {
                     reader.text += document.activeElement.value;
                     break;
                 default:
-                    console.log(document.activeElement.tagName);
                     reader.text = 'Nuevo Elemento';
                     break;
             }

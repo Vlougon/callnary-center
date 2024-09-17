@@ -11,4 +11,6 @@ export default defineConfig({
     // TODO: Comment/Remove when Finished Testing.
     watch: { usePolling: true } // Usefull for Locally Testing: Auto-refresh the page when ever a change is made and save.
   }
+  build: { chunkSizeWarningLimit: 2500, },
+  server: { port: 3000 }
 })

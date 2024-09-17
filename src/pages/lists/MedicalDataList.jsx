@@ -15,8 +15,8 @@ export default function MedicalDataList() {
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
 
-                setMedicalDatas(getResponse.data.data);
-                setCurrentMedicalDatas(getResponse.data.data);
+                setMedicalDatas(getResponse.data.data.filter(md => md.beneficiary_id && md.beneficiary_id !== null));
+                setCurrentMedicalDatas(getResponse.data.data.filter(md => md.beneficiary_id && md.beneficiary_id !== null));
             }
         }
         setGetResponse();

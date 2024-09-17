@@ -33,8 +33,8 @@ export default function ContactList() {
                         });
                     }
 
-                    setContacts(contactObject);
-                    setCurrentContacts(contactObject);
+                    setContacts(contactObject.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
+                    setCurrentContacts(contactObject.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
                 }
                 return
             }
@@ -42,8 +42,8 @@ export default function ContactList() {
             const getResponse = await getBeneficiaryContacts();
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
-                setContacts(getResponse.data.data);
-                setCurrentContacts(getResponse.data.data);
+                setContacts(getResponse.data.data.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
+                setCurrentContacts(getResponse.data.data.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
             }
         }
         setGetResponse();

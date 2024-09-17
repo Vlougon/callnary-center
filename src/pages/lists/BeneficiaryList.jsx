@@ -11,8 +11,8 @@ export default function BeneficiaryList() {
     const [currentBeneficiaries, setCurrentBeneficiaries] = useState([]);
     const { getAllBeneficiariesFullData, loading } = useAuthContext();
     const params = useParams();
-    const tableCols = Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
-    const listType = Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
+    const tableCols = Object.keys(params) && Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
+    const listType = Object.keys(params) && Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
 
     useEffect(() => {
         async function setGetResponse() {
@@ -27,7 +27,7 @@ export default function BeneficiaryList() {
     }, []);
 
     const TableHeadRender = () => {
-        if (Object.keys(params).length === 0) {
+        if (Object.keys(params) && Object.keys(params).length === 0) {
             return (
                 <tr>
                     <th>Nombre del Beneficiario</th>
