@@ -28,8 +28,8 @@ export function AuthProvider({ children }) {
     const getUser = async () => {
         try {
             const { data } = await axios.get('/api/user');
-            await setAssistant(data);
-            setUser(data);
+            await setAssistant(data.data);
+            setUser(data.data);
             setSessionVerified(true);
             setsessionName(true);
         }
