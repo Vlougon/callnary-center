@@ -85,9 +85,11 @@ export default function AssistantPersonalDataFieldSet({ passwordConfirmation, se
                     </div>
                 </div>
 
-                <TextInput nameID={'academic_center'} sublimText={'Código del Centro Académico'} formUsed={'assistant'}
-                    boxLength={'col-md-4'} needFeedback={true}
-                />
+                {!disabledInput &&
+                    <TextInput nameID={'serial_code'} sublimText={'Código del Centro Académico'} formUsed={'assistant'}
+                        boxLength={'col-md-4'} needFeedback={true}
+                    />
+                }
 
                 <PhoneNumberInput boxLength={'col-md-4'} />
             </div>

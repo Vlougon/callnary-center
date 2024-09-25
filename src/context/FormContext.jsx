@@ -8,7 +8,7 @@ export function FormProvider({ children }) {
         email: '',
         password: '',
         role: '',
-        academic_center: '',
+        serial_code: '',
     });
 
     const [medicalFormValues, setMedicalFormValues] = useState({
@@ -146,7 +146,7 @@ export function FormProvider({ children }) {
             email: '',
             password: '',
             role: '',
-            academic_center: '',
+            serial_code: '',
         });
 
         setPhones({

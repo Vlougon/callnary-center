@@ -37,6 +37,7 @@ export default function AssistantForm() {
 
                     const assitantObject = getAssistantResponse.data.data;
                     assitantObject['password'] = '';
+                    assitantObject['serial_code'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
                     delete assitantObject.id;
 
