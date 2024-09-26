@@ -37,6 +37,7 @@ export default function AssistantForm() {
 
                     const assitantObject = getAssistantResponse.data.data;
                     assitantObject['password'] = '';
+                    assitantObject['serial_code'] = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
                     delete assitantObject.id;
 
@@ -95,7 +96,8 @@ export default function AssistantForm() {
 
         for (const key in assistantData) {
             if (!assistantData[key] || assistantData[key].match(/^(?=\s*$)/) ||
-                (assistantData[key] && key === 'password' && !assistantData[key].match(/^(?=.{10,})\S*$/))) {
+                (assistantData[key] && key === 'password' && !assistantData[key].match(/^(?=.{10,})\S*$/)) ||
+                (assistantData[key] && key === 'academic_center' && assistantData[key].length != 32)) {
                 handleFormFieldsValues(document.querySelector('#' + key));
                 failed = true;
             }
@@ -157,6 +159,7 @@ export default function AssistantForm() {
                 });
             }
             setPutResponse();
+
         } else {
             async function setPostResponse() {
                 const createdUser = await createUser(assistantData);

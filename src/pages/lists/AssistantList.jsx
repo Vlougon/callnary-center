@@ -13,11 +13,11 @@ export default function AssistantList() {
 
     const [users, setUsers] = useState([]);
     const [currentUsers, setCurrentUsers] = useState([]);
-    const { getAllUsers, loading } = useAuthContext();
+    const { getUsersByCenter, loading } = useAuthContext();
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getAllUsers();
+            const getResponse = await getUsersByCenter(JSON.parse(sessionStorage.getItem('assistant')).id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setUsers(getResponse.data.data);
