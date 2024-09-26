@@ -750,6 +750,72 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const getUsersByCenter = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/academic_center/users/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getUserBeneficiaries = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/beneficiaries/user/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getUserReminders = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/reminders/user/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
     /* ############################################################################################ */
     /* #####################################   END OF GET   ####################################### */
     /* ############################################################################################ */
@@ -1310,6 +1376,7 @@ export function AuthProvider({ children }) {
             getAllAssistantsWithDetails, getAllBeneficiariesWithDetails, getAllContactsWithDetails,
             getAllCallsWithDetails, getAllIncomingCallsWithDetails, getAllOutgoingCallsWithDetails,
             getAllRemindersWithDetails,
+            getUsersByCenter, getUserBeneficiaries, getUserReminders,
         }}>
             {children}
         </AuthContext.Provider>
