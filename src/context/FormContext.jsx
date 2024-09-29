@@ -36,9 +36,11 @@ export function FormProvider({ children }) {
         birth_date: '----/--/--',
         social_security_number: '',
         rutine: '',
+        audio_text: '',
         gender: '',
         marital_status: '',
         beneficiary_type: '',
+        user_id: '',
     });
 
     const [addressData, setAddressData] = useState({
@@ -53,6 +55,10 @@ export function FormProvider({ children }) {
 
     const [phones, setPhones] = useState({
         phone_number: '',
+    });
+
+    const [aviableUsers, setAvaiableUsers] = useState({
+        users: [],
     });
 
     const [contactData, setContactData] = useState({
@@ -104,6 +110,13 @@ export function FormProvider({ children }) {
             [element.target.name]: element.target.value,
         });
     };
+
+    const handleAvailableUsersChange = (element) => {
+        setAvaiableUsers([
+            ...aviableUsers,
+            { value: element.id, text: element.name },
+        ]);
+    }
 
     const handlePhonesChange = (element) => {
         setPhones({
@@ -163,9 +176,11 @@ export function FormProvider({ children }) {
             birth_date: '----/--/--',
             social_security_number: '',
             rutine: '',
+            audio_text: '',
             gender: '',
             marital_status: '',
             beneficiary_type: '',
+            user_id: '',
         });
 
         setAddressData({
@@ -176,6 +191,10 @@ export function FormProvider({ children }) {
             street: '',
             addressable_type: '',
             addressable_id: 0,
+        });
+
+        setAvaiableUsers({
+            users: [],
         });
 
         setPhones({
@@ -260,12 +279,13 @@ export function FormProvider({ children }) {
                 medicalFormValues, setMedicalFormValues,
                 beneficiaryData, setBeneficiaryData,
                 addressData, setAddressData,
+                aviableUsers, setAvaiableUsers,
                 phones, setPhones,
                 contactData, setContactData,
                 callData, setCallData,
                 reminderData, setReminderData,
                 handlePersonalDataChange, handleAddressChange, handlePhonesChange, handleContactChange,
-                handleCallChange, handleReminderDataChange, handleAssistantData,
+                handleCallChange, handleReminderDataChange, handleAssistantData, handleAvailableUsersChange,
                 clearAssitantForm, clearBeneficiaryForm, clearCallForm, clearContactData,
                 clearMedicalData, clearReminderForm,
             }}
