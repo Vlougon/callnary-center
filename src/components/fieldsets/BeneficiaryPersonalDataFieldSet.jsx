@@ -6,7 +6,7 @@ import TextInput from '../inputs/TextInput';
 import DNIGenerator from '../../classes/DNIGenerator';
 import SSNGenerator from '../../classes/SSNGenerator';
 
-export default function BeneficiaryPersonalDataFieldSet() {
+export default function BeneficiaryPersonalDataFieldSet({ beneficiaryId = null }) {
     const { beneficiaryData, aviableUsers } = useContext(FormContext);
     const { handlePersonalDataChange } = useContext(FormContext);
 
@@ -115,16 +115,18 @@ export default function BeneficiaryPersonalDataFieldSet() {
                     </div>
                 </div>
 
-                <SelectInput
-                    selectNameID={'user_id'}
-                    selectLabel={'Usuario Encargado'}
-                    selectValues={
-                        aviableUsers && aviableUsers.length >= 1 ? aviableUsers : [{ value: '0', text: 'No se ha Encontrado nigún Usuario' }]
-                    }
-                    formUsed={'beneficiary'}
-                    boxLength={'col-md-4'}
-                    needFeedBack={true}
-                />
+                {!beneficiaryId &&
+                    <SelectInput
+                        selectNameID={'user_id'}
+                        selectLabel={'Usuario Encargado'}
+                        selectValues={
+                            aviableUsers && aviableUsers.length >= 1 ? aviableUsers : [{ value: '0', text: 'No se ha Encontrado nigún Usuario' }]
+                        }
+                        formUsed={'beneficiary'}
+                        boxLength={'col-md-4'}
+                        needFeedBack={true}
+                    />
+                }
 
                 <PhoneNumberInput boxLength={'col-md-4'} />
 

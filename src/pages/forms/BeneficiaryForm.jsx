@@ -298,7 +298,7 @@ export default function BeneficiaryForm() {
             }
 
             <form action="/api/V1/beneficiaries" method="POST" onSubmit={handleSubmit}>
-                <BeneficiaryPersonalDataFieldSet />
+                <BeneficiaryPersonalDataFieldSet beneficiaryId={beneficiaryID.id} />
 
                 <SocialDataFieldSet />
 
