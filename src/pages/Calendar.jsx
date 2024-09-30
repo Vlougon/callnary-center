@@ -27,13 +27,24 @@ export default function Calendar() {
         message: '',
         type: '',
     });
-    const { getAllReminders, getAllBeneficiaries, loading } = useAuthContext();
+    const { getUserReminders, getUserBeneficiaries, loading } = useAuthContext();
     const modalRef = useRef(null);
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function getReminderResponse() {
-            const remindersResposne = await getAllReminders();
+            const remindersResposne = await getUserReminders(assistantObject.id);
             const reminderArray = [];
+
+            if (!remindersResposne || !remindersResposne.data | remindersResposne.data.data) {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: '¡No se Encontraron los Recordatorios!',
+                    type: 'danger',
+                });
+                return
+            }
 
             for (const reminder of remindersResposne.data.data) {
                 reminder.start_date = reminder.start_date.split('T')[0];
@@ -54,7 +65,7 @@ export default function Calendar() {
         getReminderResponse();
 
         async function getBeneficiaryResponse() {
-            const beneficiaryResponse = await getAllBeneficiaries();
+            const beneficiaryResponse = await getUserBeneficiaries(assistantObject.id);
 
             if (beneficiaryResponse.data.status && beneficiaryResponse.data.status === 'success') {
                 const beneficiaryObjectArray = beneficiaryResponse.data.data.map((beneficiary) => {

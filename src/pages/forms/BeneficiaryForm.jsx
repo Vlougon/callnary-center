@@ -29,6 +29,7 @@ export default function BeneficiaryForm() {
     const { getUsersByCenter } = useAuthContext();
     const beneficiaryID = useParams();
     const userID = useParams();
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         clearBeneficiaryForm();
@@ -100,18 +101,18 @@ export default function BeneficiaryForm() {
         } else {
             async function getCenterUsers() {
                 let succeded = false;
-                const getCenterUsersResponse = JSON.parse(sessionStorage.getItem('assistant')).role === 'supervisor'
-                    ? await getUsersByCenter(JSON.parse(sessionStorage.getItem('assistant')).id)
-                    : JSON.parse(sessionStorage.getItem('assistant')).id;
+                const getCenterUsersResponse = assistantObject.role === 'supervisor'
+                    ? await getUsersByCenter(assistantObject.id)
+                    : assistantObject.id;
 
                 if (getCenterUsersResponse.data && getCenterUsersResponse.data.status && getCenterUsersResponse.data.status === 'success') {
                     succeded = true;
 
                     console.log(getCenterUsersResponse);
-                } else if ((getCenterUsersResponse === JSON.parse(sessionStorage.getItem('assistant')).id)) {
+                } else if ((getCenterUsersResponse === assistantObject.id)) {
                     succeded = true;
 
-                    setAvaiableUsers([{ value: getCenterUsersResponse, text: JSON.parse(sessionStorage.getItem('assistant')).name }]);
+                    setAvaiableUsers([{ value: getCenterUsersResponse, text: assistantObject.name }]);
                 }
 
                 if (!succeded) {
