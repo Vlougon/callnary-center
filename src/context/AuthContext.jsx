@@ -491,7 +491,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/beneficiaryContacts/' + id);
+            const response = await axios.get('/api/V1/contacts/beneficiary/' + id);
             return response
         }
         catch (e) {
