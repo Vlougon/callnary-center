@@ -8,8 +8,9 @@ import '../../assets/pages/lists/ContactList.css';
 export default function ContactList() {
     const [contacts, setContacts] = useState([]);
     const [curretnContacts, setCurrentContacts] = useState([]);
-    const { getUserBeneficiaryContacts, getContactsBeneficiary, loading } = useAuthContext();
+    const { getUserBeneficiaryContacts, getContactsBeneficiary, getAllContactsByCenter, loading } = useAuthContext();
     const beneficiaryID = useParams();
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function setGetResponse() {
@@ -24,7 +25,9 @@ export default function ContactList() {
                 return
             }
 
-            const getResponse = await getUserBeneficiaryContacts(JSON.parse(sessionStorage.getItem('assistant')).id);
+            const getResponse = assistantObject.role === 'supervisor'
+                ? await getAllContactsByCenter(assistantObject.id)
+                : await getUserBeneficiaryContacts(assistantObject.id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setContacts(getResponse.data.data);
