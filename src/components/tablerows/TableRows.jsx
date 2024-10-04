@@ -1,7 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../components/modals/ConfirmationModal';
 
-export default function TableRows({ columns, list, dataArray, arrayHandler }) {
+export default function TableRows({ columns, list, dataArray, arrayHandler, userRole = 'assistant' }) {
     const tableRows = [];
     const callKind = useParams().kind;
     const navigate = useNavigate();
@@ -82,7 +82,7 @@ export default function TableRows({ columns, list, dataArray, arrayHandler }) {
                     tableRows.push(
                         <tr key={beneficiary.id}>
                             <td>{beneficiary.name.charAt(0).toUpperCase() + beneficiary.name.slice(1)}</td>
-                            <td>{beneficiary.dni}</td>
+                            <td>{userRole === 'supervisor' ? beneficiary.user_name : beneficiary.dni}</td>
                             <td>
                                 <Link className="btn btn-info" to={'/contactlist/' + beneficiary.id} title={'Ver Contactos de ' + beneficiary.name}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
