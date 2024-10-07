@@ -27,13 +27,15 @@ export default function Calendar() {
         message: '',
         type: '',
     });
-    const { getUserReminders, getUserBeneficiaries, loading } = useAuthContext();
+    const { getUserReminders, getUserBeneficiaries, getAllRemindersByCenter, loading } = useAuthContext();
     const modalRef = useRef(null);
     const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function getReminderResponse() {
-            const remindersResposne = await getUserReminders(assistantObject.id);
+            const remindersResposne = assistantObject.role === 'supervisor'
+                ? await getAllRemindersByCenter(assistantObject.id)
+                : await getUserReminders(assistantObject.id);
             const reminderArray = [];
 
             if (!remindersResposne || !remindersResposne.data | remindersResposne.data.data) {
@@ -52,7 +54,7 @@ export default function Calendar() {
                 reminder.repeat = !reminder.repeat ? '' : reminder.repeat.split(',');
 
                 reminderArray.push({
-                    title: reminder.title,
+                    title: reminder.title + ' - ' + reminder.user_id.name + ': ' + reminder.beneficiary_id.name,
                     start: reminder.start_date + 'T' + reminder.start_time + 'Z',
                     end: reminder.end_date + 'T' + reminder.end_time + 'Z',
                     backgroundColor: reminder.background_color,
