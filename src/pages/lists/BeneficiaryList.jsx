@@ -9,14 +9,17 @@ import '../../assets/pages/lists/BeneficiaryList.css';
 export default function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
     const [currentBeneficiaries, setCurrentBeneficiaries] = useState([]);
-    const { getAllBeneficiariesFullData, loading } = useAuthContext();
+    const { getUserBeneficiaries, getAllBeneficiariesByCenter, loading } = useAuthContext();
     const params = useParams();
     const tableCols = Object.keys(params) && Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
     const listType = Object.keys(params) && Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getAllBeneficiariesFullData();
+            const getResponse = assistantObject.role === 'supervisor'
+                ? await getAllBeneficiariesByCenter(assistantObject.id)
+                : await getUserBeneficiaries(assistantObject.id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setBeneficiaries(getResponse.data.data);
@@ -31,7 +34,7 @@ export default function BeneficiaryList() {
             return (
                 <tr>
                     <th>Nombre del Beneficiario</th>
-                    <th>DNI</th>
+                    <th>{assistantObject.role === 'supervisor' ? 'Alumno' : ' DNI'}</th>
                     <th>Ver Contactos</th>
                     <th>Editar Datos Médicos</th>
                     <th>Editar Datos</th>
@@ -71,7 +74,7 @@ export default function BeneficiaryList() {
 
                     <tbody>
                         {!loading &&
-                            <TableRows columns={tableCols} list={listType} dataArray={currentBeneficiaries} arrayHandler={setCurrentBeneficiaries} />
+                            <TableRows columns={tableCols} list={listType} dataArray={currentBeneficiaries} arrayHandler={setCurrentBeneficiaries} userRole={assistantObject.role} />
                         }
                     </tbody>
                 </table>

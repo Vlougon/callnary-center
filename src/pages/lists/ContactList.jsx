@@ -8,8 +8,9 @@ import '../../assets/pages/lists/ContactList.css';
 export default function ContactList() {
     const [contacts, setContacts] = useState([]);
     const [curretnContacts, setCurrentContacts] = useState([]);
-    const { getBeneficiaryContacts, getContactsBeneficiary, loading } = useAuthContext();
+    const { getUserBeneficiaryContacts, getContactsBeneficiary, getAllContactsByCenter, loading } = useAuthContext();
     const beneficiaryID = useParams();
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function setGetResponse() {
@@ -18,32 +19,19 @@ export default function ContactList() {
 
                 if (getResponse.data.status && getResponse.data.status === 'success') {
 
-                    const contactObject = [];
-
-                    for (const contact of getResponse.data.data) {
-                        contactObject.push({
-                            contact_id: {
-                                id: contact.id,
-                                name: contact.name,
-                            },
-                            beneficiary_id: {
-                                id: beneficiaryID.id,
-                                name: getResponse.data.beneficiary,
-                            }
-                        });
-                    }
-
-                    setContacts(contactObject.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
-                    setCurrentContacts(contactObject.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
+                    setContacts(getResponse.data.data);
+                    setCurrentContacts(getResponse.data.data);
                 }
                 return
             }
 
-            const getResponse = await getBeneficiaryContacts();
+            const getResponse = assistantObject.role === 'supervisor'
+                ? await getAllContactsByCenter(assistantObject.id)
+                : await getUserBeneficiaryContacts(assistantObject.id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
-                setContacts(getResponse.data.data.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
-                setCurrentContacts(getResponse.data.data.filter(contact => contact.beneficiary_id && contact.beneficiary_id !== null));
+                setContacts(getResponse.data.data);
+                setCurrentContacts(getResponse.data.data);
             }
         }
         setGetResponse();

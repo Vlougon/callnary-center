@@ -27,7 +27,7 @@ export default function MedicalDataForm() {
             beneficiary_id: parseInt(params.userid),
         }));
 
-        if (params.id && params.id !== 'null') {
+        if (params.id && params.id !== 'null' && params.id !== 'undefined') {
             async function getResponse() {
                 const getMedicalResponse = await getOneMedicalData(params.id);
 
@@ -50,7 +50,7 @@ export default function MedicalDataForm() {
         }
     }, []);
 
-    if (params.id && params.id === 'null') {
+    if (params.id && (params.id === 'null' || params.id === 'undefined')) {
         const url = '/medicaldataform/' + params.userid;
         return <Navigate to={url} />
     }

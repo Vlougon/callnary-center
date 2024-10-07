@@ -7,16 +7,19 @@ import '../../assets/pages/lists/MedicalDataList.css';
 export default function MedicalDataList() {
     const [medicalDatas, setMedicalDatas] = useState([]);
     const [curretnMedicalDatas, setCurrentMedicalDatas] = useState([]);
-    const { getAllMedicalData, loading } = useAuthContext();
+    const { getUserBeneficiaryMedicalData, getAllMedicalDataByCenter, loading } = useAuthContext();
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getAllMedicalData();
+            const getResponse = assistantObject.role === 'supervisor'
+                ? await getAllMedicalDataByCenter(assistantObject.id)
+                : await getUserBeneficiaryMedicalData(assistantObject.id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
 
-                setMedicalDatas(getResponse.data.data.filter(md => md.beneficiary_id && md.beneficiary_id !== null));
-                setCurrentMedicalDatas(getResponse.data.data.filter(md => md.beneficiary_id && md.beneficiary_id !== null));
+                setMedicalDatas(getResponse.data.data);
+                setCurrentMedicalDatas(getResponse.data.data);
             }
         }
         setGetResponse();

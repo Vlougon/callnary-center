@@ -40,7 +40,8 @@
 }
 
 
-#beneficiaryList .btn-success {
+#beneficiaryList .btn-success,
+#beneficiaryList .btn-secondary {
     width: 60%;
 }
 

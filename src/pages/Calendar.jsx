@@ -27,13 +27,26 @@ export default function Calendar() {
         message: '',
         type: '',
     });
-    const { getAllReminders, getAllBeneficiaries, loading } = useAuthContext();
+    const { getUserReminders, getUserBeneficiaries, getAllRemindersByCenter, loading } = useAuthContext();
     const modalRef = useRef(null);
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         async function getReminderResponse() {
-            const remindersResposne = await getAllReminders();
+            const remindersResposne = assistantObject.role === 'supervisor'
+                ? await getAllRemindersByCenter(assistantObject.id)
+                : await getUserReminders(assistantObject.id);
             const reminderArray = [];
+
+            if (!remindersResposne || !remindersResposne.data | remindersResposne.data.data) {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: '¡No se Encontraron los Recordatorios!',
+                    type: 'danger',
+                });
+                return
+            }
 
             for (const reminder of remindersResposne.data.data) {
                 reminder.start_date = reminder.start_date.split('T')[0];
@@ -41,7 +54,7 @@ export default function Calendar() {
                 reminder.repeat = !reminder.repeat ? '' : reminder.repeat.split(',');
 
                 reminderArray.push({
-                    title: reminder.title,
+                    title: reminder.title + ' - ' + reminder.user_id.name + ': ' + reminder.beneficiary_id.name,
                     start: reminder.start_date + 'T' + reminder.start_time + 'Z',
                     end: reminder.end_date + 'T' + reminder.end_time + 'Z',
                     backgroundColor: reminder.background_color,
@@ -54,7 +67,7 @@ export default function Calendar() {
         getReminderResponse();
 
         async function getBeneficiaryResponse() {
-            const beneficiaryResponse = await getAllBeneficiaries();
+            const beneficiaryResponse = await getUserBeneficiaries(assistantObject.id);
 
             if (beneficiaryResponse.data.status && beneficiaryResponse.data.status === 'success') {
                 const beneficiaryObjectArray = beneficiaryResponse.data.data.map((beneficiary) => {

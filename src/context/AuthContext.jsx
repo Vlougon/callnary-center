@@ -491,7 +491,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/beneficiaryContacts/' + id);
+            const response = await axios.get('/api/V1/contacts/beneficiary/' + id);
             return response
         }
         catch (e) {
@@ -800,6 +800,138 @@ export function AuthProvider({ children }) {
         try {
             await csrf();
             const response = await axios.get('/api/V1/reminders/user/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getUserBeneficiaryContacts = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contacts/user/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getUserBeneficiaryMedicalData = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/medicaldatas/user/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getAllRemindersByCenter = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/remindersbycenter/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getAllBeneficiariesByCenter = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/beneficiariesbycenter/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getAllContactsByCenter = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/contactsbycenter/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getAllMedicalDataByCenter = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/medicaldatasbycenter/' + userId);
             return response
         }
         catch (e) {
@@ -1376,7 +1508,8 @@ export function AuthProvider({ children }) {
             getAllAssistantsWithDetails, getAllBeneficiariesWithDetails, getAllContactsWithDetails,
             getAllCallsWithDetails, getAllIncomingCallsWithDetails, getAllOutgoingCallsWithDetails,
             getAllRemindersWithDetails,
-            getUsersByCenter, getUserBeneficiaries, getUserReminders,
+            getUsersByCenter, getUserBeneficiaries, getUserReminders, getUserBeneficiaryContacts, getUserBeneficiaryMedicalData,
+            getAllRemindersByCenter, getAllBeneficiariesByCenter, getAllContactsByCenter, getAllMedicalDataByCenter, 
         }}>
             {children}
         </AuthContext.Provider>

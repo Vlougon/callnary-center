@@ -19,11 +19,17 @@ export default function BeneficiaryForm() {
         message: '',
         type: '',
     });
-    const { beneficiaryData, setBeneficiaryData, addressData, setAddressData, phones, setPhones, clearBeneficiaryForm } = useContext(FormContext);
+    const {
+        beneficiaryData, setBeneficiaryData, addressData, setAddressData,
+        phones, setPhones, aviableUsers, setAvaiableUsers, clearBeneficiaryForm
+    } = useContext(FormContext);
     const { getOneBeneficiary, createBeneficiary, updateBeneficiary, loading } = useAuthContext();
     const { getPhoneBeneficiary, createPhoneBeneficiary, updatePhoneBeneficiary } = useAuthContext();
     const { getBeneficiaryAddress, createAddress, updateAddress } = useAuthContext();
+    const { getUsersByCenter } = useAuthContext();
     const beneficiaryID = useParams();
+    const userID = useParams();
+    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
 
     useEffect(() => {
         clearBeneficiaryForm();
@@ -33,7 +39,7 @@ export default function BeneficiaryForm() {
             addressable_type: 'App\\Models\\Beneficiary',
         }));
 
-        if (beneficiaryID.id) {
+        if (beneficiaryID.id || userID.id) {
             async function setGetResponse() {
                 let succeded = false;
                 const getBeneficiaryResponse = await getOneBeneficiary(beneficiaryID.id);
@@ -41,10 +47,15 @@ export default function BeneficiaryForm() {
                 if (getBeneficiaryResponse.data.status && getBeneficiaryResponse.data.status === 'success') {
                     succeded = true;
 
-                    const beneficiaryObject = getBeneficiaryResponse.data.data;
+                    const beneficiaryObject = { ...getBeneficiaryResponse.data.data };
+
+                    setAvaiableUsers([{ value: beneficiaryObject.user_id.id, text: beneficiaryObject.user_id.name }]);
+
                     beneficiaryObject.birth_date = beneficiaryObject.birth_date.split('T')[0];
                     beneficiaryObject.second_surname = beneficiaryObject.second_surname ? beneficiaryObject.second_surname : '';
                     beneficiaryObject.rutine = beneficiaryObject.rutine ? beneficiaryObject.rutine : '';
+                    beneficiaryObject.audio_text = beneficiaryObject.audio_text ? beneficiaryObject.audio_text : '';
+                    beneficiaryObject.user_id = beneficiaryObject.user_id ? beneficiaryObject.user_id.id : '0';
 
                     delete beneficiaryObject.id;
 
@@ -86,6 +97,38 @@ export default function BeneficiaryForm() {
                 }
             }
             setGetResponse();
+
+        } else {
+            async function getCenterUsers() {
+                let succeded = false;
+                const getCenterUsersResponse = assistantObject.role === 'supervisor'
+                    ? await getUsersByCenter(assistantObject.id)
+                    : assistantObject.id;
+
+                if (getCenterUsersResponse.data && getCenterUsersResponse.data.status && getCenterUsersResponse.data.status === 'success') {
+                    succeded = true;
+
+                    console.log(getCenterUsersResponse);
+                } else if ((getCenterUsersResponse === assistantObject.id)) {
+                    succeded = true;
+
+                    setAvaiableUsers([{ value: getCenterUsersResponse, text: assistantObject.name }]);
+                }
+
+                if (!succeded) {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: '¡Error al Cargar los Datos!',
+                        type: 'danger',
+                    });
+
+                    return
+                }
+
+
+            }
+            getCenterUsers();
         }
     }, []);
 
@@ -98,7 +141,8 @@ export default function BeneficiaryForm() {
                 (beneficiaryData[key] && key === 'birth_date' && beneficiaryData[key] >= (new Date().getFullYear() - 5) + '/' + (new Date().getDay()).toString().padStart(2, '0') + '/' + (new Date().getMonth()).toString().padStart(2, '0')) ||
                 (beneficiaryData[key] && key === 'second_surname' && beneficiaryData[key].match(/^(?=\s*$)/)) ||
                 (beneficiaryData[key] && key === 'rutine' && beneficiaryData[key].match(/^(?=\s*$)/)) ||
-                (!beneficiaryData[key] && key !== 'second_surname' && key !== 'rutine') ||
+                (beneficiaryData[key] && key === 'audio_text' && beneficiaryData[key].match(/^(?=\s*$)/)) ||
+                (!beneficiaryData[key] && key !== 'second_surname' && key !== 'rutine' && key !== 'audio_text') ||
                 beneficiaryData[key] === '----/--/--') {
                 failed = true;
                 handleFormFieldsValues(document.querySelector('#' + key));
@@ -255,7 +299,7 @@ export default function BeneficiaryForm() {
             }
 
             <form action="/api/V1/beneficiaries" method="POST" onSubmit={handleSubmit}>
-                <BeneficiaryPersonalDataFieldSet />
+                <BeneficiaryPersonalDataFieldSet beneficiaryId={beneficiaryID.id} />
 
                 <SocialDataFieldSet />
 
