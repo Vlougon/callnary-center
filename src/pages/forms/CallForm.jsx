@@ -6,7 +6,6 @@ import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
-import AudiosPaths from '../../classes/AudiosPaths';
 import '../../assets/pages/forms/CallForm.css';
 
 export default function CallForm() {
