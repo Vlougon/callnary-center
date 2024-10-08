@@ -18,7 +18,7 @@ export default function ModalForm() {
     const { createReminder, loading } = useAuthContext();
 
     useEffect(() => {
-        const id = JSON.parse(sessionStorage.getItem('assistant')).id;
+        const id = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).id : null;
 
         setUserID(id);
     });

@@ -8,7 +8,9 @@ export default function MedicalDataList() {
     const [medicalDatas, setMedicalDatas] = useState([]);
     const [curretnMedicalDatas, setCurrentMedicalDatas] = useState([]);
     const { getUserBeneficiaryMedicalData, getAllMedicalDataByCenter, loading } = useAuthContext();
-    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant" };
 
     useEffect(() => {
         async function setGetResponse() {

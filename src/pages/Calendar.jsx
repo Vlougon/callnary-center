@@ -29,7 +29,9 @@ export default function Calendar() {
     });
     const { getUserReminders, getUserBeneficiaries, getAllRemindersByCenter, loading } = useAuthContext();
     const modalRef = useRef(null);
-    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant" };
 
     useEffect(() => {
         async function getReminderResponse() {

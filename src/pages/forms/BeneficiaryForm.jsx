@@ -29,7 +29,9 @@ export default function BeneficiaryForm() {
     const { getUsersByCenter } = useAuthContext();
     const beneficiaryID = useParams();
     const userID = useParams();
-    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant", name: "Anon" };
 
     useEffect(() => {
         clearBeneficiaryForm();

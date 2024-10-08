@@ -10,7 +10,9 @@ export default function ContactList() {
     const [curretnContacts, setCurrentContacts] = useState([]);
     const { getUserBeneficiaryContacts, getContactsBeneficiary, getAllContactsByCenter, loading } = useAuthContext();
     const beneficiaryID = useParams();
-    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant" };
 
     useEffect(() => {
         async function setGetResponse() {
