@@ -16,12 +16,14 @@ export default function CallForm() {
         type: '',
     });
     const { callData, setCallData, clearCallForm } = useContext(FormContext);
-    const { createCall, loading } = useAuthContext();
+    const { createCall, getOneBeneficiary, loading } = useAuthContext();
     const durationRef = useRef();
     const userId = JSON.parse(window.sessionStorage.getItem('assistant')).id;
-    const beneficiaryId = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id : 0;
+    const synth = window.speechSynthesis;
     const callKind = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).kind : '';
     const type = window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).type : '';
+    const beneficiaryId = durationRef && durationRef.beneficiary_id ? durationRef.beneficiary_id
+        : window.localStorage.getItem('kindObject') ? JSON.parse(window.localStorage.getItem('kindObject')).beneficiary_id : 0;
     const turn = callData.time >= '06:00' && callData.time <= '13:59' ? 'morning' :
         callData.time >= '14:00' && callData.time <= '21:59' ? 'afternoon' : 'night';
 
@@ -36,6 +38,21 @@ export default function CallForm() {
             user_id: userId,
         }));
 
+        async function setGetText() {
+            const voices = synth.getVoices();
+            const getTextResponse = await getOneBeneficiary(beneficiaryId);
+
+            if (getTextResponse && getTextResponse.data.status && getTextResponse.data.status === 'success') {
+                const gender = getTextResponse.data.data.gender;
+                const message = new SpeechSynthesisUtterance(getTextResponse.data.data.audio_text);
+
+                message.voice = voices[gender.match(/female/i) ? 1 : 2];
+
+                synth.speak(message);
+            }
+        }
+        setGetText();
+
         durationRef.current = setInterval(() => {
             setCallData((previousCallData) => ({
                 ...previousCallData,
@@ -43,32 +60,10 @@ export default function CallForm() {
             }));
         }, 1000);
 
-        if (type && type === 'Anonymous') {
-            const selectedAudioID = Math.floor(Math.random() * 5);
-            const audio = AudiosPaths.audios.filter(audio => audio.id === selectedAudioID)[0];
-
-            const beneficiaryCall = new Audio(audio.audioPath);
-            beneficiaryCall.autoplay = true;
-            beneficiaryCall.muted = false;
-            beneficiaryCall.play();
-
-            // Event listener that handles the end of the audio
-            const handleEnded = () => {
-                beneficiaryCall.pause();
-            };
-
-            beneficiaryCall.addEventListener('ended', handleEnded);
-
-            // Cleanup Function (Runs when the Component Unmounts)
-            return () => {
-                beneficiaryCall.removeEventListener('ended', handleEnded);
-                beneficiaryCall.pause();
-                clearInterval(durationRef.current);
-            };
-        }
-
         // Cleanup Function (Runs when the Component Unmounts)
         return () => {
+            synth.pause();
+            synth.cancel();
             clearInterval(durationRef.current);
         };
     }, []);
