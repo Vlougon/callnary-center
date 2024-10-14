@@ -13,7 +13,9 @@ export default function BeneficiaryList() {
     const params = useParams();
     const tableCols = Object.keys(params) && Object.keys(params).length === 0 ? 6 : params.kind === 'incoming' ? 3 : 2;
     const listType = Object.keys(params) && Object.keys(params).length === 0 ? 'beneficiary' : params.kind === 'incoming' ? 'incoming' : 'outgoing';
-    const assistantObject = JSON.parse(sessionStorage.getItem('assistant'));
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant" };
 
     useEffect(() => {
         async function setGetResponse() {

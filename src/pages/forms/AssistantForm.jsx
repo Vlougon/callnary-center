@@ -8,7 +8,11 @@ import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/forms/AssistantForm.css';
 
 export default function AssistantForm() {
-    if (JSON.parse(sessionStorage.getItem('assistant')).role !== 'supervisor') {
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { role: "assistant" };
+
+    if (assistantObject.role !== 'supervisor') {
         return <Navigate to='/' />
     }
 

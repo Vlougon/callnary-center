@@ -7,7 +7,11 @@ import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/lists/AssistantList.css';
 
 export default function AssistantList() {
-    if (JSON.parse(sessionStorage.getItem('assistant')).role !== 'supervisor') {
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant" };
+
+    if (assistantObject.role !== 'supervisor') {
         return <Navigate to='/' />
     }
 
@@ -17,7 +21,7 @@ export default function AssistantList() {
 
     useEffect(() => {
         async function setGetResponse() {
-            const getResponse = await getUsersByCenter(JSON.parse(sessionStorage.getItem('assistant')).id);
+            const getResponse = await getUsersByCenter(assistantObject.id);
 
             if (getResponse.data.status && getResponse.data.status === 'success') {
                 setUsers(getResponse.data.data);

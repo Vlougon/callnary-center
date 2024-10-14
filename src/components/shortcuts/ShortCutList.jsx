@@ -7,15 +7,18 @@ export default function ShortCutList({ FM, setFM }) {
     const [beneficiaryID, setBeneficiaryID] = useState(null);
     const [userRole, setUserRole] = useState('');
     const { shortCuts } = useContext(ShortCutsContext);
-    const { getFirstBeneficiary } = useAuthContext();
+    const { getRandomBeneficiary } = useAuthContext();
+    const assistantObject = sessionStorage.getItem('assistant')
+        ? JSON.parse(sessionStorage.getItem('assistant'))
+        : { id: null, role: "assistant", name: "Anon" };
 
     useEffect(() => {
-        const role = sessionStorage.getItem('assistant') ? JSON.parse(sessionStorage.getItem('assistant')).role : 'assistant';
+        const role = assistantObject.role;
 
         setUserRole(role && role !== null ? role : 'assitant');
 
         async function setResponse() {
-            const response = await getFirstBeneficiary();
+            const response = await getRandomBeneficiary(assistantObject.id);
             const responseID = response ? response.data.data.id : null;
 
             setBeneficiaryID(responseID);

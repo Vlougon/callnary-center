@@ -266,12 +266,34 @@ export function AuthProvider({ children }) {
         }
     };
 
-    const getFirstBeneficiary = async () => {
+    const getFirstBeneficiary = async (userId) => {
         setErrors({});
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/firstbeneficiary');
+            const response = await axios.get('/api/V1/firstbeneficiary/' + userId);
+            return response
+        }
+        catch (e) {
+            if (typeof e === 'object' && e !== null && 'response' in e) {
+                console.warn(e.response.data);
+                setErrors(e.response.data.errors);
+            }
+            else {
+                console.warn(e);
+            }
+        }
+        finally {
+            setTimeout(() => setLoading(false), 2000);
+        }
+    };
+
+    const getRandomBeneficiary = async (userId) => {
+        setErrors({});
+        setLoading(true);
+        try {
+            await csrf();
+            const response = await axios.get('/api/V1/randombeneficiary/' + userId);
             return response
         }
         catch (e) {
@@ -1509,7 +1531,8 @@ export function AuthProvider({ children }) {
             getAllCallsWithDetails, getAllIncomingCallsWithDetails, getAllOutgoingCallsWithDetails,
             getAllRemindersWithDetails,
             getUsersByCenter, getUserBeneficiaries, getUserReminders, getUserBeneficiaryContacts, getUserBeneficiaryMedicalData,
-            getAllRemindersByCenter, getAllBeneficiariesByCenter, getAllContactsByCenter, getAllMedicalDataByCenter, 
+            getAllRemindersByCenter, getAllBeneficiariesByCenter, getAllContactsByCenter, getAllMedicalDataByCenter,
+            getRandomBeneficiary,
         }}>
             {children}
         </AuthContext.Provider>

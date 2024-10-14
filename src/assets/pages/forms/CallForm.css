@@ -54,6 +54,19 @@
     box-shadow: 0 0 10px 3px rgba(220, 53, 69, .6);
 }
 
+#callForm #playButton {
+    position: fixed;
+    left: 1%;
+    bottom: 1%;
+    display: flex;
+    border: 2px solid black !important;
+}
+
+#callForm #playButton:hover {
+    background-color: #ffc107;
+    box-shadow: 0 0 10px 3px rgba(255, 198, 29, .6);
+}
+
 #callForm label {
     margin-bottom: 3px !important;
 }

@@ -39,7 +39,7 @@ export default function App() {
             <Route element={<Home />} path='/'></Route>
             <Route element={<BeneficiaryForm />} path='/beneficiaryform/:id?'></Route>
             <Route element={<AssistantForm />} path='/assistantform/:id?'></Route>
-            <Route element={<CallForm />} path='/callform'></Route>
+            <Route element={<CallForm />} path='/callform/:beneficiary_id?'></Route>
             <Route element={<MedicalDataForm />} path='/medicaldataform/:userid/:id?'></Route>
             <Route element={<ContactForm />} path='/contactform/:userid/:id?'></Route>
             <Route element={<BeneficiaryList />} path='/beneficiarylist/:kind?'></Route>
