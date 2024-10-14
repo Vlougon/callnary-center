@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
-import '../../assets/pages/auth/Login.css';
+import PasswordIcon from '../../components/ui/PasswordIcon';
+import '../../assets/pages/auth/Auth.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export default function Login() {
   };
 
   return (
-    <div id='login'>
+    <div id='auth'>
       <div className="container-fluid">
         <div className="row justify-content-center">
           <h2>
@@ -42,8 +43,9 @@ export default function Login() {
                   Contraseña:
                 </label>
               </div>
-              <div className="col-12">
+              <div className="col-12 input-group">
                 <input id="password" name="password" type="password" placeholder='Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <PasswordIcon />
               </div>
               <p className='text-danger'>
                 {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
@@ -60,8 +62,8 @@ export default function Login() {
             </div>
 
             <div className="row">
-              <p>
-                ¿No tienes cuenta?<Link to={'/register'}>Resgistrate</Link>
+              <p className='redirect'>
+                ¿No tienes cuenta? <Link to={'/register'}>Resgistrate</Link>
               </p>
             </div>
           </form>
