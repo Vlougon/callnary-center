@@ -4,10 +4,16 @@ import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
 import '../../assets/pages/auth/Login.css';
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [serialCode, setSerialCode] = useState('');
   const { login, errors, loading } = useAuthContext();
+
+  const changePasswordVisibility = () => {
+    console.log('A');
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,7 +25,7 @@ export default function Login() {
       <div className="container-fluid">
         <div className="row justify-content-center">
           <h2>
-            Inicio de Sesión
+            Registro de Asistente
           </h2>
         </div>
 
@@ -42,11 +48,35 @@ export default function Login() {
                   Contraseña:
                 </label>
               </div>
-              <div className="col-12">
+              <div className="col-12 input-group">
                 <input id="password" name="password" type="password" placeholder='Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <p className='text-danger'>
                 {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
+              </p>
+            </div>
+
+            <div className='col-12 text-sm-start mb-4'>
+              <div className="d-sm-flex justify-content-between mb-2 mb-sm-0">
+                <label htmlFor="password_confirmation" className="form-label">
+                  Confirmar Contraseña:
+                </label>
+              </div>
+              <div className="col-12 input-group">
+                <input id="password_confirmation" name="password_confirmation" type="password" placeholder='Confirmar Contraseña' autoComplete="current-password" className='form-control' value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <p className='text-danger'>
+                {errors ? errors.password_confirmation : false && (<span className="text-danger">{errors.password_confirmation[0]}</span>)}
+              </p>
+            </div>
+
+            <div className='col-12 text-sm-start mb-4'>
+              <label htmlFor="serial_code" className="form-label">
+                Código del Centro:
+              </label>
+              <input id="serial_code" name="serial_code" type="text" placeholder='Código del Centro' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
+              <p className='text-danger'>
+                {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
               </p>
             </div>
 
@@ -55,13 +85,13 @@ export default function Login() {
                 <Spinner loading={loading} spinnerColor={'white'} spinnerType={'spinner-border'}
                   spinnerStyle={{ width: '1rem', height: '1rem', }}
                 />
-                <span>Iniciar Sesión</span>
+                <span>Registrarse</span>
               </button>
             </div>
 
-            <div className="row">
+            <div>
               <p>
-                ¿No tienes cuenta?<Link to={'/register'}>Resgistrate</Link>
+                ¿Ya tienes una Cuenta?<Link to={'/login'}>Inicia Sesión</Link>
               </p>
             </div>
           </form>

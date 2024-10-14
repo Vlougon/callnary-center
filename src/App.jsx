@@ -20,6 +20,7 @@ import DocumentGenerator from "./pages/DocumentGenerator";
 import NotFound from "./pages/auth/NotFound";
 
 import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import ErrorBoundary from './components/ErrorBoundary';
 import './assets/app.css';
 
@@ -55,6 +56,7 @@ export default function App() {
           <GuestLayout />
         </ErrorBoundary>}>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </div>
