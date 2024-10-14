@@ -30,6 +30,10 @@ p.redirect {
     text-align: end;
 }
 
+.invalid-feedback p {
+    margin-bottom: 0;
+}
+
 @media (max-width: 300px) {
     #auth .container-fluid {
         max-width: 95%;

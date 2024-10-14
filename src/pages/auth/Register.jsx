@@ -6,6 +6,7 @@ import PasswordIcon from '../../components/ui/PasswordIcon';
 import '../../assets/pages/auth/Auth.css';
 
 export default function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -23,9 +24,21 @@ export default function Register() {
     e.preventDefault();
     let failedChecking = false;
 
+    if (name.match(/^(?=\s*$)/)) {
+      document.querySelector('#name').className += ' is-invalid';
+      document.querySelector('#name').nextElementSibling.className += ' d-block';
+      failedChecking = true;
+    }
+
+    if (email.match(/^(?=\s*$)/)) {
+      document.querySelector('#email').className += ' is-invalid';
+      document.querySelector('#email').nextElementSibling.className += ' d-block';
+      failedChecking = true;
+    }
+
     if (!password.match(/^(?=.{10,})\S*$/) || password.match(/^(?=\s*$)/)) {
       document.querySelector('#password').className += ' is-invalid';
-      document.querySelector('#serial_code').nextElementSibling.nextElementSibling.className += ' d-block';
+      document.querySelector('#password').nextElementSibling.nextElementSibling.className += ' d-block';
       failedChecking = true;
     }
 
@@ -33,7 +46,7 @@ export default function Register() {
       password !== passwordConfirmation
     ) {
       document.querySelector('#password_confirmation').className += ' is-invalid';
-      document.querySelector('#serial_code').nextElementSibling.nextElementSibling.className += ' d-block';
+      document.querySelector('#password_confirmation').nextElementSibling.className += ' d-block';
       failedChecking = true;
     }
 
@@ -47,7 +60,7 @@ export default function Register() {
       return;
     }
 
-    register({ email, password, passwordConfirmation, serialCode });
+    register({ name, email, password, passwordConfirmation, serialCode });
   };
 
   return (
@@ -63,13 +76,23 @@ export default function Register() {
           <form method="POST" onSubmit={handleRegister}>
 
             <div className='col-12 text-sm-start mb-4'>
+              <label htmlFor="name" className="form-label">
+                Nombre:
+              </label>
+              <input id="name" name="name" type="text" autoComplete="no" placeholder='Nombre' className='form-control' value={name} onChange={(e) => setName(e.target.value)} onClick={handleRegisterInput} />
+              <div className="invalid-feedback">
+                <p>¡Es necesario un Nombre de Usuario!</p>
+              </div>
+            </div>
+
+            <div className='col-12 text-sm-start mb-4'>
               <label htmlFor="email" className="form-label">
                 Email:
               </label>
-              <input id="email" name="email" type="email" autoComplete="email" placeholder='Email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} />
-              <p className='text-danger'>
-                {errors ? errors.email : false && (<span className="text-danger">{errors.email[0]}</span>)}
-              </p>
+              <input id="email" name="email" type="email" autoComplete="email" placeholder='Email' className='form-control' value={email} onChange={(e) => setEmail(e.target.value)} onClick={handleRegisterInput} />
+              <div className="invalid-feedback">
+                <p>¡Se debe usar un Email válido!</p>
+              </div>
             </div>
 
             <div className='col-12 text-sm-start mb-4'>
@@ -85,9 +108,6 @@ export default function Register() {
                   <p>¡La Contraseña Debe tener 10 carácteres como mínimo (No debe tener espacios)!</p>
                 </div>
               </div>
-              <p className='text-danger'>
-                {errors ? errors.password : false && (<span className="text-danger">{errors.password[0]}</span>)}
-              </p>
             </div>
 
             <div className='col-12 text-sm-start mb-4'>
@@ -103,9 +123,6 @@ export default function Register() {
                   <p>¡Las Contraseñas Deben ser iguales!</p>
                 </div>
               </div>
-              <p className='text-danger'>
-                {errors ? errors.password_confirmation : false && (<span className="text-danger">{errors.password_confirmation[0]}</span>)}
-              </p>
             </div>
 
             <div className='col-12 text-sm-start mb-4'>
@@ -116,9 +133,6 @@ export default function Register() {
               <div className="invalid-feedback">
                 <p>¡Introduzca un Código del Centro Válido!</p>
               </div>
-              <p className='text-danger'>
-                {errors ? errors.serial_code : false && (<span className="text-danger">{errors.serial_code[0]}</span>)}
-              </p>
             </div>
 
             <div>
