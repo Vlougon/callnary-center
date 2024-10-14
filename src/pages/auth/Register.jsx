@@ -9,9 +9,9 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [serialCode, setSerialCode] = useState('');
-  const { register, errors, loading } = useAuthContext();
+  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [serial_code, setSerialCode] = useState('');
+  const { register, loading } = useAuthContext();
 
   const handleRegisterInput = (element) => {
     element.target.className = 'form-control';
@@ -42,15 +42,15 @@ export default function Register() {
       failedChecking = true;
     }
 
-    if (!passwordConfirmation.match(/^(?=.{10,})\S*$/) || passwordConfirmation.match(/^(?=\s*$)/) ||
-      password !== passwordConfirmation
+    if (!password_confirmation.match(/^(?=.{10,})\S*$/) || password_confirmation.match(/^(?=\s*$)/) ||
+      password !== password_confirmation
     ) {
       document.querySelector('#password_confirmation').className += ' is-invalid';
       document.querySelector('#password_confirmation').nextElementSibling.className += ' d-block';
       failedChecking = true;
     }
 
-    if (serialCode.length != 32) {
+    if (serial_code.length != 32) {
       document.querySelector('#serial_code').className += ' is-invalid';
       document.querySelector('#serial_code').nextElementSibling.className += ' d-block';
       failedChecking = true;
@@ -60,7 +60,7 @@ export default function Register() {
       return;
     }
 
-    register({ name, email, password, passwordConfirmation, serialCode });
+    register({ name, email, password, password_confirmation, serial_code });
   };
 
   return (
@@ -117,7 +117,7 @@ export default function Register() {
                 </label>
               </div>
               <div className="col-12 input-group has-validation">
-                <input id="password_confirmation" name="password_confirmation" type="password" placeholder='Confirmar Contraseña' autoComplete="current-password" className='form-control' value={passwordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} onClick={handleRegisterInput} />
+                <input id="password_confirmation" name="password_confirmation" type="password" placeholder='Confirmar Contraseña' autoComplete="current-password" className='form-control' value={password_confirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} onClick={handleRegisterInput} />
                 <PasswordIcon />
                 <div className="invalid-feedback">
                   <p>¡Las Contraseñas Deben ser iguales!</p>
@@ -129,7 +129,7 @@ export default function Register() {
               <label htmlFor="serial_code" className="form-label">
                 Código del Centro:
               </label>
-              <input id="serial_code" name="serial_code" type="text" placeholder='Código del Centro' className='form-control' value={serialCode} onChange={(e) => setSerialCode(e.target.value)} onClick={handleRegisterInput} />
+              <input id="serial_code" name="serial_code" type="text" placeholder='Código del Centro' className='form-control' value={serial_code} onChange={(e) => setSerialCode(e.target.value)} onClick={handleRegisterInput} />
               <div className="invalid-feedback">
                 <p>¡Introduzca un Código del Centro Válido!</p>
               </div>
