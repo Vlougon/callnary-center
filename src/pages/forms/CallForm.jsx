@@ -6,6 +6,8 @@ import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
+import playButton from '/images/playButton.png';
+import pauseButton from '/images/pauseButton.png';
 import '../../assets/pages/forms/CallForm.css';
 
 export default function CallForm() {
@@ -122,6 +124,18 @@ export default function CallForm() {
         setPostResponse();
     };
 
+    const handleSpeakerPause = () => {
+        const playButtonImage = document.querySelector('#playButton>img');
+
+        if (synth.paused) {
+            synth.resume();
+            playButtonImage.setAttribute('src', pauseButton)
+        } else {
+            synth.pause();
+            playButtonImage.setAttribute('src', playButton)
+        }
+    }
+
     const handleFormFieldsValues = (target) => {
         target.className += ' is-invalid';
         target.previousElementSibling.className += ' is-invalid';
@@ -158,6 +172,12 @@ export default function CallForm() {
                     <span>Finalizar Llamada</span>
                 </button>
             </form>
+
+            {type && type === "Anonymous" &&
+                <button id='playButton' className='btn btn-warning'>
+                    <img src={pauseButton} alt="Play Button" onClick={handleSpeakerPause} />
+                </button>
+            }
         </div>
     )
 }
