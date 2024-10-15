@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { FormContext } from "../../context/FormContext";
+import PasswordIcon from '../../components/ui/PasswordIcon';
 
 export default function PasswordInput({ nameID, passwordText, formUsed, boxLength }) {
     const { assistantData } = useContext(FormContext);
@@ -8,7 +9,9 @@ export default function PasswordInput({ nameID, passwordText, formUsed, boxLengt
     const handlePasswordInput = (element) => {
         element.target.className = 'form-control';
         element.target.previousElementSibling.className = 'input-group-text';
-        element.target.nextElementSibling.className = 'invalid-feedback';
+        element.target.getAttribute('id').match(/password/ig)
+            ? element.target.nextElementSibling.nextElementSibling.className = 'invalid-feedback'
+            : element.target.nextElementSibling.className = 'invalid-feedback';
     };
 
     const handleOnChangeValue = (operation) => {
@@ -60,6 +63,7 @@ export default function PasswordInput({ nameID, passwordText, formUsed, boxLengt
                     </svg>
                 </span>
                 <input type="password" id={nameID} name={nameID} value={handleOnChangeValue('value')} className='form-control' placeholder={passwordText} aria-describedby={nameID + passwordText} onChange={handleOnChangeValue('onChange')} onClick={handlePasswordInput} />
+                <PasswordIcon />
 
                 <FeedBackRender />
             </div>

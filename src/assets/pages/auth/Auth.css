@@ -1,4 +1,4 @@
-#login {
+#auth {
     background-color: #0d6efd;
     display: flex;
     justify-content: center;
@@ -7,51 +7,65 @@
     min-height: 100vh;
 }
 
-#login h2 {
+#auth h2 {
     width: fit-content;
     color: white;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-#login form {
+#auth form {
     background-color: white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 13px 3px rgba(0, 0, 0, .4);
 }
 
+span.input-group-text:hover {
+    cursor: pointer;
+}
+
+p.redirect {
+    margin-bottom: 0;
+    margin-top: 15px;
+    text-align: end;
+}
+
+.invalid-feedback p {
+    margin-bottom: 0;
+}
+
 @media (max-width: 300px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 95%;
     }
 }
 
 @media (min-width: 300px) and (max-width: 576px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 85%;
     }
 }
 
 @media (min-width: 576px) and (max-width: 768px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 75%;
     }
 }
 
 @media (min-width: 768px) and (max-width: 992px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 60%;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 45%;
     }
 }
 
 @media (min-width: 1200px) {
-    #login .container-fluid {
+    #auth .container-fluid {
         max-width: 35%;
     }
 }

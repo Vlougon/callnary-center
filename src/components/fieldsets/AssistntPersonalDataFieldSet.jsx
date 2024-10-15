@@ -3,6 +3,7 @@ import { FormContext } from '../../context/FormContext';
 import TextInput from '../inputs/TextInput';
 import PasswordInput from '../inputs/PasswordInput';
 import PhoneNumberInput from '../inputs/PhoneNumberInput';
+import PasswordIcon from '../../components/ui/PasswordIcon';
 
 export default function AssistantPersonalDataFieldSet({ passwordConfirmation, setPasswordConfirmation, disabledInput = false }) {
     const { assistantData, handleAssistantData } = useContext(FormContext);
@@ -14,7 +15,9 @@ export default function AssistantPersonalDataFieldSet({ passwordConfirmation, se
     const handleAssistantInputs = (element) => {
         element.target.className = 'form-control';
         element.target.previousElementSibling.className = 'input-group-text';
-        element.target.nextElementSibling.className = 'invalid-feedback';
+        element.target.getAttribute('id').match(/password/ig)
+            ? element.target.nextElementSibling.nextElementSibling.className = 'invalid-feedback'
+            : element.target.nextElementSibling.className = 'invalid-feedback';
     };
 
     return (
@@ -79,6 +82,7 @@ export default function AssistantPersonalDataFieldSet({ passwordConfirmation, se
                             placeholder='Confirmación de la Contraseña' aria-describedby='psswrdCnfrmtn'
                             onClick={handleAssistantInputs} onChange={handlePasswordConfirmation}
                         />
+                        <PasswordIcon />
                         <div className="invalid-feedback">
                             ¡Las Contraseñas deben ser Iguales!
                         </div>

@@ -206,7 +206,9 @@ export default function AssistantForm() {
     const handleFormFieldsValues = (target) => {
         target.className += ' is-invalid';
         target.previousElementSibling.className += ' is-invalid';
-        target.nextElementSibling.className += ' d-block';
+        target.getAttribute('id').match(/password/)
+            ? target.nextElementSibling.nextElementSibling.className += ' d-block'
+            : target.nextElementSibling.className += ' d-block';
     };
 
     const hiddeAlert = () => {
