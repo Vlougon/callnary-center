@@ -623,7 +623,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimateuser');
+            const response = await axios.get('/api/V1/ultimateuser', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -645,7 +645,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimatebeneficiary');
+            const response = await axios.get('/api/V1/ultimatebeneficiary/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -667,7 +667,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimatecontact');
+            const response = await axios.get('/api/V1/ultimatecontact/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -689,7 +689,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimatecall');
+            const response = await axios.get('/api/V1/ultimatecall/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -711,7 +711,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimateincomingcall');
+            const response = await axios.get('/api/V1/ultimateincomingcall/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -733,7 +733,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimateoutgoingcall');
+            const response = await axios.get('/api/V1/ultimateoutgoingcall/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
@@ -755,7 +755,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try {
             await csrf();
-            const response = await axios.get('/api/V1/ultimatereminder');
+            const response = await axios.get('/api/V1/ultimatereminder/', { headers: { 'User-Id': assistant.id } });
             return response
         }
         catch (e) {
