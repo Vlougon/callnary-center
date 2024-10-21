@@ -37,7 +37,8 @@ export default function ContactForm() {
 
                 const getContactResponse = await getOneContact(params.id);
 
-                if (getContactResponse.data.status && getContactResponse.data.status === 'success') {
+                if (getContactResponse && getContactResponse.data &&
+                    getContactResponse.data.status && getContactResponse.data.status === 'success') {
                     succeded = true;
 
                     const contactObject = getContactResponse.data.data;
@@ -52,7 +53,7 @@ export default function ContactForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Cargar los Datos!',
+                        message: getContactResponse.message,
                         type: 'danger',
                     });
 
@@ -131,22 +132,27 @@ export default function ContactForm() {
 
         if (params.id) {
             async function getPutResponse() {
+                let errorMessage = '';
+
                 const updatedContact = await updateContact(contactData, params.id);
-                if (!updatedContact || updatedContact.data.status !== 'success') {
+                if (!updatedContact || !updatedContact.data || updatedContact.data.status !== 'success') {
                     failed = true;
+                    errorMessage = updatedContact.message;
                 }
 
                 if (!failed) {
                     const updatedPhone = await updatePhoneContact(phones, globalPhoneId);
-                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                    if (!updatedPhone || !updatedPhone.data || updatedPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = updatedPhone.message;
                     }
                 }
 
                 if (!failed) {
                     const updatedAddress = await updateAddress(addressData, globalAddressId);
-                    if (!updatedAddress || updatedAddress.data.status !== 'success') {
+                    if (!updatedAddress || !updatedAddress.data || updatedAddress.data.status !== 'success') {
                         failed = true;
+                        errorMessage = updatedAddress.message;
                     }
                 }
 
@@ -154,7 +160,7 @@ export default function ContactForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Actualizar los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
 
@@ -171,15 +177,19 @@ export default function ContactForm() {
             getPutResponse();
         } else {
             async function getPostResponse() {
+                let errorMessage = '';
+
                 const createdContact = await createContact(contactData);
-                if (!createdContact || createdContact.data.status !== 'success') {
+                if (!createdContact || !createdContact.data || createdContact.data.status !== 'success') {
                     failed = true;
+                    errorMessage = createdContact.message;
                 }
 
                 if (!failed) {
                     const createdLink = await createBeneficiaryContactLink({ beneficiary_id: params.userid, contact_id: createdContact.data.data.id });
-                    if (!createdLink || createdLink.data.status !== 'success') {
+                    if (!createdLink || !createdLink.data || createdLink.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdLink.message;
                     }
                 }
 
@@ -187,8 +197,9 @@ export default function ContactForm() {
                     const phone = phones;
                     phone['contact_id'] = createdContact.data.data.id;
                     const createdPhone = await createPhoneContact(phone);
-                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                    if (!createdPhone || !createdPhone.data || createdPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdPhone.message;
                     }
                 }
 
@@ -196,8 +207,9 @@ export default function ContactForm() {
                     const address = addressData;
                     address['addressable_id'] = createdContact.data.data.id;
                     const createdAddress = await createAddress(address);
-                    if (!createdAddress || createdAddress.data.status !== 'success') {
+                    if (!createdAddress || !createdAddress.data || createdAddress.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdAddress.message;
                     }
                 }
 
@@ -205,7 +217,7 @@ export default function ContactForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Crear los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
 
