@@ -39,12 +39,13 @@ export default function Calendar() {
                 ? await getAllRemindersByCenter(assistantObject.id)
                 : await getUserReminders(assistantObject.id);
             const reminderArray = [];
+            console.log(remindersResposne.data);
 
-            if (!remindersResposne || !remindersResposne.data | remindersResposne.data.data) {
+            if (remindersResposne && remindersResposne.data && remindersResposne.data.status !== 'success') {
                 setShowFM({
                     ...showFM,
                     render: true,
-                    message: '¡No se Encontraron los Recordatorios!',
+                    message: remindersResposne.message,
                     type: 'danger',
                 });
                 return
@@ -71,12 +72,21 @@ export default function Calendar() {
         async function getBeneficiaryResponse() {
             const beneficiaryResponse = await getUserBeneficiaries(assistantObject.id);
 
-            if (beneficiaryResponse.data.status && beneficiaryResponse.data.status === 'success') {
+            if (beneficiaryResponse && beneficiaryResponse.data &&
+                beneficiaryResponse.data.status && beneficiaryResponse.data.status === 'success') {
                 const beneficiaryObjectArray = beneficiaryResponse.data.data.map((beneficiary) => {
                     return { value: beneficiary.id, text: beneficiary.name }
                 });
 
                 setBeneficiaries(beneficiaryObjectArray);
+            } else {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: beneficiaryResponse.message,
+                    type: 'danger',
+                });
+                return
             }
         }
         getBeneficiaryResponse();
