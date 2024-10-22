@@ -43,13 +43,21 @@ export default function CallForm() {
             const voices = synth.getVoices();
             const getTextResponse = await getOneBeneficiary(beneficiaryId);
 
-            if (getTextResponse && getTextResponse.data.status && getTextResponse.data.status === 'success') {
+            if (getTextResponse && getTextResponse.data && getTextResponse.data.status
+                && getTextResponse.data.status === 'success') {
                 const gender = getTextResponse.data.data.gender;
                 const message = new SpeechSynthesisUtterance(getTextResponse.data.data.audio_text);
 
                 message.voice = voices[gender.match(/female/i) ? 1 : 2];
 
                 synth.speak(message);
+            } else {
+                setShowFM({
+                    ...showFM,
+                    render: true,
+                    message: getTextResponse.message,
+                    type: 'danger',
+                });
             }
         }
         setGetText();
@@ -98,7 +106,7 @@ export default function CallForm() {
         async function setPostResponse() {
             const createdCall = await createCall(callData);
 
-            if (createdCall.data.status && createdCall.data.status !== 'success') {
+            if (!createdCall || !createdCall.data || !createdCall.data.status || createdCall.data.status !== 'success') {
                 failed = true;
             }
 

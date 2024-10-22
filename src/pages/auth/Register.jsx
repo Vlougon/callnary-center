@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
 import PasswordIcon from '../../components/ui/PasswordIcon';
+import FlashMessage from '../../components/flashmessages/FlashMessage';
 import '../../assets/pages/auth/Auth.css';
 
 export default function Register() {
@@ -19,6 +20,21 @@ export default function Register() {
       ? element.target.nextElementSibling.nextElementSibling.className = 'invalid-feedback'
       : element.target.nextElementSibling.className = 'invalid-feedback';
   }
+
+  const [showFM, setShowFM] = useState({
+    render: false,
+    message: '',
+    type: '',
+  });
+
+  const hiddeAlert = () => {
+    setShowFM({
+      ...showFM,
+      render: false,
+      message: '',
+      type: '',
+    });
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -60,11 +76,23 @@ export default function Register() {
       return;
     }
 
-    register({ name, email, password, password_confirmation, serial_code });
+    const registerResposne = await register({ name, email, password, password_confirmation, serial_code });
+
+    if (registerResposne && registerResposne.response && registerResposne.response.status !== 204) {
+      setShowFM({
+        ...showFM,
+        render: true,
+        message: registerResposne.response.data.message,
+        type: 'danger',
+      });
+    }
   };
 
   return (
     <div id='auth'>
+      {showFM.render &&
+        <FlashMessage flashMessgae={showFM.message} flashType={showFM.type} closeHandler={hiddeAlert} />
+      }
       <div className="container-fluid">
         <div className="row justify-content-center">
           <h2>

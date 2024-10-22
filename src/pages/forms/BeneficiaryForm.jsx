@@ -46,7 +46,8 @@ export default function BeneficiaryForm() {
                 let succeded = false;
                 const getBeneficiaryResponse = await getOneBeneficiary(beneficiaryID.id);
 
-                if (getBeneficiaryResponse.data.status && getBeneficiaryResponse.data.status === 'success') {
+                if (getBeneficiaryResponse && getBeneficiaryResponse.data && getBeneficiaryResponse.data.status
+                    && getBeneficiaryResponse.data.status === 'success') {
                     succeded = true;
 
                     const beneficiaryObject = { ...getBeneficiaryResponse.data.data };
@@ -68,7 +69,7 @@ export default function BeneficiaryForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Cargar los Datos!',
+                        message: getBeneficiaryResponse.message,
                         type: 'danger',
                     });
 
@@ -102,26 +103,27 @@ export default function BeneficiaryForm() {
 
         } else {
             async function getCenterUsers() {
-                let succeded = false;
+                let failed = false;
+                let errorMessage = '';
+
                 const getCenterUsersResponse = assistantObject.role === 'supervisor'
                     ? await getUsersByCenter(assistantObject.id)
                     : assistantObject.id;
 
-                if (getCenterUsersResponse.data && getCenterUsersResponse.data.status && getCenterUsersResponse.data.status === 'success') {
-                    succeded = true;
-
-                    console.log(getCenterUsersResponse);
-                } else if ((getCenterUsersResponse === assistantObject.id)) {
-                    succeded = true;
-
+                if (getCenterUsersResponse === assistantObject.id) {
                     setAvaiableUsers([{ value: getCenterUsersResponse, text: assistantObject.name }]);
+
+                } else if (!getCenterUsersResponse || !getCenterUsersResponse.data || !getCenterUsersResponse.data.status
+                    || getCenterUsersResponse.data.status !== 'success') {
+
+                    failed = true;
                 }
 
-                if (!succeded) {
+                if (failed) {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Cargar los Datos!',
+                        message: getCenterUsersResponse.message,
                         type: 'danger',
                     });
 
@@ -181,22 +183,27 @@ export default function BeneficiaryForm() {
         if (beneficiaryID.id) {
 
             async function setPutResponse() {
+                let errorMessage = '';
+
                 const updatedBenficiary = await updateBeneficiary(beneficiaryData, beneficiaryID.id);
-                if (!updatedBenficiary || updatedBenficiary.data.status !== 'success') {
+                if (!updatedBenficiary || !updatedBenficiary.data || updatedBenficiary.data.status !== 'success') {
                     failed = true;
+                    errorMessage = updatedBenficiary.message;
                 }
 
                 if (!failed) {
                     const updatedPhone = await updatePhoneBeneficiary(phones, globalPhoneId);
-                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                    if (!updatedPhone || !updatedPhone.data || updatedPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = updatedPhone.message;
                     }
                 }
 
                 if (!failed) {
                     const updatedAddress = await updateAddress(addressData, globalAddressId);
-                    if (!updatedAddress || updatedAddress.data.status !== 'success') {
+                    if (!updatedAddress || !updatedAddress.data || updatedAddress.data.status !== 'success') {
                         failed = true;
+                        errorMessage = updatedAddress.message;
                     }
                 }
 
@@ -204,7 +211,7 @@ export default function BeneficiaryForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Actualizar los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
                     return
@@ -221,17 +228,21 @@ export default function BeneficiaryForm() {
 
         } else {
             async function setPostResponse() {
+                let errorMessage = '';
+
                 const createdBeneficiary = await createBeneficiary(beneficiaryData);
-                if (!createdBeneficiary || createdBeneficiary.data.status !== 'success') {
+                if (!createdBeneficiary || !createdBeneficiary.data || createdBeneficiary.data.status !== 'success') {
                     failed = true;
+                    errorMessage = createdBeneficiary.message;
                 }
 
                 if (!failed) {
                     const phone = phones;
                     phone['beneficiary_id'] = createdBeneficiary.data.data.id;
                     const createdPhones = await createPhoneBeneficiary(phone);
-                    if (!createdPhones || createdPhones.data.status !== 'success') {
+                    if (!createdPhones || !createdPhones.data || createdPhones.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdPhones.message;
                     }
                 }
 
@@ -239,8 +250,9 @@ export default function BeneficiaryForm() {
                     const address = addressData;
                     address['addressable_id'] = createdBeneficiary.data.data.id;
                     const createdAddress = await createAddress(address);
-                    if (!createdAddress || createdAddress.data.status !== 'success') {
+                    if (!createdAddress || !createdAddress.data || createdAddress.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdAddress.message;
                     }
                 }
 
@@ -248,7 +260,7 @@ export default function BeneficiaryForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Enviar los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
                     return

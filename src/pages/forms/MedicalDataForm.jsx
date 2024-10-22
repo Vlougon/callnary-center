@@ -31,7 +31,8 @@ export default function MedicalDataForm() {
             async function getResponse() {
                 const getMedicalResponse = await getOneMedicalData(params.id);
 
-                if (getMedicalResponse.data.status && getMedicalResponse.data.status === 'success') {
+                if (getMedicalResponse && getMedicalResponse.data &&
+                    getMedicalResponse.data.status && getMedicalResponse.data.status === 'success') {
                     const medicalObject = getMedicalResponse.data.data;
 
                     for (const key in medicalObject) {
@@ -44,6 +45,13 @@ export default function MedicalDataForm() {
                     delete medicalObject.id;
 
                     setMedicalFormValues(medicalObject)
+                } else {
+                    setShowFM({
+                        ...showFM,
+                        render: true,
+                        message: getMedicalResponse.message,
+                        type: 'danger',
+                    });
                 }
             }
             getResponse();
@@ -95,11 +103,11 @@ export default function MedicalDataForm() {
             async function setPutResponse() {
                 const updatedMEdicalData = await updateMedicalData(medicalFormValues, params.id);
 
-                if (!updatedMEdicalData || updatedMEdicalData.data.status !== 'success') {
+                if (!updatedMEdicalData || !updatedMEdicalData.data || updatedMEdicalData.data.status !== 'success') {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Actualizar los Datos!',
+                        message: updatedMEdicalData.message,
                         type: 'danger',
                     });
 
@@ -118,11 +126,11 @@ export default function MedicalDataForm() {
             async function setPostResponse() {
                 const createdMedicalData = await createMedicalData(medicalFormValues);
 
-                if (!createdMedicalData || createdMedicalData.data.status !== 'success') {
+                if (!createdMedicalData || !createdMedicalData.data || createdMedicalData.data.status !== 'success') {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: createdMedicalData.data.message,
+                        message: createdMedicalData.message,
                         type: 'danger',
                     });
 

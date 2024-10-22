@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e;
             }
             else {
                 console.warn(e);
@@ -212,6 +213,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -234,6 +236,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -344,6 +347,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -366,6 +370,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -388,6 +393,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -432,6 +438,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -476,6 +483,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -542,6 +550,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -564,6 +573,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -784,6 +794,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -806,6 +817,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -828,6 +840,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -894,6 +907,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -993,6 +1007,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1015,6 +1030,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1037,6 +1053,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1059,6 +1076,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1080,7 +1098,7 @@ export function AuthProvider({ children }) {
         catch (e) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 setErrors(e.response.data.errors);
-                return e.response;
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1103,6 +1121,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1125,6 +1144,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1147,6 +1167,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1169,6 +1190,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response;
             }
             else {
                 console.warn(e);
@@ -1213,6 +1235,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1245,6 +1268,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1267,6 +1291,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1289,6 +1314,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1311,6 +1337,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1333,6 +1360,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1355,6 +1383,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1377,6 +1406,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);
@@ -1399,6 +1429,7 @@ export function AuthProvider({ children }) {
             if (typeof e === 'object' && e !== null && 'response' in e) {
                 console.warn(e.response.data);
                 setErrors(e.response.data.errors);
+                return e.response.data;
             }
             else {
                 console.warn(e);

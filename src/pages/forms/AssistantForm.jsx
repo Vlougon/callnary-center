@@ -36,7 +36,8 @@ export default function AssistantForm() {
                 let succeded = false;
                 const getAssistantResponse = await getOneUser(assistantID.id);
 
-                if (getAssistantResponse.data.status && getAssistantResponse.data.status === 'success') {
+                if (getAssistantResponse && getAssistantResponse.data &&
+                    getAssistantResponse.data.status && getAssistantResponse.data.status === 'success') {
                     succeded = true;
 
                     const assitantObject = getAssistantResponse.data.data;
@@ -52,7 +53,7 @@ export default function AssistantForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Cargar los Datos!',
+                        message: getAssistantResponse.message,
                         type: 'danger',
                     });
 
@@ -127,20 +128,25 @@ export default function AssistantForm() {
 
         if (assistantID.id) {
             async function setPutResponse() {
+                let errorMessage = '';
+
                 const updatedUser = await updateUser(assistantData, assistantID.id);
-                if (!updatedUser || updatedUser.data.status !== 'success') {
+                if (!updatedUser || !updatedUser.data || updatedUser.data.status !== 'success') {
                     failed = true;
+                    errorMessage = updatedUser.message;
                 }
 
                 if (!failed && globalPhoneId !== 0) {
                     const updatedPhone = await updatePhoneUser(phones, globalPhoneId);
-                    if (!updatedPhone || updatedPhone.data.status !== 'success') {
+                    if (!updatedPhone || !updatedPhone.data || updatedPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = updatedPhone.message;
                     }
-                } else {
+                } else if (!failed) {
                     const createdPhone = await createPhoneUser(phones);
-                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                    if (!createdPhone || !createdPhone.data || createdPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdPhone.message;
                     }
                 }
 
@@ -148,7 +154,7 @@ export default function AssistantForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Actualizar los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
 
@@ -167,14 +173,18 @@ export default function AssistantForm() {
         } else {
             async function setPostResponse() {
                 const createdUser = await createUser(assistantData);
-                if (!createdUser || createdUser.data.status !== 'success') {
+                let errorMessage = '';
+
+                if (!createdUser || !createdUser.data || createdUser.data.status !== 'success') {
                     failed = true;
+                    errorMessage = createdUser.message;
                 }
 
                 if (!failed) {
                     const createdPhone = await createPhoneUser({ user_id: createdUser.data.data.id, phone_number: phones.phone_number });
-                    if (!createdPhone || createdPhone.data.status !== 'success') {
+                    if (!createdPhone || !createdPhone.data || createdPhone.data.status !== 'success') {
                         failed = true;
+                        errorMessage = createdPhone.message;
                     }
                 }
 
@@ -182,7 +192,7 @@ export default function AssistantForm() {
                     setShowFM({
                         ...showFM,
                         render: true,
-                        message: '¡Error al Enviar los Datos!',
+                        message: errorMessage,
                         type: 'danger',
                     });
 
