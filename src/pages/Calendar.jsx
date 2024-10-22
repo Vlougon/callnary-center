@@ -39,9 +39,8 @@ export default function Calendar() {
                 ? await getAllRemindersByCenter(assistantObject.id)
                 : await getUserReminders(assistantObject.id);
             const reminderArray = [];
-            console.log(remindersResposne.data);
 
-            if (remindersResposne && remindersResposne.data && remindersResposne.data.status !== 'success') {
+            if (remindersResposne && (!remindersResposne.data || remindersResposne.data.status !== 'success')) {
                 setShowFM({
                     ...showFM,
                     render: true,

@@ -110,13 +110,13 @@ export default function BeneficiaryForm() {
                     ? await getUsersByCenter(assistantObject.id)
                     : assistantObject.id;
 
-                if (!getCenterUsersResponse || !getCenterUsersResponse.data || !getCenterUsersResponse.data.status
-                    || getCenterUsersResponse.data.status !== 'success') {
-                    failed = true;
-
-                } else if ((getCenterUsersResponse === assistantObject.id)) {
-
+                if (getCenterUsersResponse === assistantObject.id) {
                     setAvaiableUsers([{ value: getCenterUsersResponse, text: assistantObject.name }]);
+
+                } else if (!getCenterUsersResponse || !getCenterUsersResponse.data || !getCenterUsersResponse.data.status
+                    || getCenterUsersResponse.data.status !== 'success') {
+
+                    failed = true;
                 }
 
                 if (failed) {
