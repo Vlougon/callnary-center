@@ -2,13 +2,13 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PathsList from '../../classes/PathsList';
 import useAuthContext from '../../hooks/useAuthContext';
-import majadaLogo from '/images/logoMajada.png';
 import userIcon from '/images/defaultUserIcon.png';
 import creativeCommons from '/images/creativecommons.png';
 import webAccesibility from '/images/wcag2.2AA.png';
 import '../../assets/components/HeadFoot.css';
 
 export default function HeadFoot() {
+    const ENV = import.meta.env;
     const location = useLocation();
     const { logout } = useAuthContext();
     const [userName, setuserName] = useState('');
@@ -107,10 +107,10 @@ export default function HeadFoot() {
         <div>
             <header>
                 <nav className="navbar navbar-expand-md">
-                    <div className="container-fluid">
-                        <a className="navbar-brand" href={majadaLogo} target='_blank' title='Logo del Centro de Telecomunicaciones del Majada'>
-                            <img src={majadaLogo} alt="Logo del Majada Marcial" />
-                            Majada's Call Center
+                    <div className="container-fluid d-flex align-items-center">
+                        <a className="navbar-brand" href={`${ENV.VITE_BACKEND_URL}/storage/images/logo.png`} target='_blank' title='Logo del Centro de Telecomunicaciones'>
+                            <img src={`${ENV.VITE_BACKEND_URL}/storage/images/logo.png`} alt="Logo de la Aplicación" />
+                            {ENV.VITE_APP_TITLE}
                         </a>
 
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userNavbar" aria-controls="userNavbar" aria-expanded="false" aria-label="Toggle navigation">
