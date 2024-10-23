@@ -2,13 +2,15 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PathsList from '../../classes/PathsList';
 import useAuthContext from '../../hooks/useAuthContext';
-import majadaLogo from '/images/logoMajada.png';
-import userIcon from '/images/defaultUserIcon.png';
-import creativeCommons from '/images/creativecommons.png';
-import webAccesibility from '/images/wcag2.2AA.png';
 import '../../assets/components/HeadFoot.css';
 
 export default function HeadFoot() {
+    const ENV = import.meta.env;
+    const logoImg = `${ENV.VITE_BACKEND_URL}/storage/images/logo.png`;
+    const userIconImg = `${ENV.VITE_BACKEND_URL}/storage/images/defaultUserIcon.png`;
+    const creativeCommonsImg = `${ENV.VITE_BACKEND_URL}/storage/images/creativecommons.png`;
+    const webAccesibilityImg = `${ENV.VITE_BACKEND_URL}/storage/images/wcag2.2AA.png`;
+
     const location = useLocation();
     const { logout } = useAuthContext();
     const [userName, setuserName] = useState('');
@@ -107,10 +109,10 @@ export default function HeadFoot() {
         <div>
             <header>
                 <nav className="navbar navbar-expand-md">
-                    <div className="container-fluid">
-                        <a className="navbar-brand" href={majadaLogo} target='_blank' title='Logo del Centro de Telecomunicaciones del Majada'>
-                            <img src={majadaLogo} alt="Logo del Majada Marcial" />
-                            Majada's Call Center
+                    <div className="container-fluid d-flex align-items-center">
+                        <a className="navbar-brand" href={logoImg} target='_blank' title='Logo del Centro de Telecomunicaciones'>
+                            <img src={logoImg} alt="Logo de la Aplicación" />
+                            {ENV.VITE_APP_TITLE}
                         </a>
 
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userNavbar" aria-controls="userNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,7 +125,7 @@ export default function HeadFoot() {
 
                             <div className="dropdown">
                                 <button type="button" id="profileBox" name="Perfil de Usuario" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src={userIcon} alt="Icono de Perfil de Usuario" className="d-inline-block" />
+                                    <img src={userIconImg} alt="Icono de Perfil de Usuario" className="d-inline-block" />
                                     <span id="usersName" className='text-light'>{userName}</span>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end">
@@ -151,10 +153,10 @@ export default function HeadFoot() {
                 <p>
                     Call Center Emulator by &#169; 2024 Acoray & Victor is licensed under
                     <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" title='Licencias de Creative Common'> Attribution-NonCommercial-NoDerivatives 4.0 International
-                        <img src={creativeCommons} alt='Licensias de Creative Common' />
+                        <img src={creativeCommonsImg} alt='Licensias de Creative Common' />
                     </a>
                     <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel='noreferrer' title='Licencia de Accesibilidad Web WCAG 2.2 WAI-AA'>
-                        <img src={webAccesibility} alt='Licensia de Accesibilidad Web' />
+                        <img src={webAccesibilityImg} alt='Licensia de Accesibilidad Web' />
                     </a>
                 </p>
 

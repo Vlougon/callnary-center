@@ -7,6 +7,12 @@ import FlashMessage from '../components/flashmessages/FlashMessage';
 import '../assets/pages/Home.css';
 
 export default function Home() {
+    const ENV = import.meta.env;
+    const incomingCallBigIcon = `${ENV.VITE_BACKEND_URL}/storage/images/incomingCallBigIcon.png`;
+    const outgoingCallBigIcon = `${ENV.VITE_BACKEND_URL}/storage/images/outgoingCallBigIcon.png`;
+    const userDocumentsBigIcon = `${ENV.VITE_BACKEND_URL}/storage/images/userDocumentsBigIcon.png`;
+    const pdfDownloadBigIcon = `${ENV.VITE_BACKEND_URL}/storage/images/pdfDownloadBigIcon.png`;
+
     const [shortCuts, dispatch] = useReducer(shortcutReducer,
         localStorage.getItem('shortCuts') ? JSON.parse(localStorage.getItem('shortCuts')) : [],
     );
@@ -58,10 +64,10 @@ export default function Home() {
 
                 <div className="col-md-9 main">
                     <div className='row gap-4 justify-content-center align-items-center'>
-                        <BigShortCut key={1} hrefLink={'/beneficiarylist/incoming'} imageSource={'../images/incomingCallBigIcon.png'} imageAlt={'Llamada Entrante'} />
-                        <BigShortCut key={2} hrefLink={'/beneficiarylist/outgoing'} imageSource={'../images/outgoingCallBigIcon.png'} imageAlt={'Llamada Saliente'} />
-                        <BigShortCut key={3} hrefLink={'/beneficiarylist'} imageSource={'../images/userDocumentsBigIcon.png'} imageAlt={'Gestión de Beneficiarios'} />
-                        <BigShortCut key={4} hrefLink={'/documentgenerator'} imageSource={'../images/pdfDownloadBigIcon.png'} imageAlt={'Generador de Documentos'} />
+                        <BigShortCut key={1} hrefLink={'/beneficiarylist/incoming'} imageSource={incomingCallBigIcon} imageAlt={'Llamada Entrante'} />
+                        <BigShortCut key={2} hrefLink={'/beneficiarylist/outgoing'} imageSource={outgoingCallBigIcon} imageAlt={'Llamada Saliente'} />
+                        <BigShortCut key={3} hrefLink={'/beneficiarylist'} imageSource={userDocumentsBigIcon} imageAlt={'Gestión de Beneficiarios'} />
+                        <BigShortCut key={4} hrefLink={'/documentgenerator'} imageSource={pdfDownloadBigIcon} imageAlt={'Generador de Documentos'} />
                     </div>
                 </div>
             </div>
