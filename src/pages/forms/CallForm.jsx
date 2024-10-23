@@ -6,11 +6,13 @@ import EmergencyFieldSet from '../../components/fieldsets/EmergencyFieldSet';
 import FlashMessage from '../../components/flashmessages/FlashMessage';
 import Spinner from '../../components/ui/Spinner';
 import useAuthContext from '../../hooks/useAuthContext';
-import playButton from '/images/playButton.png';
-import pauseButton from '/images/pauseButton.png';
 import '../../assets/pages/forms/CallForm.css';
 
 export default function CallForm() {
+    const ENV = import.meta.env;
+    const playButton = `${ENV.VITE_BACKEND_URL}/storage/images/playButton.png`;
+    const pauseButton = `${ENV.VITE_BACKEND_URL}/storage/images/pauseButton.png`;
+
     const [showFM, setShowFM] = useState({
         render: false,
         message: '',
