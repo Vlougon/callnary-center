@@ -2,6 +2,15 @@ import { useContext, useEffect, useState } from "react"
 import { ShortCutsContext, ShortCutsDispatchContext } from '../../context/ShortCutContext';
 
 export default function ShortCutModal({ currentShortCuts, FM, setFM }) {
+    const ENV = import.meta.env;
+    const addAssistantIcon = `${ENV.VITE_BACKEND_URL}/storage/images/addAssistantIcon.png`;
+    const assistantIcon = `${ENV.VITE_BACKEND_URL}/storage/images/assistantIcon.png`;
+    const addBeneficiaryIcon = `${ENV.VITE_BACKEND_URL}/storage/images/addBeneficiaryIcon.png`;
+    const medicalDataIcon = `${ENV.VITE_BACKEND_URL}/storage/images/medicalDataIcon.png`;
+    const contactsIcon = `${ENV.VITE_BACKEND_URL}/storage/images/contactsIcon.png`;
+    const calendarIcon = `${ENV.VITE_BACKEND_URL}/storage/images/calendarIcon.png`;
+    const unknownCallIcon = `${ENV.VITE_BACKEND_URL}/storage/images/unknownCallIcon.png`;
+
     const [userRole, setUserRole] = useState('');
     const { shortCuts } = useContext(ShortCutsContext);
     const dispatch = useContext(ShortCutsDispatchContext);
@@ -49,16 +58,16 @@ export default function ShortCutModal({ currentShortCuts, FM, setFM }) {
                     <div className="row modal-body row-cols-3 justify-content-center">
                         {userRole === 'supervisor' &&
                             <>
-                                < img src="../images/addAssistantIcon.png" alt="Añadir Trabajador" title='Añadir Trabajador' prefix='/assistantform' onClick={shortCutAddHandler} />
-                                <img src="../images/assistantIcon.png" alt="Asistentes" title='Listado de Asistentes' prefix='/assistantlist' onClick={shortCutAddHandler} />
+                                <img src={addAssistantIcon} alt="Añadir Trabajador" title='Añadir Trabajador' prefix='/assistantform' onClick={shortCutAddHandler} />
+                                <img src={assistantIcon} alt="Asistentes" title='Listado de Asistentes' prefix='/assistantlist' onClick={shortCutAddHandler} />
                             </>
                         }
 
-                        <img src="../images/addBeneficiaryIcon.png" alt="Añadir Beneficiario" title='Añadir Beneficiario' prefix='/beneficiaryform' onClick={shortCutAddHandler} />
-                        <img src="../images/medicalDataIcon.png" alt="Datos Médicos" title='Datos Médicos' prefix='/medicaldatalist' onClick={shortCutAddHandler} />
-                        <img src="../images/contactsIcon.png" alt="Contactos" title='Contactos' prefix='/contactlist' onClick={shortCutAddHandler} />
-                        <img src="../images/calendarIcon.png" alt="Calendario" title='Calendario' prefix='/calendar' onClick={shortCutAddHandler} />
-                        <img src="../images/unknownCallIcon.png" alt="Llamada Aleatoria" title='Llamada Aleatoria' prefix='/callform' onClick={shortCutAddHandler} />
+                        <img src={addBeneficiaryIcon} alt="Añadir Beneficiario" title='Añadir Beneficiario' prefix='/beneficiaryform' onClick={shortCutAddHandler} />
+                        <img src={medicalDataIcon} alt="Datos Médicos" title='Datos Médicos' prefix='/medicaldatalist' onClick={shortCutAddHandler} />
+                        <img src={contactsIcon} alt="Contactos" title='Contactos' prefix='/contactlist' onClick={shortCutAddHandler} />
+                        <img src={calendarIcon} alt="Calendario" title='Calendario' prefix='/calendar' onClick={shortCutAddHandler} />
+                        <img src={unknownCallIcon} alt="Llamada Aleatoria" title='Llamada Aleatoria' prefix='/callform' onClick={shortCutAddHandler} />
                     </div>
                     <div className="modal-footer justify-content-center">
                         <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
