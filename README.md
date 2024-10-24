@@ -1,32 +1,54 @@
-# Vite + React + TypeScript + Tailwindcss
+# Callnary Center
 
-This directory contains the frontend code that connects to the Laravel Breeze API backend.
+A web application built using React.js with Vite, JavaScript, and Bootstrap. This project uses npm for managing dependencies.
 
-# Intallation
+## Table of Contents
 
-To get started, Install the dependencies using Yarn:
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
-`yarn`
+## Introduction
 
-# Usage
+Callnary is a modern web application designed to help users to simulate and practice the tasks related to call-assistance jobs. 
 
-To run the development server, use the following command:
+## Technologies Used
+As sated before, between the technologies used on this project we find:
 
-`yarn dev`
+| Technology  | Description |
+| ----------- |:-----------:|
+| React       | A JavaScript library for building user interfaces   |
+| Vite        | A fast build tool for modern web applications   |
+| JavaScript  | The main used programming language   |
+| Bootstrap   | Powerful, extensible, and feature-packed frontend toolkit   |
+
+## Installation
+
+To get started with Callnary, follow these steps:
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Vlougon/callnary-center.git
+    cd callnary-center
+    ```
+
+2. Install the dependencies using npm:
+    ```bash
+    npm install
+    ```
+
+## Usage
+
+To start the development server and view the app in your browser, use the following command:
+```bash
+npm run dev
+```
 
 This will start the server and open the application in your default browser.
 
-# Technologies Used
-
-- Vite: A fast build tool for modern web applications.
-- React: A JavaScript library for building user interfaces.
-- TypeScript: A typed superset of JavaScript that compiles to plain JavaScript.
-- Tailwind CSS: A utility-first CSS framework for rapid UI development.
-
-# Contributing
-
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
-
 # Contact
 
-If you have any questions or need further assistance, feel free to contact **NIXX** at [hello@nixx.dev](mailto:hello@nixx.dev).
+If you have any questions or need further assistance, feel free to contact me through [vlougongs@gmail.com](mailto:vlougongs@gmail.com).
