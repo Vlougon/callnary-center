@@ -10,6 +10,11 @@ export default function HeadFoot() {
     const userIconImg = `${ENV.VITE_BACKEND_URL}/storage/images/defaultUserIcon.png`;
     const creativeCommonsImg = `${ENV.VITE_BACKEND_URL}/storage/images/creativecommons.png`;
     const webAccesibilityImg = `${ENV.VITE_BACKEND_URL}/storage/images/wcag2.2AA.png`;
+    const legalNoticeAndConditionUse = `${ENV.VITE_BACKEND_URL}/storage/documents/aviso_legal_y_condiciones_de_uso.pdf`;
+    const salesConditions = `${ENV.VITE_BACKEND_URL}/storage/documents/condiciones_generales_de_venta.pdf`;
+    const cookiesPolicy = `${ENV.VITE_BACKEND_URL}/storage/documents/politica_de_cookies.pdf`;
+    const privacyPolicy = `${ENV.VITE_BACKEND_URL}/storage/documents/politica_de_privacidad.pdf`;
+
 
     const location = useLocation();
     const { logout } = useAuthContext();
@@ -157,6 +162,21 @@ export default function HeadFoot() {
                     </a>
                     <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel='noreferrer' title='Licencia de Accesibilidad Web WCAG 2.2 WAI-AA'>
                         <img src={webAccesibilityImg} alt='Licensia de Accesibilidad Web' />
+                    </a>
+                </p>
+
+                <p>
+                    <a href={legalNoticeAndConditionUse} target="_blank" rel="noreferrer" title='Aviso Legal y Condiciones de Uso'>
+                        Aviso Legal y Condiciones de Uso
+                    </a>
+                    <a href={salesConditions} target="_blank" rel='noreferrer' title='Condiciones Generales de Venta'>
+                        Condiciones Generales de Venta
+                    </a>
+                    <a href={cookiesPolicy} target="_blank" rel="noreferrer" title='Política de Cookies'>
+                        Política de Cookies
+                    </a>
+                    <a href={privacyPolicy} target="_blank" rel='noreferrer' title='Política de Privacidad'>
+                        Política de Privacidad
                     </a>
                 </p>
 
