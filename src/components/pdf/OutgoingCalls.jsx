@@ -67,10 +67,10 @@ const OutgoingCalls = ({ data }) => (
                             <Text style={styles.dataLabel}>Duración de la Llamada: {Math.floor(call.duration / 3600) + 'h  ' + Math.floor(call.duration % 3600 / 60) + 'm ' + Math.floor(call.duration % 3600 % 60) + 's'}</Text>
                             <Text style={styles.dataLabel}>Tipo de Llamada: {call.call_type}</Text>
                             <Text style={styles.dataLabel}>Clase de Llamada: {call.call_kind}</Text>
-                            <Text style={styles.dataLabel}>¿Fue Respondida la Llamada?: {call.answered_call === 1 ? 'Fue RespondidFa' : 'No fue Respondida'}</Text>
+                            <Text style={styles.dataLabel}>¿Fue Respondida la Llamada?: {call.answered_call === 1 ? 'Fue Respondida' : 'No fue Respondida'}</Text>
                             <Text style={styles.dataLabel}>Observaciones: {call.observations}</Text>
                             <Text style={styles.dataLabel}>Description al 112: {call.description}</Text>
-                            <Text style={styles.dataLabel}>¿Fue Necesario Contactar con el 112?: {call.contacted_112 === 1 ? 'Se Contactó con el 112' : 'No se Contactó con el 112'}</Text>
+                            <Text style={styles.dataLabel}>¿Fue Necesario Contactar con el 112?: {call.contacted_112 === 1 ? 'Se Contactó al 112' : 'No se Contactó al 112'}</Text>
 
                             <Text style={styles.dataLabel}>Asistente Implicado/a: {call.user_name}</Text>
                             <Text style={styles.dataLabel}>Correo Electrónico: {call.email}</Text>
